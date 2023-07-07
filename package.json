@@ -1,0 +1,32 @@
+{
+  "name": "bobby-carrot-game",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "format": "prettier --write --plugin-search-dir=. ./**/*.svelte"
+  },
+  "devDependencies": {
+    "@excaliburjs/dev-tools": "^0.27.1",
+    "@sveltejs/vite-plugin-svelte": "^2.4.2",
+    "@tsconfig/svelte": "^4.0.1",
+    "@types/node": "^20.3.1",
+    "prettier": "^2.8.8",
+    "prettier-plugin-svelte": "^2.10.1",
+    "svelte-check": "^3.4.4",
+    "svelte-preprocess": "^5.0.4",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.9",
+    "vite-plugin-compress": "^2.1.1",
+    "vite-plugin-pwa": "^0.16.4"
+  },
+  "dependencies": {
+    "@excaliburjs/plugin-tiled": "^0.27.0",
+    "excalibur": "^0.27.0",
+    "just-debounce-it": "^3.2.0",
+    "svelte": "^4.0.0"
+  }
+}
