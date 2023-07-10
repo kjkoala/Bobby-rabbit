@@ -3,6 +3,7 @@ import { TiledMapResource } from '@excaliburjs/plugin-tiled';
 import './style.css';
 import { Level } from "src/scenes/level";
 import { levels } from "./levels";
+import { resources } from "./resources";
 
 const engine = new Engine({
   antialiasing: false,
@@ -14,19 +15,11 @@ const engine = new Engine({
   pointerScope: Input.PointerScope.Canvas,
   fixedUpdateFps: 60,
 })
-const tileMaps = levels.map(level => new TiledMapResource(level as  unknown as string))
+const tileMaps = levels.map(level => new TiledMapResource(level))
 
 engine.addScene('level', new Level(tileMaps, 0))
 
-const loader = new Loader(tileMaps)
+const loader = new Loader([...tileMaps, ...Object.values(resources)])
 engine.start(loader).then(() => {
     engine.goToScene('level')
-    // tiledMapResource.addTiledMapToScene(engine.currentScene);
-    // const carrots = tiledMapResource.data.objectGroups.find(obj => obj.name === 'Carrots')
-    // const playerStart = tiledMapResource.data.objectGroups[0].objects.find(obj => obj.name === 'player-start')
-    // if (playerStart && playerStart.x && playerStart.y) {
-    //   engine.add(new Bobby(playerStart.x, playerStart.y))
-    // }
-
-    // engine.currentScene.camera.zoom = 2;
 });
