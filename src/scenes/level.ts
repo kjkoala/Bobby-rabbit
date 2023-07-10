@@ -68,8 +68,13 @@ export class Level extends Scene {
 
         this.on('levelComplete', () => {
             engine.removeScene('level');
-            engine.addScene('level', new Level(this.levels, this.currentLevel + 1));
-            engine.goToScene('level');
+            const nextLevel = this.currentLevel + 1
+            if (nextLevel >= this.levels.length) {
+                engine.goToScene('endLevel')
+            } else {
+                engine.addScene('level', new Level(this.levels, nextLevel));
+                engine.goToScene('level');
+            }
         })
 
         this.on('playerDied', () => {

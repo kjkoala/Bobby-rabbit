@@ -4,6 +4,7 @@ import './style.css';
 import { Level } from "src/scenes/level";
 import { levels } from "./levels";
 import { resources } from "./resources";
+import { EndGame } from "src/scenes/endGame";
 
 const engine = new Engine({
   antialiasing: false,
@@ -18,6 +19,7 @@ const engine = new Engine({
 const tileMaps = levels.map(level => new TiledMapResource(level))
 
 engine.addScene('level', new Level(tileMaps, 0))
+engine.addScene('endLevel', new EndGame)
 
 const loader = new Loader([...tileMaps, ...Object.values(resources)])
 engine.start(loader).then(() => {
