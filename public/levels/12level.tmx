@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="15" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="121" nextobjectid="463">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="121" nextobjectid="463">
  <properties>
   <property name="excalibur" type="bool" value="true"/>
  </properties>
@@ -17,67 +17,67 @@
    </animation>
   </tile>
  </tileset>
- <layer id="112" name="Grass" width="15" height="16">
+ <layer id="112" name="Grass" width="16" height="16">
   <data encoding="csv">
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,
-1,1,0,0,1,1,1,0,0,0,0,0,0,0,1,
-1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,
-1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,
-1,0,0,0,0,1,1,0,0,0,0,1,0,0,0,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
-1,1,0,0,1,1,0,0,0,0,0,0,0,0,1,
-1,1,1,1,1,1,1,0,0,0,0,1,1,1,1
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,0,
+1,1,0,0,1,1,1,0,0,0,0,0,0,0,1,0,
+1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,
+1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,
+1,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,
+1,1,0,0,1,1,0,0,0,0,0,0,0,0,1,0,
+1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,0
 </data>
  </layer>
- <layer id="113" name="Ground" width="15" height="16">
+ <layer id="113" name="Ground" width="16" height="16">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,21,21,21,0,0,0,0,
-0,0,19,19,0,0,0,0,21,21,21,19,19,19,0,
-0,0,19,32,0,0,19,19,21,21,21,0,0,19,0,
-0,0,19,19,0,0,0,0,0,0,0,0,0,19,0,
-0,0,19,19,0,0,0,0,0,0,0,0,0,19,0,
-0,19,19,32,0,0,19,32,21,21,21,0,0,32,32,
-0,22,19,19,19,19,19,19,21,21,21,0,0,32,49,
-0,19,19,32,0,0,19,32,21,21,21,0,0,32,32,
-0,0,19,19,0,0,0,0,0,0,0,0,0,19,0,
-0,0,19,19,0,0,0,0,0,0,0,0,0,19,0,
-0,0,19,32,0,0,32,19,21,21,21,0,0,19,0,
-0,0,19,19,0,0,0,19,21,21,21,19,19,19,0,
-0,0,0,0,0,0,0,19,21,21,21,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,21,21,21,0,0,0,0,0,
+0,0,19,19,0,0,0,0,21,21,21,19,19,19,0,0,
+0,0,19,32,0,0,19,19,21,21,21,0,0,19,0,0,
+0,0,19,19,0,0,0,0,0,0,0,0,0,19,0,0,
+0,0,19,19,0,0,0,0,0,0,0,0,0,19,0,0,
+0,19,19,32,0,0,19,32,21,21,21,0,0,32,32,0,
+0,22,19,19,0,13,0,0,21,21,21,0,0,32,49,0,
+0,19,19,32,0,0,19,32,21,21,21,0,0,32,32,0,
+0,0,19,19,0,0,0,0,0,0,0,0,0,19,0,0,
+0,0,19,19,0,0,0,0,0,0,0,0,0,19,0,0,
+0,0,19,32,0,0,32,19,21,21,21,0,0,19,0,0,
+0,0,19,19,0,0,0,19,21,21,21,19,19,19,0,0,
+0,0,0,0,0,0,0,19,21,21,21,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="114" name="Wall" width="15" height="16">
+ <layer id="114" name="Wall" width="16" height="16">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,4,4,4,0,0,0,0,
-0,0,4,4,0,0,0,2,0,0,0,7,4,4,0,
-0,2,0,0,3,0,4,6,0,0,0,0,0,0,3,
-0,2,0,0,0,0,0,0,0,0,0,8,9,0,3,
-0,2,0,0,3,0,0,5,5,0,5,0,2,0,3,
-0,6,0,0,3,0,0,4,4,0,4,0,2,0,3,
-2,0,0,0,0,0,0,0,0,0,0,3,2,0,0,
-2,0,0,0,17,13,13,18,0,0,0,3,2,0,0,
-2,0,0,0,0,0,0,0,0,0,0,3,2,0,0,
-0,9,0,0,3,0,5,5,5,5,5,0,2,0,3,
-0,2,0,0,3,0,0,4,4,4,4,0,2,0,3,
-0,2,0,0,0,0,0,0,0,0,0,7,6,0,3,
-0,2,0,0,3,0,2,0,0,0,0,0,0,0,3,
-0,0,5,5,0,0,2,0,0,0,0,8,5,5,0,
-0,0,0,0,0,0,0,5,5,5,5,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,4,4,4,0,0,0,0,0,
+0,0,4,4,0,0,0,2,0,0,0,7,4,4,0,0,
+0,2,0,0,3,0,4,6,0,0,0,0,0,0,3,0,
+0,2,0,0,0,0,0,0,0,0,0,8,9,0,3,0,
+0,2,0,0,3,0,0,5,5,0,5,0,2,0,3,0,
+0,6,0,0,3,0,0,4,4,0,4,0,2,0,3,0,
+2,0,0,0,0,0,0,0,0,0,0,3,2,0,0,1,
+2,0,0,0,17,0,13,18,0,0,0,3,2,0,0,1,
+2,0,0,0,0,0,0,0,0,0,0,3,2,0,0,1,
+0,9,0,0,3,0,5,5,5,5,5,0,2,0,3,0,
+0,2,0,0,3,0,0,4,4,4,4,0,2,0,3,0,
+0,2,0,0,0,0,0,0,0,0,0,7,6,0,3,0,
+0,2,0,0,3,0,2,0,0,0,0,0,0,0,3,0,
+0,0,5,5,0,0,2,0,0,0,0,8,5,5,0,0,
+0,0,0,0,0,0,0,5,5,5,5,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="116" name="Convertor">
+ <objectgroup id="116" name="Convertor" locked="1">
   <properties>
    <property name="excalibur" type="bool" value="true"/>
   </properties>
@@ -86,7 +86,7 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="411" name="Convertor_Right_Block" type="Convertor_Right_Block" gid="42" x="80" y="208" width="16" height="16">
+  <object id="411" name="Convertor_Right" type="Convertor_Right" gid="42" x="80" y="208" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
@@ -96,12 +96,12 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="413" name="Convertor_Right_Block" type="Convertor_Right_Block" gid="42" x="80" y="128" width="16" height="16">
+  <object id="413" name="Convertor_Right" type="Convertor_Right" gid="42" x="80" y="128" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="414" name="Convertor_Left_Block" type="Convertor_Left_Block" gid="41" x="64" y="160" width="16" height="16">
+  <object id="414" name="Convertor_Left" type="Convertor_Left" gid="41" x="64" y="160" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
@@ -111,7 +111,7 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="416" name="Convertor_Left_Block" type="Convertor_Left_Block" gid="41" x="64" y="80" width="16" height="16">
+  <object id="416" name="Convertor_Left" type="Convertor_Left" gid="41" x="64" y="80" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
@@ -126,7 +126,7 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="419" name="Convertor_Up_Block" type="Convertor_Up_Block" gid="43" x="96" y="96" width="16" height="16">
+  <object id="419" name="Convertor_Up" type="Convertor_Up" gid="43" x="96" y="96" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
@@ -136,7 +136,7 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="421" name="Convertor_Down_Block" type="Convertor_Down_Block" gid="44" x="144" y="112" width="16" height="16">
+  <object id="421" name="Convertor_Down" type="Convertor_Down" gid="44" x="144" y="112" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>

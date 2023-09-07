@@ -91,7 +91,7 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="307" name="Convertor_Right_Block" type="Convertor_Right_Block" gid="42" x="128" y="64" width="16" height="16">
+  <object id="307" name="Convertor_Right" type="Convertor_Right" gid="42" x="128" y="64" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
@@ -101,7 +101,7 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="309" name="Convertor_Down_Block" type="Convertor_Down_Block" gid="44" x="64" y="112" width="16" height="16">
+  <object id="309" name="Convertor_Down" type="Convertor_Down" gid="44" x="64" y="112" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
@@ -255,7 +255,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="89" name="Traps">
+ <objectgroup id="89" name="Traps" locked="1">
   <properties>
    <property name="excalibur" type="bool" value="true"/>
   </properties>

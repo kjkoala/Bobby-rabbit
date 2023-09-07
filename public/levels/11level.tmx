@@ -42,11 +42,11 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,21,21,19,49,19,21,21,0,0,0,0,
-0,0,0,0,19,19,19,19,19,19,19,0,0,0,0,
+0,0,0,0,0,0,0,19,0,0,0,0,0,0,0,
 0,32,19,19,19,19,19,19,19,19,19,19,19,32,0,
-0,21,0,0,0,32,19,32,19,32,0,0,0,21,0,
-0,21,0,0,0,21,19,21,19,21,0,0,0,21,0,
-0,21,0,0,0,19,19,32,19,19,0,0,0,21,0,
+0,21,0,0,0,32,0,32,0,32,0,0,0,21,0,
+0,21,0,0,0,21,0,21,0,21,0,0,0,21,0,
+0,21,0,0,0,0,0,32,0,0,0,0,0,21,0,
 0,32,19,19,19,19,19,19,19,19,19,19,19,32,0,
 0,0,0,0,0,19,19,19,19,19,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -85,7 +85,7 @@
 0,0,0,0,0,0,5,5,5,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="107" name="Carrots">
+ <objectgroup id="107" name="Carrots" visible="0">
   <properties>
    <property name="excalibur" type="bool" value="true"/>
   </properties>
@@ -170,7 +170,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="108" name="Traps">
+ <objectgroup id="108" name="Traps" visible="0">
   <properties>
    <property name="excalibur" type="bool" value="true"/>
   </properties>
@@ -224,12 +224,12 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="401" name="Convertor_Up_Block" type="Convertor_Up_Block" gid="43" x="112" y="176" width="16" height="16">
+  <object id="401" name="Convertor_Up" type="Convertor_Up" gid="43" x="112" y="176" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="402" name="Convertor_Left_Block" type="Convertor_Left_Block" gid="41" x="160" y="112" width="16" height="16">
+  <object id="402" name="Convertor_Left" type="Convertor_Left" gid="41" x="160" y="112" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
@@ -244,7 +244,7 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="405" name="Convertor_Left_Block" type="Convertor_Left_Block" gid="41" x="32" y="112" width="16" height="16">
+  <object id="405" name="Convertor_Left" type="Convertor_Left_Block" gid="41" x="32" y="112" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>

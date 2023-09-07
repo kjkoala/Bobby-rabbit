@@ -46,12 +46,12 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="271" name="Convertor_Right_Block" type="Convertor_Right_Block" gid="42" x="96" y="144" width="16" height="16">
+  <object id="271" name="Convertor_Right" type="Convertor_Righ" gid="42" x="96" y="144" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="272" name="Convertor_Left_Block" type="Convertor_Left_Block" gid="41" x="80" y="192" width="16" height="16">
+  <object id="272" name="Convertor_Left" type="Convertor_Left" gid="41" x="80" y="192" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
