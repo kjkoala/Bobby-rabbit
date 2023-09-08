@@ -9,7 +9,7 @@ export class Level extends Scene {
     carrots!: number;
     mapWidth!: number;
     collisionMap!: Record<string, boolean>
-    rotatePlatform!: Record<string, {state: string; actors: Record<string, Actor>}>
+    rotatePlatform!: Record<string, {state: string | number; actors: Record<string, Actor>; x: number; y: number}>
     constructor(tileMaps: TiledMapResource[], currentLevel: number) {
         super()
         this.levels = tileMaps
@@ -20,11 +20,9 @@ export class Level extends Scene {
         this.mapWidth = currentMap.data.width;
         this.collisionMap = {};
         this.rotatePlatform = {};
-        const isRotateFindOnMap = currentMap.data.objectGroups.find(object => object.name === '2_Rotate');
+        const isRotateFindOnMap = currentMap.data.objectGroups.filter(object => object.name === '2_Rotate' || object.name === '4_Rotate');
         const wall = this.findIndexLayer(currentMap, 'Wall')
         this.createMapForCollision(wall)
-
-        console.log('currentMap', currentMap.data.objectGroups)
 
         const carrots = currentMap.data.objectGroups.find(obj => obj.name === 'Carrots')?.objects.length
         if (carrots) {
@@ -34,8 +32,9 @@ export class Level extends Scene {
         if (playerStart && playerStart.x && playerStart.y) {
             engine.add(new Bobby(playerStart.x, playerStart.y))
         }
+
         currentMap.addTiledMapToScene(engine.currentScene);
-        console.log('[actors]',this.actors)
+
         this.actors.forEach((actor) => {
             // TODO: Пересмотреть работу конвертеров под коллизии
             if (actor.name.startsWith('Convertor_Right')) {
@@ -46,18 +45,34 @@ export class Level extends Scene {
                 actor.graphics.use(convertorUpAnim)
             }  else if (actor.name.startsWith('Convertor_Down')) {
                 actor.graphics.use(convertorDownAnim)
-            } else if (isRotateFindOnMap && actor.name === 'X' || actor.name === 'Y') {
-                // TODO: Дописать логику, в объект положить начальное значение, актеров из движка
-                this.rotatePlatform[(isRotateFindOnMap!.properties as any).find((prop: any) => prop.name === 'coords')!.value] = {
-                    state: (isRotateFindOnMap!.properties as any).find((prop: any) => prop.name === 'state')!.value,
-                    actors: Object.fromEntries(isRotateFindOnMap?.objects.map(obj => {
-                        if (obj.name) {
-                            return [obj.name, this.actors.find(actor => actor.name === obj.name)]
-                        }
-                    }) as any)
-                }
-            }
+            } 
         })
+        if (isRotateFindOnMap.length > 0) {
+            isRotateFindOnMap.forEach(platform => {
+                const coords = platform.properties.find(prop => prop.name === 'coords') 
+                const state = platform.properties.find(prop => prop.name === 'state') 
+                const array = platform.properties.find(prop => prop.name === 'array')
+                const x = platform.properties.find(prop => prop.name === 'x')
+                const y = platform.properties.find(prop => prop.name === 'y')
+
+                const elements = (array?.value as string).split(',').map((el: string) => el.split('='));
+                this.rotatePlatform[coords?.value as string] = {
+                    state: state!.value as string,
+                    x: x!.value as number,
+                    y: y!.value as number, 
+                    actors: this.actors.reduce<Record<string, Actor>>((acc, actor) => {
+                        elements.find(([name, axis]) => {
+                            if (name.includes(actor.name)) {
+                                acc[axis] = actor
+                                return true
+                            }
+                            return false;
+                        })
+                        return acc
+                    }, {} )
+                }
+            })
+        }
         console.log(this.rotatePlatform)
         this.on('takeCarrot', () => {
             this.carrots -= 1
@@ -89,7 +104,7 @@ export class Level extends Scene {
     }
 
     createMapForCollision(wall: number[]) {
-        for(var y = 1; y <= this.mapWidth; y++) {
+        for(var y = 0; y <= this.mapWidth; y++) {
             var yStart = y * this.mapWidth
             var yFinish = (y + 1) * this.mapWidth
             for(var x = 0; x < wall.length;x++) {

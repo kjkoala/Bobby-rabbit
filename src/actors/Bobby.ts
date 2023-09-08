@@ -6,15 +6,6 @@ const SPEED = 45;
 const BLOCK_SIZE = 16;
 type TypeAnimation = 'up' | 'down' | 'left' | 'right' | 'idle' | 'fade' | 'death';
 
-
-const ROTATE_2 = {
-    [Directon.LEFT]: 'X',
-    [Directon.RIGHT]: 'X',
-    [Directon.UP]: 'Y',
-    [Directon.DOWN]: 'Y',
-}
-
-
 const ListAnimation: Record<Exclude<TypeAnimation, 'start'>, Animation>  = {
     idle: idleAnim,
     fade: fadeAnim,
@@ -31,7 +22,8 @@ export class Bobby extends Actor {
     blockX: number;
     blockY: number;
     playerConvertorCount: number;
-    onRotatePlatform: string | null = null;
+    playerRotateCount: number;
+    onRotatePlatform: string | number | null = null;
     constructor(x: number, y: number) {
         super({
             name: 'Bobby',
@@ -45,6 +37,7 @@ export class Bobby extends Actor {
         this.blockX = (x - 8) / BLOCK_SIZE + 1;
         this.blockY = (y - 8) / BLOCK_SIZE + 1;
         this.playerConvertorCount = 0;
+        this.playerRotateCount = 0;
     }
 
     onInitialize(engine: Engine): void {
@@ -104,26 +97,61 @@ export class Bobby extends Actor {
                     this.playerConvertorCount -= 1
                     this.blockY = (this.pos.y - 8) / BLOCK_SIZE + 1
                 })
-            } else if (other.name === 'X' || other.name === 'Y') {
+            } else if (other.name.startsWith('2_Rotate') || other.name.startsWith('4_Rotate') ) {
                 const platform = this.scene.rotatePlatform[`${other.pos.x / 16 + 1}x${other.pos.y / 16}`]
                 this.onRotatePlatform = platform.state;
+                this.playerRotateCount += 1
             }
         })
         this.on('collisionend', ({ other }) => {
             if (other.name === 'Trap') {
                 other.graphics.visible = false
-            } else if (other.name === 'X' || other.name === 'Y') {
+            } else if (other.name.startsWith('2_Rotate')) {
+                this.playerRotateCount -= 1
                 const platform = this.scene.rotatePlatform[`${other.pos.x / 16 + 1}x${other.pos.y / 16}`]
                 if (platform.state === 'Y') {
                     platform.state = 'X'
-                    platform.actors.X.z = 1
-                    platform.actors.Y.z = 0
+                    platform.actors.X.graphics.visible = true
+                    platform.actors.Y.graphics.visible = false
                 } else {
                     platform.state = 'Y'
-                    platform.actors.X.z = 0
-                    platform.actors.Y.z = 1
+                    platform.actors.Y.graphics.visible = true
+                    platform.actors.X.graphics.visible = false
                 }
-                this.onRotatePlatform = null;
+                if (this.playerRotateCount === 0) {
+                    this.onRotatePlatform = null;
+                }
+            } else if (other.name.startsWith('4_Rotate')) {
+                this.playerRotateCount -= 1
+                const platform = this.scene.rotatePlatform[`${other.pos.x / 16 + 1}x${other.pos.y / 16}`]
+                if (platform.state === 1) {
+                    platform.state = 2
+                    platform.actors['2'].graphics.visible = true
+                    platform.actors['1'].graphics.visible = false
+                    platform.actors['3'].graphics.visible = false
+                    platform.actors['4'].graphics.visible = false
+                } else if (platform.state === 2) {
+                    platform.state = 3
+                    platform.actors['3'].graphics.visible = true
+                    platform.actors['2'].graphics.visible = false
+                    platform.actors['1'].graphics.visible = false
+                    platform.actors['4'].graphics.visible = false
+                } else if (platform.state === 3) {
+                    platform.state = 4
+                    platform.actors['4'].graphics.visible = true
+                    platform.actors['3'].graphics.visible = false
+                    platform.actors['2'].graphics.visible = false
+                    platform.actors['1'].graphics.visible = false
+                } else if (platform.state === 4) {
+                    platform.state = 1
+                    platform.actors['1'].graphics.visible = true
+                    platform.actors['2'].graphics.visible = false
+                    platform.actors['3'].graphics.visible = false
+                    platform.actors['4'].graphics.visible = false
+                }
+                if (this.playerRotateCount === 0) {
+                    this.onRotatePlatform = null;
+                } 
             }
         })
     }
@@ -150,11 +178,14 @@ export class Bobby extends Actor {
     move(engine: Engine) {
         if (this.playerConvertorCount) return;
         if (engine.input.keyboard.isHeld(Keys.ArrowUp) && (this.pos.y - 8) / BLOCK_SIZE + 1 === this.blockY) {
-            if (this.onRotatePlatform === 'X') {
+            if (this.onRotatePlatform === 'X' || this.onRotatePlatform === 2 || this.onRotatePlatform === 1) {
                 return
             }
             const coord = `${this.blockX}x${this.blockY - 1}`
-            if (coord in this.scene.rotatePlatform && ROTATE_2[this.direction] !== this.scene.rotatePlatform[coord].state) {
+            if (coord in this.scene.rotatePlatform && ((typeof this.scene.rotatePlatform[coord].state === 'string' && this.scene.rotatePlatform[coord].state === 'X') ||
+            ((this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 2) && this.blockY < this.scene.rotatePlatform[coord].y) ||
+            ((this.scene.rotatePlatform[coord].state === 3 || this.scene.rotatePlatform[coord].state === 4) && this.blockY > this.scene.rotatePlatform[coord].y)
+            )) {
                 return
             }
             if (!(coord in this.scene.collisionMap)) {
@@ -162,11 +193,15 @@ export class Bobby extends Actor {
             this.blockY -= 1
             }
         } else if (engine.input.keyboard.isHeld(Keys.ArrowDown) && (this.pos.y - 8) / BLOCK_SIZE + 1 === this.blockY) {
-            if (this.onRotatePlatform === 'X') {
+            if (this.onRotatePlatform === 'X' || this.onRotatePlatform === 3 || this.onRotatePlatform === 4) {
                 return
             }
             const coord = `${this.blockX}x${this.blockY + 1}`
-            if (coord in this.scene.rotatePlatform && ROTATE_2[this.direction] !== this.scene.rotatePlatform[coord].state) {
+            if (coord in this.scene.rotatePlatform && 
+                ((typeof this.scene.rotatePlatform[coord].state === 'string' && this.scene.rotatePlatform[coord].state === 'X') ||
+                ((this.scene.rotatePlatform[coord].state === 3 || this.scene.rotatePlatform[coord].state === 4)  && this.blockY > this.scene.rotatePlatform[coord].y) ||
+                ((this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 2)  && this.blockY < this.scene.rotatePlatform[coord].y))
+                ) {
                 return
             }
             if (!(coord in this.scene.collisionMap)) {
@@ -174,11 +209,13 @@ export class Bobby extends Actor {
                 this.blockY += 1
             }
         } else if (engine.input.keyboard.isHeld(Keys.ArrowRight) && (this.pos.x - 8) / BLOCK_SIZE + 1 === this.blockX) {
-            if (this.onRotatePlatform === 'Y') {
+            if (this.onRotatePlatform === 'Y'  || this.onRotatePlatform === 2 || this.onRotatePlatform === 3) {
                 return
             }
             const coord = `${this.blockX + 1}x${this.blockY}`
-            if (coord in this.scene.rotatePlatform && ROTATE_2[this.direction] !== this.scene.rotatePlatform[coord].state) {
+            if (coord in this.scene.rotatePlatform && ((typeof this.scene.rotatePlatform[coord].state === 'string' && this.scene.rotatePlatform[coord].state === 'Y') ||
+                ((this.scene.rotatePlatform[coord].state === 2 || this.scene.rotatePlatform[coord].state === 3) && this.blockX > this.scene.rotatePlatform[coord].x) ||
+                ((this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 4) && this.blockX < this.scene.rotatePlatform[coord].x))) {
                 return
             }
             if (!(coord in this.scene.collisionMap) ) {
@@ -186,11 +223,14 @@ export class Bobby extends Actor {
                 this.blockX += 1
             }
         } else if (engine.input.keyboard.isHeld(Keys.ArrowLeft) && (this.pos.x - 8) / BLOCK_SIZE + 1 === this.blockX) {
-            if (this.onRotatePlatform === 'Y') {
+            if (this.onRotatePlatform === 'Y' || this.onRotatePlatform === 1 || this.onRotatePlatform === 4) {
                 return
             }
             const coord = `${this.blockX - 1}x${this.blockY}`
-            if (coord in this.scene.rotatePlatform && ROTATE_2[this.direction] !== this.scene.rotatePlatform[coord].state) {
+            if (coord in this.scene.rotatePlatform && ((typeof this.scene.rotatePlatform[coord].state === 'string' && this.scene.rotatePlatform[coord].state === 'Y') || 
+            (this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 4) && (this.blockX < this.scene.rotatePlatform[coord].x) || 
+            (this.scene.rotatePlatform[coord].state === 2 || this.scene.rotatePlatform[coord].state === 3) && (this.blockX > this.scene.rotatePlatform[coord].x)
+            )) {
                 return
             }
             if (!(coord in this.scene.collisionMap)) {
