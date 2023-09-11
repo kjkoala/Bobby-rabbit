@@ -1,4 +1,4 @@
-import { Engine, Input, Loader } from "excalibur";
+import { Color, Engine, Loader } from "excalibur";
 import { TiledMapResource } from '@excaliburjs/plugin-tiled';
 import './style.css';
 import { Level } from "src/scenes/level";
@@ -13,8 +13,8 @@ const engine = new Engine({
     width: 240,
     height: 256,
   },
-  pointerScope: Input.PointerScope.Canvas,
   fixedUpdateFps: 60,
+  backgroundColor: Color.Black,
 })
 const tileMaps = levels.map(level => new TiledMapResource(level))
 

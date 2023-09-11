@@ -12,37 +12,11 @@ html {
 
 body, button {
     font-family: 'Press Start 2P', cursive;
+    background-color: black;
 }
-
 
 #root {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-#root .root {
     display: flex;
-    flex-direction: column;
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-}
-
-button {
-    font-family: 'Press Start 2P', cursive;
-    background-color: #cc5809;
-    text-shadow: 0 2px #913e06;
-    color: white;
-    border: 2px solid white;
-    box-shadow: 0 1px 0 2px #452c0e;
-    min-width: 60px;
-    text-transform: uppercase;
-    letter-spacing: 0.03rem;
-    padding: 3px;
-}
-
-button:hover {
-    transform: translateY(2px)
+    align-items: center;
+    justify-content: center;
 }

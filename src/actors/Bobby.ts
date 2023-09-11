@@ -30,7 +30,6 @@ export class Bobby extends Actor {
             width: 14,
             height: 14,
             pos: vec(x, y),
-            color: Color.Red,
             z: Number.POSITIVE_INFINITY,
             collisionType: CollisionType.Active
         })
