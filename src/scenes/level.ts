@@ -1,5 +1,5 @@
 import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
-import { Actor, CollisionType, Engine, Scene } from "excalibur";
+import { Actor, BoundingBox, CollisionType, Engine, Scene } from "excalibur";
 import { Bobby } from "src/actors/Bobby";
 import { convertorDownAnim, convertorLeftAnim, convertorRightAnim, convertorUpAnim } from "src/animations/Convertor";
 
@@ -139,9 +139,11 @@ export class Level extends Scene {
         })
 
         this.on('playerDied', () => {
-            engine.removeScene('level');
-            engine.addScene('level', new Level(this.levels, this.currentLevel));
-            engine.goToScene('level');
+            engine.clock.schedule(() => {
+                engine.removeScene('level');
+                engine.addScene('level', new Level(this.levels, this.currentLevel));
+                engine.goToScene('level');
+            }, 1000)
         })
 
     }

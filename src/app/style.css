@@ -1,9 +1,8 @@
 * {
     margin: 0;
     padding: 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
     user-select: none;
+    touch-action: none;
 }
 
 html {
@@ -11,7 +10,6 @@ html {
 }
 
 body, button {
-    font-family: 'Press Start 2P', cursive;
     background-color: black;
 }
 
