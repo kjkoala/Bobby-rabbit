@@ -10,7 +10,7 @@ const engine = new Engine({
   antialiasing: false,
   canvasElementId: 'game',
   resolution: {
-    width: 240,
+    width: 256,
     height: 256,
   },
   fixedUpdateFps: 60,

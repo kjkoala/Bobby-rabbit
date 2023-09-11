@@ -15,6 +15,8 @@ import level14 from 'public/levels/14level.tmx';
 import level15 from 'public/levels/15level.tmx';
 import level16 from 'public/levels/16level.tmx';
 import level17 from 'public/levels/17level.tmx';
+import level18 from 'public/levels/18level.tmx';
+import level19 from 'public/levels/19level.tmx';
 
-export const levels3 = [level1,level2,level3,level4,level5,level6,level7,level8,level9,level10,level11,level12,level13,level14,level15,level16,level17]
-export const levels = [level16, level17];
+export const levels2 = [level1,level2,level3,level4,level5,level6,level7,level8,level9,level10,level11,level12,level13,level14,level15,level16,level17,level18];
+export const levels = [level16,level17,level18,level19];

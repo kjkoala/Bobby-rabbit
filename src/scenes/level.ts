@@ -14,6 +14,7 @@ export class Level extends Scene {
     rotatePlatform!: Record<string, {state: string | number; actors: Record<string, Actor>; x: number; y: number}>
     convertorButtons!: Record<string, boolean> | null;
     rotateButtons!: Record<string, boolean> | null;
+    locks!: Record<string, string> | null;
     constructor(tileMaps: TiledMapResource[], currentLevel: number) {
         super()
         this.levels = tileMaps
@@ -26,6 +27,7 @@ export class Level extends Scene {
         this.rotatePlatform = {};
         this.convertorButtons = null;
         this.rotateButtons = null;
+        this.locks = null;
         const rotatePlatform = currentMap.data.objectGroups.filter(object => object.name === '2_Rotate' || object.name === '4_Rotate');
         const convertorButtons = currentMap.data.objectGroups.find(object => object.name === 'ConvertorButtons');
         const rotateButtons = currentMap.data.objectGroups.find(object => object.name === 'RotateButtons');
@@ -76,6 +78,16 @@ export class Level extends Scene {
                 this.convertorControl(actor)
             } else if (actor.name.startsWith('RotateButton')) {
                 this.rotateControl(actor)
+            } else if (actor.name.startsWith('Lock')) {
+                const lockPos = `${actor.pos.x / BLOCK_SIZE}x${actor.pos.y / BLOCK_SIZE - 1}` 
+                this.collisionMap[lockPos] = true
+                if (this.locks) {
+                    this.locks[actor.name] = lockPos
+                } else {
+                    this.locks = {
+                        [actor.name]: lockPos
+                    }
+                }
             }
         })
 

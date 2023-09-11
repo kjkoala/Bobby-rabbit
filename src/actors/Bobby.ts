@@ -103,6 +103,14 @@ export class Bobby extends Actor {
                 engine.clock.schedule(() => this.scene.convertorControl(), 300)
             } else if (other.name.startsWith('RotateButton')) {
                 engine.clock.schedule(() => this.scene.rotateControl(), 300)
+            } else if (other.name.startsWith('Key')) {
+                engine.clock.schedule(() => other.kill(), 300)
+                const arr = other.name.split('_')
+                if (this.scene.locks) {
+                    delete this.scene.collisionMap[this.scene.locks[`Lock_${arr[1]}`]]
+                }
+            } else if (other.name.startsWith('Lock')) {
+                engine.clock.schedule(() => other.kill(), 150)
             }
         })
         this.on('collisionend', ({ other }) => {
