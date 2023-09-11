@@ -130,11 +130,11 @@
  <objectgroup id="116" name="2_Rotate">
   <properties>
    <property name="array" value="2_Rotate_Y=Y,2_Rotate_X=X"/>
-   <property name="coords" value="8x9"/>
+   <property name="coords" value="7x8"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="Y"/>
-   <property name="x" value="8"/>
-   <property name="y" value="9"/>
+   <property name="x" value="7"/>
+   <property name="y" value="8"/>
   </properties>
   <object id="425" name="2_Rotate_X" gid="29" x="112" y="144" width="16" height="16">
    <properties>

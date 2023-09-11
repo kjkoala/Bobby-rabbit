@@ -159,11 +159,11 @@
  <objectgroup id="130" name="2_Rotate">
   <properties>
    <property name="array" value="2_Rotate_Y=Y,2_Rotate_X=X"/>
-   <property name="coords" value="4x11"/>
+   <property name="coords" value="3x10"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="X"/>
-   <property name="x" value="4"/>
-   <property name="y" value="11"/>
+   <property name="x" value="3"/>
+   <property name="y" value="10"/>
   </properties>
   <object id="455" name="2_Rotate_Y" gid="30" x="48" y="176" width="16" height="16"/>
   <object id="456" name="2_Rotate_X" gid="29" x="48" y="176" width="16" height="16">

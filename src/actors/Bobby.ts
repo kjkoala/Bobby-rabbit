@@ -1,9 +1,8 @@
-import { Actor, CollisionType, Color, Engine, vec, Animation, Keys } from "excalibur";
+import { Actor, CollisionType, Engine, vec, Animation, Keys } from "excalibur";
 import { downAnim, idleAnim, leftAnim, rightAnim, upAnim, fadeAnim, deathAnim } from "src/animations/Bobby";
-import type { Level } from "src/scenes/level";
+import { BLOCK_SIZE, type Level } from "src/scenes/level";
 import { Directon } from "./types";
 const SPEED = 45;
-const BLOCK_SIZE = 16;
 type TypeAnimation = 'up' | 'down' | 'left' | 'right' | 'idle' | 'fade' | 'death';
 
 const ListAnimation: Record<Exclude<TypeAnimation, 'start'>, Animation>  = {
@@ -33,8 +32,8 @@ export class Bobby extends Actor {
             z: Number.POSITIVE_INFINITY,
             collisionType: CollisionType.Active
         })
-        this.blockX = (x - 8) / BLOCK_SIZE + 1;
-        this.blockY = (y - 8) / BLOCK_SIZE + 1;
+        this.blockX = (x - 8) / BLOCK_SIZE;
+        this.blockY = (y - 8) / BLOCK_SIZE;
         this.playerConvertorCount = 0;
         this.playerRotateCount = 0;
     }
@@ -70,7 +69,7 @@ export class Bobby extends Actor {
                 this.actions.moveBy(BLOCK_SIZE, 0, SPEED).toPromise()
                 .then(() => {
                     this.playerConvertorCount -= 1
-                    this.blockX = (this.pos.x - 8) / BLOCK_SIZE + 1
+                    this.blockX = (this.pos.x - 8) / BLOCK_SIZE
                 })
             } else if (other.name.startsWith('Convertor_Left')) {
                 // TODO: Работа с коллизиями на конверторе, пересмотреть подход, попробовать найти лучше
@@ -78,7 +77,7 @@ export class Bobby extends Actor {
                 this.actions.moveBy(-BLOCK_SIZE, 0, SPEED).toPromise()
                 .then(() => {
                     this.playerConvertorCount -= 1
-                    this.blockX = (this.pos.x - 8) / BLOCK_SIZE + 1
+                    this.blockX = (this.pos.x - 8) / BLOCK_SIZE
                 })
             }  else if (other.name.startsWith('Convertor_Up')) {
                 // TODO: Работа с коллизиями на конверторе, пересмотреть подход, попробовать найти лучше
@@ -86,7 +85,7 @@ export class Bobby extends Actor {
                 this.actions.moveBy(0, -BLOCK_SIZE, SPEED).toPromise()
                 .then(() => {
                     this.playerConvertorCount -= 1
-                    this.blockY = (this.pos.y - 8) / BLOCK_SIZE + 1
+                    this.blockY = (this.pos.y - 8) / BLOCK_SIZE
                 })
             }  else if (other.name.startsWith('Convertor_Down')) {
                 // TODO: Работа с коллизиями на конверторе, пересмотреть подход, попробовать найти лучше
@@ -94,10 +93,10 @@ export class Bobby extends Actor {
                 this.actions.moveBy(0, BLOCK_SIZE, SPEED).toPromise()
                 .then(() => {
                     this.playerConvertorCount -= 1
-                    this.blockY = (this.pos.y - 8) / BLOCK_SIZE + 1
+                    this.blockY = (this.pos.y - 8) / BLOCK_SIZE
                 })
             } else if (other.name.startsWith('2_Rotate') || other.name.startsWith('4_Rotate') ) {
-                const platform = this.scene.rotatePlatform[`${other.pos.x / 16 + 1}x${other.pos.y / 16}`]
+                const platform = this.scene.rotatePlatform[`${other.pos.x / BLOCK_SIZE}x${other.pos.y / BLOCK_SIZE - 1}`]
                 this.onRotatePlatform = platform.state;
                 this.playerRotateCount += 1
             } else if (other.name.startsWith('ConvertorButton')) {
@@ -143,15 +142,15 @@ export class Bobby extends Actor {
         }
         this.move(engine)
     }
-
+    
     move(engine: Engine) {
         if (this.playerConvertorCount) return;
-        if (engine.input.keyboard.isHeld(Keys.ArrowUp) && (this.pos.y - 8) / BLOCK_SIZE + 1 === this.blockY) {
+        if (engine.input.keyboard.isHeld(Keys.ArrowUp) && ((this.pos.y - 8) / BLOCK_SIZE === this.blockY)) {
             if (this.onRotatePlatform === 'X' || this.onRotatePlatform === 2 || this.onRotatePlatform === 1) {
                 return
             }
             const coord = `${this.blockX}x${this.blockY - 1}`
-            if (coord in this.scene.rotatePlatform && ((typeof this.scene.rotatePlatform[coord].state === 'string' && this.scene.rotatePlatform[coord].state === 'X') ||
+            if (coord in this.scene.rotatePlatform && ((this.scene.rotatePlatform[coord].state === 'X') ||
             ((this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 2) && this.blockY < this.scene.rotatePlatform[coord].y) ||
             ((this.scene.rotatePlatform[coord].state === 3 || this.scene.rotatePlatform[coord].state === 4) && this.blockY > this.scene.rotatePlatform[coord].y)
             )) {
@@ -161,13 +160,13 @@ export class Bobby extends Actor {
             this.actions.moveBy(0, -BLOCK_SIZE, SPEED)
             this.blockY -= 1
             }
-        } else if (engine.input.keyboard.isHeld(Keys.ArrowDown) && (this.pos.y - 8) / BLOCK_SIZE + 1 === this.blockY) {
+        } else if (engine.input.keyboard.isHeld(Keys.ArrowDown) && (this.pos.y - 8) / BLOCK_SIZE === this.blockY) {
             if (this.onRotatePlatform === 'X' || this.onRotatePlatform === 3 || this.onRotatePlatform === 4) {
                 return
             }
             const coord = `${this.blockX}x${this.blockY + 1}`
             if (coord in this.scene.rotatePlatform && 
-                ((typeof this.scene.rotatePlatform[coord].state === 'string' && this.scene.rotatePlatform[coord].state === 'X') ||
+                ((this.scene.rotatePlatform[coord].state === 'X') ||
                 ((this.scene.rotatePlatform[coord].state === 3 || this.scene.rotatePlatform[coord].state === 4)  && this.blockY > this.scene.rotatePlatform[coord].y) ||
                 ((this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 2)  && this.blockY < this.scene.rotatePlatform[coord].y))
                 ) {
@@ -177,7 +176,7 @@ export class Bobby extends Actor {
                 this.actions.moveBy(0, BLOCK_SIZE, SPEED)
                 this.blockY += 1
             }
-        } else if (engine.input.keyboard.isHeld(Keys.ArrowRight) && (this.pos.x - 8) / BLOCK_SIZE + 1 === this.blockX) {
+        } else if (engine.input.keyboard.isHeld(Keys.ArrowRight) && (this.pos.x - 8) / BLOCK_SIZE === this.blockX) {
             if (this.onRotatePlatform === 'Y'  || this.onRotatePlatform === 2 || this.onRotatePlatform === 3) {
                 return
             }
@@ -191,7 +190,7 @@ export class Bobby extends Actor {
                 this.actions.moveBy(BLOCK_SIZE, 0, SPEED)
                 this.blockX += 1
             }
-        } else if (engine.input.keyboard.isHeld(Keys.ArrowLeft) && (this.pos.x - 8) / BLOCK_SIZE + 1 === this.blockX) {
+        } else if (engine.input.keyboard.isHeld(Keys.ArrowLeft) && (this.pos.x - 8) / BLOCK_SIZE === this.blockX) {
             if (this.onRotatePlatform === 'Y' || this.onRotatePlatform === 1 || this.onRotatePlatform === 4) {
                 return
             }

@@ -24,4 +24,5 @@ engine.addScene('endLevel', new EndGame)
 const loader = new Loader([...tileMaps, ...Object.values(resources)])
 engine.start(loader).then(() => {
     engine.goToScene('level')
+    engine.screen.goFullScreen('root')
 });

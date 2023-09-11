@@ -3,6 +3,7 @@ import { Actor, CollisionType, Engine, Scene } from "excalibur";
 import { Bobby } from "src/actors/Bobby";
 import { convertorDownAnim, convertorLeftAnim, convertorRightAnim, convertorUpAnim } from "src/animations/Convertor";
 
+export const BLOCK_SIZE = 16;
 export class Level extends Scene {
     declare player: Bobby
     levels: TiledMapResource[];
@@ -104,7 +105,6 @@ export class Level extends Scene {
                 }
             })
         }
-
         this.on('takeCarrot', () => {
             this.carrots -= 1
             if (this.carrots <= 0) {
@@ -191,7 +191,7 @@ export class Level extends Scene {
     rotate2Platform(x: string): void;
     rotate2Platform(x: number, y: number): void;
     rotate2Platform(x: string | number, y?: number) {
-        const platform = typeof x === 'string' ? this.rotatePlatform[x] : this.rotatePlatform[`${x / 16 + 1}x${y! / 16}`]
+        const platform = typeof x === 'string' ? this.rotatePlatform[x] : this.rotatePlatform[`${x / BLOCK_SIZE}x${y! / BLOCK_SIZE - 1}`]
         if (platform.state === 'Y') {
             platform.state = 'X'
             platform.actors.X.graphics.visible = true
@@ -206,7 +206,7 @@ export class Level extends Scene {
     rotate4Platform(x: string): void;
     rotate4Platform(x: number, y: number): void;
     rotate4Platform(x: string | number, y?: number) {
-        const platform = typeof x === 'string' ? this.rotatePlatform[x] : this.rotatePlatform[`${x / 16 + 1}x${y! / 16}`]
+        const platform = typeof x === 'string' ? this.rotatePlatform[x] : this.rotatePlatform[`${x / BLOCK_SIZE}x${y! / BLOCK_SIZE - 1}`]
         if (platform.state === 4) {
             platform.state = 1
         } else if (typeof platform.state === 'number') {
@@ -224,8 +224,8 @@ export class Level extends Scene {
             var yStart = y * this.mapWidth
             var yFinish = (y + 1) * this.mapWidth
             for(var x = 0; x < wall.length;x++) {
-              if (wall[x] > yStart && wall[x] <= yFinish) {
-                this.collisionMap[`${wall[x] - yStart}x${y + 1}`] = true
+              if (wall[x] >= yStart && wall[x] <= yFinish) {
+                this.collisionMap[`${wall[x] - yStart}x${y}`] = true
               }
             }
           } 
@@ -236,7 +236,7 @@ export class Level extends Scene {
         if (layer && Array.isArray(layer.data)) {
             return layer.data.reduce<number[]>((acc, item, index) => {
                 if (item > 0) {
-                    acc.push(index + 1)
+                    acc.push(index)
                 }
                 return acc
             }, [])
