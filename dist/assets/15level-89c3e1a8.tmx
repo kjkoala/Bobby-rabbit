@@ -127,19 +127,14 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="128" name="4_Rotate">
-  <properties>
-   <property name="excalibur" type="bool" value="true"/>
-  </properties>
- </objectgroup>
  <objectgroup id="129" name="2_Rotate">
   <properties>
    <property name="array" value="2_Rotate_Y=Y,2_Rotate_X=X"/>
-   <property name="coords" value="11x12"/>
+   <property name="coords" value="10x11"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="Y"/>
-   <property name="x" value="11"/>
-   <property name="y" value="12"/>
+   <property name="x" value="10"/>
+   <property name="y" value="11"/>
   </properties>
   <object id="461" name="2_Rotate_X" gid="29" x="160" y="192" width="16" height="16">
    <properties>
@@ -156,11 +151,11 @@
  <objectgroup id="132" name="2_Rotate">
   <properties>
    <property name="array" value="2_Rotate_Y_2=Y,2_Rotate_X_2=X"/>
-   <property name="coords" value="11x14"/>
+   <property name="coords" value="10x13"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="Y"/>
-   <property name="x" value="11"/>
-   <property name="y" value="14"/>
+   <property name="x" value="10"/>
+   <property name="y" value="13"/>
   </properties>
   <object id="467" name="2_Rotate_X_2" gid="29" x="160" y="224" width="16" height="16">
    <properties>
@@ -177,11 +172,11 @@
  <objectgroup id="133" name="2_Rotate">
   <properties>
    <property name="array" value="2_Rotate_Y_3=Y,2_Rotate_X_3=X"/>
-   <property name="coords" value="13x14"/>
+   <property name="coords" value="12x13"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="Y"/>
-   <property name="x" value="13"/>
-   <property name="y" value="14"/>
+   <property name="x" value="12"/>
+   <property name="y" value="13"/>
   </properties>
   <object id="469" name="2_Rotate_X_3" gid="29" x="192" y="224" width="16" height="16">
    <properties>
@@ -198,11 +193,11 @@
  <objectgroup id="131" name="2_Rotate">
   <properties>
    <property name="array" value="2_Rotate_Y_1=Y,2_Rotate_X_1=X"/>
-   <property name="coords" value="13x12"/>
+   <property name="coords" value="12x11"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="Y"/>
-   <property name="x" value="13"/>
-   <property name="y" value="12"/>
+   <property name="x" value="12"/>
+   <property name="y" value="11"/>
   </properties>
   <object id="465" name="2_Rotate_X_1" gid="29" x="192" y="192" width="16" height="16">
    <properties>
@@ -239,11 +234,11 @@
  <objectgroup id="134" name="4_Rotate">
   <properties>
    <property name="array" value="4_Rotate_1_1=1,4_Rotate_1_2=2,4_Rotate_1_3=3,4_Rotate_1_4=4"/>
-   <property name="coords" value="11x13"/>
+   <property name="coords" value="10x12"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="4"/>
-   <property name="x" value="11"/>
-   <property name="y" value="13"/>
+   <property name="x" value="10"/>
+   <property name="y" value="12"/>
   </properties>
   <object id="471" name="4_Rotate_1_1" gid="25" x="160" y="208" width="16" height="16">
    <properties>
@@ -270,11 +265,11 @@
  <objectgroup id="135" name="4_Rotate">
   <properties>
    <property name="array" value="4_Rotate_2_1=1,4_Rotate_2_2=2,4_Rotate_2_3=3,4_Rotate_2_4=4"/>
-   <property name="coords" value="13x13"/>
+   <property name="coords" value="12x12"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="4"/>
-   <property name="x" value="13"/>
-   <property name="y" value="13"/>
+   <property name="x" value="12"/>
+   <property name="y" value="12"/>
   </properties>
   <object id="475" name="4_Rotate_2_1" gid="25" x="192" y="208" width="16" height="16">
    <properties>
@@ -301,11 +296,11 @@
  <objectgroup id="137" name="4_Rotate">
   <properties>
    <property name="array" value="4_Rotate_3_1=1,4_Rotate_3_2=2,4_Rotate_3_3=3,4_Rotate_3_4=4"/>
-   <property name="coords" value="7x10"/>
+   <property name="coords" value="6x9"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="2"/>
-   <property name="x" value="7"/>
-   <property name="y" value="10"/>
+   <property name="x" value="6"/>
+   <property name="y" value="9"/>
   </properties>
   <object id="483" name="4_Rotate_3_1" gid="25" x="96" y="160" width="16" height="16">
    <properties>
@@ -332,11 +327,11 @@
  <objectgroup id="138" name="4_Rotate">
   <properties>
    <property name="array" value="4_Rotate_4_1=1,4_Rotate_4_2=2,4_Rotate_4_3=3,4_Rotate_4_4=4"/>
-   <property name="coords" value="9x8"/>
+   <property name="coords" value="8x7"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="2"/>
-   <property name="x" value="9"/>
-   <property name="y" value="8"/>
+   <property name="x" value="8"/>
+   <property name="y" value="7"/>
   </properties>
   <object id="487" name="4_Rotate_4_1" gid="25" x="128" y="128" width="16" height="16">
    <properties>

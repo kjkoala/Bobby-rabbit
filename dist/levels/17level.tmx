@@ -88,11 +88,11 @@
  <objectgroup id="141" name="2_Rotate">
   <properties>
    <property name="array" value="2_Rotate_1_Y=Y,2_Rotate_1_X=X"/>
-   <property name="coords" value="8x7"/>
+   <property name="coords" value="7x6"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="Y"/>
-   <property name="x" value="8"/>
-   <property name="y" value="7"/>
+   <property name="x" value="7"/>
+   <property name="y" value="6"/>
   </properties>
   <object id="530" name="2_Rotate_1_X" gid="29" x="112" y="112" width="16" height="16"/>
   <object id="531" name="2_Rotate_1_Y" gid="30" x="112" y="112" width="16" height="16">
@@ -104,11 +104,11 @@
  <objectgroup id="142" name="2_Rotate">
   <properties>
    <property name="array" value="2_Rotate_2_Y=Y,2_Rotate_2_X=X"/>
-   <property name="coords" value="8x11"/>
+   <property name="coords" value="7x10"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="Y"/>
-   <property name="x" value="8"/>
-   <property name="y" value="11"/>
+   <property name="x" value="7"/>
+   <property name="y" value="10"/>
   </properties>
   <object id="533" name="2_Rotate_2_X" gid="29" x="112" y="176" width="16" height="16"/>
   <object id="534" name="2_Rotate_2_Y" gid="30" x="112" y="176" width="16" height="16">
@@ -120,11 +120,11 @@
  <objectgroup id="145" name="2_Rotate">
   <properties>
    <property name="array" value="2_Rotate_4_Y=Y,2_Rotate_4_X=X"/>
-   <property name="coords" value="6x9"/>
+   <property name="coords" value="5x8"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="X"/>
-   <property name="x" value="6"/>
-   <property name="y" value="9"/>
+   <property name="x" value="5"/>
+   <property name="y" value="8"/>
   </properties>
   <object id="539" name="2_Rotate_4_Y" gid="30" x="80" y="144" width="16" height="16"/>
   <object id="540" name="2_Rotate_4_X" gid="29" x="80" y="144" width="16" height="16">
@@ -136,11 +136,11 @@
  <objectgroup id="144" name="2_Rotate">
   <properties>
    <property name="array" value="2_Rotate_3_Y=Y,2_Rotate_3_X=X"/>
-   <property name="coords" value="11x9"/>
+   <property name="coords" value="10x8"/>
    <property name="excalibur" type="bool" value="true"/>
    <property name="state" value="X"/>
-   <property name="x" value="11"/>
-   <property name="y" value="9"/>
+   <property name="x" value="10"/>
+   <property name="y" value="8"/>
   </properties>
   <object id="535" name="2_Rotate_3_Y" gid="30" x="160" y="144" width="16" height="16"/>
   <object id="536" name="2_Rotate_3_X" gid="29" x="160" y="144" width="16" height="16">
