@@ -1,15 +1,18 @@
 import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
-import { Actor, Engine, Scene } from "excalibur";
+import { Actor, CollisionType, Engine, Scene } from "excalibur";
 import { Bobby } from "src/actors/Bobby";
 import { convertorDownAnim, convertorLeftAnim, convertorRightAnim, convertorUpAnim } from "src/animations/Convertor";
 
 export class Level extends Scene {
+    declare player: Bobby
     levels: TiledMapResource[];
     currentLevel: number
     carrots!: number;
     mapWidth!: number;
     collisionMap!: Record<string, boolean>
     rotatePlatform!: Record<string, {state: string | number; actors: Record<string, Actor>; x: number; y: number}>
+    convertorButtons!: Record<string, boolean> | null;
+    rotateButtons!: Record<string, boolean> | null;
     constructor(tileMaps: TiledMapResource[], currentLevel: number) {
         super()
         this.levels = tileMaps
@@ -20,7 +23,12 @@ export class Level extends Scene {
         this.mapWidth = currentMap.data.width;
         this.collisionMap = {};
         this.rotatePlatform = {};
-        const isRotateFindOnMap = currentMap.data.objectGroups.filter(object => object.name === '2_Rotate' || object.name === '4_Rotate');
+        this.convertorButtons = null;
+        this.rotateButtons = null;
+        const rotatePlatform = currentMap.data.objectGroups.filter(object => object.name === '2_Rotate' || object.name === '4_Rotate');
+        const convertorButtons = currentMap.data.objectGroups.find(object => object.name === 'ConvertorButtons');
+        const rotateButtons = currentMap.data.objectGroups.find(object => object.name === 'RotateButtons');
+
         const wall = this.findIndexLayer(currentMap, 'Wall')
         this.createMapForCollision(wall)
 
@@ -35,6 +43,24 @@ export class Level extends Scene {
 
         currentMap.addTiledMapToScene(engine.currentScene);
 
+        if (convertorButtons) {
+            this.convertorButtons = Object.fromEntries((convertorButtons.properties[0].value as string).split(',').map((el: string) => {
+                const els = el.split('=')
+                els[1] = JSON.parse(els[1])
+                return els
+            }));
+        }
+
+        if (rotateButtons) {
+            this.rotateButtons = Object.fromEntries((rotateButtons.properties[0].value as string).split(',').map((el: string) => {
+                const els = el.split('=')
+                els[1] = JSON.parse(els[1])
+                return els
+            }));
+        }
+
+        this.player = this.actors.find(actor => actor.name === 'Bobby') as Bobby;
+
         this.actors.forEach((actor) => {
             // TODO: Пересмотреть работу конвертеров под коллизии
             if (actor.name.startsWith('Convertor_Right')) {
@@ -45,10 +71,15 @@ export class Level extends Scene {
                 actor.graphics.use(convertorUpAnim)
             }  else if (actor.name.startsWith('Convertor_Down')) {
                 actor.graphics.use(convertorDownAnim)
-            } 
+            } else if (actor.name.startsWith('Convertor')) {
+                this.convertorControl(actor)
+            } else if (actor.name.startsWith('RotateButton')) {
+                this.rotateControl(actor)
+            }
         })
-        if (isRotateFindOnMap.length > 0) {
-            isRotateFindOnMap.forEach(platform => {
+
+        if (rotatePlatform.length > 0) {
+            rotatePlatform.forEach(platform => {
                 const coords = platform.properties.find(prop => prop.name === 'coords') 
                 const state = platform.properties.find(prop => prop.name === 'state') 
                 const array = platform.properties.find(prop => prop.name === 'array')
@@ -73,7 +104,7 @@ export class Level extends Scene {
                 }
             })
         }
-        console.log(this.rotatePlatform)
+
         this.on('takeCarrot', () => {
             this.carrots -= 1
             if (this.carrots <= 0) {
@@ -101,6 +132,91 @@ export class Level extends Scene {
             engine.goToScene('level');
         })
 
+    }
+
+    convertorControl(actor?: Actor) {
+        if (this.convertorButtons && actor && actor.name in this.convertorButtons) {
+            if (this.convertorButtons[actor.name]) {
+                actor.graphics.visible = true
+                actor.body.collisionType = CollisionType.Passive
+            } else {
+                actor.graphics.visible = false
+                actor.body.collisionType = CollisionType.PreventCollision
+            }
+        } else {
+            this.actors.forEach(actor => {
+                if (actor.name.startsWith('Convertor')) {
+                    if (actor.body.collisionType === CollisionType.PreventCollision) {
+                        actor.graphics.visible = true
+                        actor.body.collisionType = CollisionType.Passive
+                    } else if (actor.body.collisionType === CollisionType.Passive) {
+                        actor.graphics.visible = false
+                        actor.body.collisionType = CollisionType.PreventCollision
+                    }
+                }
+            })
+        }
+    }
+
+    rotateControl(actor?: Actor) {
+        if (this.rotateButtons && actor && actor.name in this.rotateButtons) {
+            if (this.rotateButtons[actor.name]) {
+                actor.graphics.visible = true
+                actor.body.collisionType = CollisionType.Passive
+            } else {
+                actor.graphics.visible = false
+                actor.body.collisionType = CollisionType.PreventCollision
+            }
+        } else {
+            this.actors.forEach(actor => {
+                if (actor.name.startsWith('RotateButton')) {
+                    if (actor.body.collisionType === CollisionType.PreventCollision) {
+                        actor.graphics.visible = true
+                        actor.body.collisionType = CollisionType.Passive
+                    } else if (actor.body.collisionType === CollisionType.Passive) {
+                        actor.graphics.visible = false
+                        actor.body.collisionType = CollisionType.PreventCollision
+                    }
+                }
+            })
+            for(const key in this.rotatePlatform) {
+                if(this.rotatePlatform[key].state === 'X' || this.rotatePlatform[key].state === 'Y' ) {
+                    this.rotate2Platform(key)
+                } else {
+                    this.rotate4Platform(key)
+                }
+            }
+        }
+    }
+    rotate2Platform(x: string): void;
+    rotate2Platform(x: number, y: number): void;
+    rotate2Platform(x: string | number, y?: number) {
+        const platform = typeof x === 'string' ? this.rotatePlatform[x] : this.rotatePlatform[`${x / 16 + 1}x${y! / 16}`]
+        if (platform.state === 'Y') {
+            platform.state = 'X'
+            platform.actors.X.graphics.visible = true
+            platform.actors.Y.graphics.visible = false
+        } else {
+            platform.state = 'Y'
+            platform.actors.Y.graphics.visible = true
+            platform.actors.X.graphics.visible = false
+        }
+    }
+
+    rotate4Platform(x: string): void;
+    rotate4Platform(x: number, y: number): void;
+    rotate4Platform(x: string | number, y?: number) {
+        const platform = typeof x === 'string' ? this.rotatePlatform[x] : this.rotatePlatform[`${x / 16 + 1}x${y! / 16}`]
+        if (platform.state === 4) {
+            platform.state = 1
+        } else if (typeof platform.state === 'number') {
+            platform.state += 1
+        }
+        
+        for (const index in platform.actors) {
+            platform.actors[index].graphics.visible = false
+        }
+        platform.actors[platform.state].graphics.visible = true
     }
 
     createMapForCollision(wall: number[]) {

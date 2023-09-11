@@ -31,7 +31,7 @@ export class Bobby extends Actor {
             height: 14,
             pos: vec(x, y),
             color: Color.Red,
-            z: 9,
+            z: Number.POSITIVE_INFINITY,
             collisionType: CollisionType.Active
         })
         this.blockX = (x - 8) / BLOCK_SIZE + 1;
@@ -101,6 +101,10 @@ export class Bobby extends Actor {
                 const platform = this.scene.rotatePlatform[`${other.pos.x / 16 + 1}x${other.pos.y / 16}`]
                 this.onRotatePlatform = platform.state;
                 this.playerRotateCount += 1
+            } else if (other.name.startsWith('ConvertorButton')) {
+                engine.clock.schedule(() => this.scene.convertorControl(), 300)
+            } else if (other.name.startsWith('RotateButton')) {
+                engine.clock.schedule(() => this.scene.rotateControl(), 300)
             }
         })
         this.on('collisionend', ({ other }) => {
@@ -108,50 +112,16 @@ export class Bobby extends Actor {
                 other.graphics.visible = false
             } else if (other.name.startsWith('2_Rotate')) {
                 this.playerRotateCount -= 1
-                const platform = this.scene.rotatePlatform[`${other.pos.x / 16 + 1}x${other.pos.y / 16}`]
-                if (platform.state === 'Y') {
-                    platform.state = 'X'
-                    platform.actors.X.graphics.visible = true
-                    platform.actors.Y.graphics.visible = false
-                } else {
-                    platform.state = 'Y'
-                    platform.actors.Y.graphics.visible = true
-                    platform.actors.X.graphics.visible = false
-                }
+                this.scene.rotate2Platform(other.pos.x, other.pos.y)
                 if (this.playerRotateCount === 0) {
                     this.onRotatePlatform = null;
                 }
             } else if (other.name.startsWith('4_Rotate')) {
                 this.playerRotateCount -= 1
-                const platform = this.scene.rotatePlatform[`${other.pos.x / 16 + 1}x${other.pos.y / 16}`]
-                if (platform.state === 1) {
-                    platform.state = 2
-                    platform.actors['2'].graphics.visible = true
-                    platform.actors['1'].graphics.visible = false
-                    platform.actors['3'].graphics.visible = false
-                    platform.actors['4'].graphics.visible = false
-                } else if (platform.state === 2) {
-                    platform.state = 3
-                    platform.actors['3'].graphics.visible = true
-                    platform.actors['2'].graphics.visible = false
-                    platform.actors['1'].graphics.visible = false
-                    platform.actors['4'].graphics.visible = false
-                } else if (platform.state === 3) {
-                    platform.state = 4
-                    platform.actors['4'].graphics.visible = true
-                    platform.actors['3'].graphics.visible = false
-                    platform.actors['2'].graphics.visible = false
-                    platform.actors['1'].graphics.visible = false
-                } else if (platform.state === 4) {
-                    platform.state = 1
-                    platform.actors['1'].graphics.visible = true
-                    platform.actors['2'].graphics.visible = false
-                    platform.actors['3'].graphics.visible = false
-                    platform.actors['4'].graphics.visible = false
-                }
+                this.scene.rotate4Platform(other.pos.x, other.pos.y)
                 if (this.playerRotateCount === 0) {
                     this.onRotatePlatform = null;
-                } 
+                }
             }
         })
     }
