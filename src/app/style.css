@@ -2,11 +2,12 @@
     margin: 0;
     padding: 0;
     user-select: none;
-    touch-action: none;
+    box-sizing: border-box;
 }
 
 html {
     font-size: 14px;
+    font-family: sans-serif;
 }
 
 body, button {

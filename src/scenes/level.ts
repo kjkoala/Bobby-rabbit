@@ -1,6 +1,7 @@
 import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
 import { Actor, CollisionType, Engine, Scene } from "excalibur";
 import { Bobby } from "src/actors/Bobby";
+import HUD from 'src/ui/HUD.svelte'
 import { convertorDownAnim, convertorLeftAnim, convertorRightAnim, convertorUpAnim } from "src/animations/Convertor";
 
 export const BLOCK_SIZE = 16;
@@ -15,6 +16,7 @@ export class Level extends Scene {
     convertorButtons!: Record<string, boolean> | null;
     rotateButtons!: Record<string, boolean> | null;
     locks!: Record<string, string> | null;
+    hud!: HUD;
     constructor(tileMaps: TiledMapResource[], currentLevel: number) {
         super()
         this.levels = tileMaps
@@ -70,9 +72,9 @@ export class Level extends Scene {
                 actor.graphics.use(convertorRightAnim)
             } else if (actor.name.startsWith('Convertor_Left')) {
                 actor.graphics.use(convertorLeftAnim)
-            }  else if (actor.name.startsWith('Convertor_Up')) {
+            } else if (actor.name.startsWith('Convertor_Up')) {
                 actor.graphics.use(convertorUpAnim)
-            }  else if (actor.name.startsWith('Convertor_Down')) {
+            } else if (actor.name.startsWith('Convertor_Down')) {
                 actor.graphics.use(convertorDownAnim)
             } else if (actor.name.startsWith('Convertor')) {
                 this.convertorControl(actor)
@@ -128,24 +130,35 @@ export class Level extends Scene {
         })
 
         this.on('levelComplete', () => {
-            engine.removeScene('level');
-            const nextLevel = this.currentLevel + 1
-            if (nextLevel >= this.levels.length) {
-                engine.goToScene('endLevel')
-            } else {
-                engine.addScene('level', new Level(this.levels, nextLevel));
-                engine.goToScene('level');
-            }
+            engine.clock.schedule(() => {
+                engine.removeScene('level');
+                this.hud.$destroy()
+                const nextLevel = this.currentLevel + 1
+                if (nextLevel >= this.levels.length) {
+                    engine.goToScene('endLevel')
+                } else {
+                    engine.addScene('level', new Level(this.levels, nextLevel));
+                    engine.goToScene('level');
+                }
+            }, 1000)
         })
 
         this.on('playerDied', () => {
             engine.clock.schedule(() => {
+                this.hud.$destroy()
                 engine.removeScene('level');
                 engine.addScene('level', new Level(this.levels, this.currentLevel));
                 engine.goToScene('level');
             }, 1000)
         })
 
+        
+        this.hud = new HUD({
+            target: document.querySelector('#root')!,
+            props: {
+                scene: this
+            }
+        })
     }
 
     convertorControl(actor?: Actor) {

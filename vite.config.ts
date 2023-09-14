@@ -21,9 +21,9 @@ export default defineConfig({
             includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
             manifest: {
               name: "Bobby Carrot",
-              short_name: "FlappyBird",
-              description: "Fly and Lie",
-              theme_color: "#ffffff",
+              short_name: "Bobby Carrot",
+              description: "Puzzle",
+              theme_color: "#000",
               icons: [
                 {
                   src: "pwa-192x192.png",

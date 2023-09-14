@@ -1,9 +1,11 @@
-import { Actor, CollisionType, Engine, vec, Animation, Keys } from "excalibur";
+import { Actor, CollisionType, Engine, vec, Animation, Keys, AnimationDirection, type Handler, CollisionEndEvent } from "excalibur";
 import { downAnim, idleAnim, leftAnim, rightAnim, upAnim, fadeOutAnim, fadeInAnim, deathAnim } from "src/animations/Bobby";
 import { BLOCK_SIZE, type Level } from "src/scenes/level";
 import { Directon } from "./types";
-const SPEED = 45;
+const SPEED = 30;
 type TypeAnimation = 'up' | 'down' | 'left' | 'right' | 'idle' | 'fadeOutAnim' | 'fadeInAnim' | 'death';
+
+const CONTROL_KEYS = [Keys.Left, Keys.Right, Keys.Up, Keys.Down]
 
 const ListAnimation: Record<Exclude<TypeAnimation, 'start'>, Animation>  = {
     idle: idleAnim,
@@ -24,6 +26,9 @@ export class Bobby extends Actor {
     playerConvertorCount: number;
     playerRotateCount: number;
     onRotatePlatform: string | number | null = null;
+    isMoving: boolean;
+    isDead: boolean;
+    currentAnimation: Animation;
     constructor(x: number, y: number) {
         super({
             name: 'Bobby',
@@ -37,6 +42,10 @@ export class Bobby extends Actor {
         this.blockY = (y - 8) / BLOCK_SIZE;
         this.playerConvertorCount = 0;
         this.playerRotateCount = 0;
+        this.isMoving = false;
+        this.isDead = true;
+        this.direction = Directon.DOWN;
+        this.currentAnimation = ListAnimation.fadeOutAnim;
     }
 
     onInitialize(engine: Engine): void {
@@ -49,21 +58,47 @@ export class Bobby extends Actor {
         this.graphics.add(`${Directon.LEFT}`, ListAnimation.left)
         this.graphics.add(`${Directon.RIGHT}`, ListAnimation.right)
         this.graphics.add('death', ListAnimation.death)
-    
+        this.currentAnimation.reset()
+        engine.clock.schedule(() => {
+            if (this.currentAnimation.direction === AnimationDirection.Forward) {
+                this.currentAnimation.reverse()
+            }
+            this.graphics.use('fadeOut')
+            engine.clock.schedule(() => {
+                this.isDead = false
+            }, 800)
+        }, 500)
         this.scene.on('playerDied', () => {
-            ListAnimation.death.reset()
+            this.isDead = true;
+            this.isMoving = false;
+            this.currentAnimation = ListAnimation.death;
+            this.currentAnimation.reset()
             this.graphics.use('death')
         });
+
+        this.scene.on('levelComplete', () => {
+            this.isDead = true;
+            this.isMoving = false;
+            engine.clock.schedule(() => {
+                this.graphics.use('fadeOut')
+                this.currentAnimation.reset()
+                if (this.currentAnimation.direction === AnimationDirection.Backward) {
+                    this.currentAnimation.reverse()
+                }
+            }, 500)
+        })
 
         this.on('collisionstart', ({ other }) => {
             if (other.name === 'Carrot') {
                 engine.clock.schedule(() => {
                     this.onTakeCarrot(other)
-                }, 300)
+                }, 500)
             } else if (other.name === 'Finish' && !other.graphics.visible) {
                 this.scene.emit('levelComplete', undefined)
             } else if (other.name === 'Trap' && !other.graphics.visible) {
-                this.scene.emit('playerDied', undefined)
+                engine.clock.schedule(() => {
+                    this.scene.emit('playerDied', undefined)
+                }, 300)
             } else if (other.name.startsWith('Convertor_Right')) {
                 // TODO: Работа с коллизиями на конверторе, пересмотреть подход, попробовать найти лучше
                 this.playerConvertorCount += 1
@@ -101,19 +136,26 @@ export class Bobby extends Actor {
                 this.onRotatePlatform = platform.state;
                 this.playerRotateCount += 1
             } else if (other.name.startsWith('ConvertorButton')) {
-                engine.clock.schedule(() => this.scene.convertorControl(), 300)
+                engine.clock.schedule(() => this.scene.convertorControl(), 500)
             } else if (other.name.startsWith('RotateButton')) {
-                engine.clock.schedule(() => this.scene.rotateControl(), 300)
+                engine.clock.schedule(() => this.scene.rotateControl(), 500)
             } else if (other.name.startsWith('Key')) {
-                engine.clock.schedule(() => other.kill(), 300)
+                engine.clock.schedule(() => {
+                    other.kill()
+                    this.scene.emit('takeKey', other.name)
+                }, 300)
                 const arr = other.name.split('_')
                 if (this.scene.locks) {
                     delete this.scene.collisionMap[this.scene.locks[`Lock_${arr[1]}`]]
                 }
             } else if (other.name.startsWith('Lock')) {
-                engine.clock.schedule(() => other.kill(), 150)
+                engine.clock.schedule(() => {
+                    other.kill()
+                    this.scene.emit('openLock', other.name)
+                }, 150)
             }
         })
+
         this.on('collisionend', ({ other }) => {
             if (other.name === 'Trap') {
                 other.graphics.visible = false
@@ -131,29 +173,55 @@ export class Bobby extends Actor {
                 }
             }
         })
+
+        // engine.input.keyboard.on('press', (event) => {
+        // })
+        engine.input.keyboard.on('release', () => {
+            this.isMoving = false
+        })
     }
 
     update(engine: Engine): void {
         if(engine.input.keyboard.wasPressed(Keys.R)) {
             this.scene.emit('playerDied', undefined)
         }
-        if (this.oldPos.x !== this.pos.x || this.oldPos.y !== this.pos.y) {
+        if (this.isMoving && (this.oldPos.x !== this.pos.x || this.oldPos.y !== this.pos.y)) {
             if (this.oldPos.x < this.pos.x) {
                 this.direction = Directon.RIGHT
+                this.currentAnimation = ListAnimation.right
             } else if (this.oldPos.x > this.pos.x) {
                 this.direction = Directon.LEFT
+                this.currentAnimation = ListAnimation.left
             } else if (this.oldPos.y < this.pos.y) {
+                this.currentAnimation = ListAnimation.down
                 this.direction = Directon.DOWN
-            } else {
+            } else if (this.oldPos.y > this.pos.y) {
                 this.direction = Directon.UP
+                this.currentAnimation = ListAnimation.up
             }
             this.graphics.use(`${this.direction}`)
-        }   
-        this.move(engine)
+            this.currentAnimation.play()
+        } else if (!this.isMoving && (this.oldPos.x === this.pos.x && this.oldPos.y === this.pos.y)) {
+            if (this.direction === Directon.UP) {
+                ListAnimation.up.goToFrame(3)
+                ListAnimation.up.pause()
+            } else if (this.direction === Directon.DOWN) {
+                ListAnimation.down.goToFrame(3)
+                ListAnimation.down.pause()
+            } else if (this.direction === Directon.LEFT) {
+                ListAnimation.left.goToFrame(3)
+                ListAnimation.left.pause()
+            } else if (this.direction === Directon.RIGHT) {
+                ListAnimation.right.goToFrame(3)
+                ListAnimation.right.pause()
+            }
+        }
+        if (!this.isDead && !this.playerConvertorCount) {
+            this.move(engine)
+        }
     }
-    
+
     move(engine: Engine) {
-        if (this.playerConvertorCount) return;
         if (engine.input.keyboard.isHeld(Keys.ArrowUp) && ((this.pos.y - 8) / BLOCK_SIZE === this.blockY)) {
             if (this.onRotatePlatform === 'X' || this.onRotatePlatform === 2 || this.onRotatePlatform === 1) {
                 return
@@ -166,6 +234,7 @@ export class Bobby extends Actor {
                 return
             }
             if (!(coord in this.scene.collisionMap)) {
+            this.isMoving = true;
             this.actions.moveBy(0, -BLOCK_SIZE, SPEED)
             this.blockY -= 1
             }
@@ -182,6 +251,7 @@ export class Bobby extends Actor {
                 return
             }
             if (!(coord in this.scene.collisionMap)) {
+                this.isMoving = true;
                 this.actions.moveBy(0, BLOCK_SIZE, SPEED)
                 this.blockY += 1
             }
@@ -197,6 +267,7 @@ export class Bobby extends Actor {
                 return
             }
             if (!(coord in this.scene.collisionMap) ) {
+                this.isMoving = true;
                 this.actions.moveBy(BLOCK_SIZE, 0, SPEED)
                 this.blockX += 1
             }
@@ -213,6 +284,7 @@ export class Bobby extends Actor {
                 return
             }
             if (!(coord in this.scene.collisionMap)) {
+                this.isMoving = true;
                 this.actions.moveBy(-BLOCK_SIZE, 0, SPEED)
                 this.blockX -= 1
             }
