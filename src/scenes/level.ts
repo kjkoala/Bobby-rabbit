@@ -1,12 +1,13 @@
 import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
-import { Actor, CollisionType, Engine, Scene } from "excalibur";
+import { Actor, CollisionType, Engine, Scene, BoundingBox } from "excalibur";
 import { Bobby } from "src/actors/Bobby";
 import HUD from 'src/ui/HUD.svelte'
 import { convertorDownAnim, convertorLeftAnim, convertorRightAnim, convertorUpAnim } from "src/animations/Convertor";
 
 export const BLOCK_SIZE = 16;
+
 export class Level extends Scene {
-    declare player: Bobby
+    declare player: Bobby;
     levels: TiledMapResource[];
     currentLevel: number
     carrots!: number;
@@ -17,10 +18,12 @@ export class Level extends Scene {
     rotateButtons!: Record<string, boolean> | null;
     locks!: Record<string, string> | null;
     hud!: HUD;
+    isMobile: boolean;
     constructor(tileMaps: TiledMapResource[], currentLevel: number) {
         super()
         this.levels = tileMaps
         this.currentLevel = currentLevel
+        this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     }
     onInitialize(engine: Engine): void {
         const currentMap = this.levels[this.currentLevel];
@@ -37,10 +40,7 @@ export class Level extends Scene {
         const wall = this.findIndexLayer(currentMap, 'Wall')
         this.createMapForCollision(wall)
 
-        const carrots = currentMap.data.objectGroups.find(obj => obj.name === 'Carrots')?.objects.length
-        if (carrots) {
-            this.carrots = carrots;
-        }
+        this.carrots = currentMap.data.objectGroups.find(obj => obj.name === 'Carrots')?.objects.length || 0
         const playerStart = currentMap.data.objectGroups.find(obj => obj.name === 'Camera')?.objects.find(obj => obj.name === 'player-start')
         if (playerStart && playerStart.x && playerStart.y) {
             engine.add(new Bobby(playerStart.x, playerStart.y))
@@ -65,7 +65,13 @@ export class Level extends Scene {
         }
 
         this.player = this.actors.find(actor => actor.name === 'Bobby') as Bobby;
-
+        if (this.isMobile) {
+            this.camera.strategy.lockToActor(this.player)
+            this.camera.zoom = 2.3
+            this.camera.strategy.limitCameraBounds(
+                new BoundingBox(0, 0, 256, 256)
+              )
+        }
         this.actors.forEach((actor) => {
             // TODO: Пересмотреть работу конвертеров под коллизии
             if (actor.name.startsWith('Convertor_Right')) {
@@ -144,15 +150,14 @@ export class Level extends Scene {
         })
 
         this.on('playerDied', () => {
-            engine.clock.schedule(() => {
+            // engine.clock.schedule(() => {
                 this.hud.$destroy()
                 engine.removeScene('level');
                 engine.addScene('level', new Level(this.levels, this.currentLevel));
                 engine.goToScene('level');
-            }, 1000)
+            // }, 1000)
         })
 
-        
         this.hud = new HUD({
             target: document.querySelector('#root')!,
             props: {

@@ -1,11 +1,9 @@
-import { Actor, CollisionType, Engine, vec, Animation, Keys, AnimationDirection, type Handler, CollisionEndEvent } from "excalibur";
+import { Actor, CollisionType, Engine, vec, Animation, Keys, AnimationDirection } from "excalibur";
 import { downAnim, idleAnim, leftAnim, rightAnim, upAnim, fadeOutAnim, fadeInAnim, deathAnim } from "src/animations/Bobby";
 import { BLOCK_SIZE, type Level } from "src/scenes/level";
 import { Directon } from "./types";
 const SPEED = 30;
 type TypeAnimation = 'up' | 'down' | 'left' | 'right' | 'idle' | 'fadeOutAnim' | 'fadeInAnim' | 'death';
-
-const CONTROL_KEYS = [Keys.Left, Keys.Right, Keys.Up, Keys.Down]
 
 const ListAnimation: Record<Exclude<TypeAnimation, 'start'>, Animation>  = {
     idle: idleAnim,
@@ -26,25 +24,24 @@ export class Bobby extends Actor {
     playerConvertorCount: number;
     playerRotateCount: number;
     onRotatePlatform: string | number | null = null;
-    isMoving: boolean;
     isDead: boolean;
     currentAnimation: Animation;
+    mobileDirection: Directon| 11 | null = null
     constructor(x: number, y: number) {
         super({
             name: 'Bobby',
             width: 14,
             height: 14,
             pos: vec(x, y),
-            z: Number.POSITIVE_INFINITY,
+            z: 1_000,
             collisionType: CollisionType.Active
         })
         this.blockX = (x - 8) / BLOCK_SIZE;
         this.blockY = (y - 8) / BLOCK_SIZE;
         this.playerConvertorCount = 0;
         this.playerRotateCount = 0;
-        this.isMoving = false;
-        this.isDead = true;
         this.direction = Directon.DOWN;
+        this.isDead = true;
         this.currentAnimation = ListAnimation.fadeOutAnim;
     }
 
@@ -58,27 +55,26 @@ export class Bobby extends Actor {
         this.graphics.add(`${Directon.LEFT}`, ListAnimation.left)
         this.graphics.add(`${Directon.RIGHT}`, ListAnimation.right)
         this.graphics.add('death', ListAnimation.death)
-        this.currentAnimation.reset()
-        engine.clock.schedule(() => {
-            if (this.currentAnimation.direction === AnimationDirection.Forward) {
-                this.currentAnimation.reverse()
-            }
-            this.graphics.use('fadeOut')
-            engine.clock.schedule(() => {
-                this.isDead = false
-            }, 800)
-        }, 500)
-        this.scene.on('playerDied', () => {
-            this.isDead = true;
-            this.isMoving = false;
-            this.currentAnimation = ListAnimation.death;
-            this.currentAnimation.reset()
-            this.graphics.use('death')
-        });
+        // Останавливаем все анимации перед началом уровня
+        for(const key in ListAnimation) {
+            ListAnimation[key as keyof typeof ListAnimation].pause()
+        }
+        // this.scene.on('playerDied', () => {
+        //     // this.isDead = true;
+        //     this.currentAnimation = ListAnimation.death;
+        //     this.currentAnimation.reset()
+        //     this.graphics.use('death')
+        // });
+
+        this.scene.on('mobileButtonPressed', (key: unknown) => {
+            this.mobileDirection = Number(key as Directon)
+        })
+
+        this.scene.on('mobileButtonWasReleased', () => {
+            this.mobileDirection = null;
+        })
 
         this.scene.on('levelComplete', () => {
-            this.isDead = true;
-            this.isMoving = false;
             engine.clock.schedule(() => {
                 this.graphics.use('fadeOut')
                 this.currentAnimation.reset()
@@ -96,9 +92,9 @@ export class Bobby extends Actor {
             } else if (other.name === 'Finish' && !other.graphics.visible) {
                 this.scene.emit('levelComplete', undefined)
             } else if (other.name === 'Trap' && !other.graphics.visible) {
-                engine.clock.schedule(() => {
+                // engine.clock.schedule(() => {
                     this.scene.emit('playerDied', undefined)
-                }, 300)
+                // }, 300)
             } else if (other.name.startsWith('Convertor_Right')) {
                 // TODO: Работа с коллизиями на конверторе, пересмотреть подход, попробовать найти лучше
                 this.playerConvertorCount += 1
@@ -156,6 +152,7 @@ export class Bobby extends Actor {
             }
         })
 
+
         this.on('collisionend', ({ other }) => {
             if (other.name === 'Trap') {
                 other.graphics.visible = false
@@ -173,19 +170,13 @@ export class Bobby extends Actor {
                 }
             }
         })
-
-        // engine.input.keyboard.on('press', (event) => {
-        // })
-        engine.input.keyboard.on('release', () => {
-            this.isMoving = false
-        })
     }
 
     update(engine: Engine): void {
-        if(engine.input.keyboard.wasPressed(Keys.R)) {
+        if(this.mobileDirection === 11 || engine.input.keyboard.wasPressed(Keys.R)) {
             this.scene.emit('playerDied', undefined)
         }
-        if (this.isMoving && (this.oldPos.x !== this.pos.x || this.oldPos.y !== this.pos.y)) {
+        if (!this.playerConvertorCount && (this.oldPos.x !== this.pos.x || this.oldPos.y !== this.pos.y)) {
             if (this.oldPos.x < this.pos.x) {
                 this.direction = Directon.RIGHT
                 this.currentAnimation = ListAnimation.right
@@ -199,95 +190,80 @@ export class Bobby extends Actor {
                 this.direction = Directon.UP
                 this.currentAnimation = ListAnimation.up
             }
-            this.graphics.use(`${this.direction}`)
-            this.currentAnimation.play()
-        } else if (!this.isMoving && (this.oldPos.x === this.pos.x && this.oldPos.y === this.pos.y)) {
-            if (this.direction === Directon.UP) {
-                ListAnimation.up.goToFrame(3)
-                ListAnimation.up.pause()
-            } else if (this.direction === Directon.DOWN) {
-                ListAnimation.down.goToFrame(3)
-                ListAnimation.down.pause()
-            } else if (this.direction === Directon.LEFT) {
-                ListAnimation.left.goToFrame(3)
-                ListAnimation.left.pause()
-            } else if (this.direction === Directon.RIGHT) {
-                ListAnimation.right.goToFrame(3)
-                ListAnimation.right.pause()
+            if (!this.currentAnimation.isPlaying) {
+                this.graphics.use(`${this.direction}`)
+                this.currentAnimation.play()
             }
+        } else if (this.currentAnimation.isPlaying && (this.oldPos.x === this.pos.x && this.oldPos.y === this.pos.y)) {
+            this.currentAnimation.goToFrame(3)
+            this.currentAnimation.pause()
+        } else if (this.playerConvertorCount && this.currentAnimation.isPlaying) {
+                engine.clock.schedule(() => {
+                    this.currentAnimation.goToFrame(3)
+                    this.currentAnimation.pause()
+                    // время расчитано из кол-ва кадров ходьбы (8) на 60мс на 1 кадр 6 * 8 = 48
+                }, 480)
         }
-        if (!this.isDead && !this.playerConvertorCount) {
+        if (!this.playerConvertorCount) {
             this.move(engine)
         }
     }
 
     move(engine: Engine) {
-        if (engine.input.keyboard.isHeld(Keys.ArrowUp) && ((this.pos.y - 8) / BLOCK_SIZE === this.blockY)) {
+        if ((this.mobileDirection ===  Directon.UP || engine.input.keyboard.isHeld(Keys.ArrowUp)) && ((this.pos.y - 8) / BLOCK_SIZE === this.blockY)) {
             if (this.onRotatePlatform === 'X' || this.onRotatePlatform === 2 || this.onRotatePlatform === 1) {
                 return
             }
             const coord = `${this.blockX}x${this.blockY - 1}`
-            if (coord in this.scene.rotatePlatform && ((this.scene.rotatePlatform[coord].state === 'X') ||
+            if (coord in this.scene.collisionMap || (coord in this.scene.rotatePlatform && ((this.scene.rotatePlatform[coord].state === 'X') ||
             ((this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 2) && this.blockY < this.scene.rotatePlatform[coord].y) ||
             ((this.scene.rotatePlatform[coord].state === 3 || this.scene.rotatePlatform[coord].state === 4) && this.blockY > this.scene.rotatePlatform[coord].y)
-            )) {
+            ))) {
                 return
             }
-            if (!(coord in this.scene.collisionMap)) {
-            this.isMoving = true;
-            this.actions.moveBy(0, -BLOCK_SIZE, SPEED)
-            this.blockY -= 1
-            }
-        } else if (engine.input.keyboard.isHeld(Keys.ArrowDown) && (this.pos.y - 8) / BLOCK_SIZE === this.blockY) {
+                this.actions.moveBy(0, -BLOCK_SIZE, SPEED)
+                this.blockY -= 1
+        } else if ((this.mobileDirection ===  Directon.DOWN || engine.input.keyboard.isHeld(Keys.ArrowDown)) && (this.pos.y - 8) / BLOCK_SIZE === this.blockY) {
             if (this.onRotatePlatform === 'X' || this.onRotatePlatform === 3 || this.onRotatePlatform === 4) {
                 return
             }
             const coord = `${this.blockX}x${this.blockY + 1}`
-            if (coord in this.scene.rotatePlatform && 
+            if (coord in this.scene.collisionMap || (coord in this.scene.rotatePlatform && 
                 ((this.scene.rotatePlatform[coord].state === 'X') ||
                 ((this.scene.rotatePlatform[coord].state === 3 || this.scene.rotatePlatform[coord].state === 4)  && this.blockY > this.scene.rotatePlatform[coord].y) ||
                 ((this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 2)  && this.blockY < this.scene.rotatePlatform[coord].y))
-                ) {
+                )) {
                 return
             }
-            if (!(coord in this.scene.collisionMap)) {
-                this.isMoving = true;
-                this.actions.moveBy(0, BLOCK_SIZE, SPEED)
-                this.blockY += 1
-            }
-        } else if (engine.input.keyboard.isHeld(Keys.ArrowRight) && (this.pos.x - 8) / BLOCK_SIZE === this.blockX) {
+            this.actions.moveBy(0, BLOCK_SIZE, SPEED)
+            this.blockY += 1
+        } else if ((this.mobileDirection ===  Directon.RIGHT ||engine.input.keyboard.isHeld(Keys.ArrowRight)) && (this.pos.x - 8) / BLOCK_SIZE === this.blockX) {
             if (this.onRotatePlatform === 'Y'  || this.onRotatePlatform === 2 || this.onRotatePlatform === 3) {
                 return
             }
             const coord = `${this.blockX + 1}x${this.blockY}`
-            if (coord in this.scene.rotatePlatform &&
+            if (coord in this.scene.collisionMap || (coord in this.scene.rotatePlatform &&
                 ((this.scene.rotatePlatform[coord].state === 'Y') ||
                 ((this.scene.rotatePlatform[coord].state === 2 || this.scene.rotatePlatform[coord].state === 3) && this.blockX > this.scene.rotatePlatform[coord].x) ||
-                ((this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 4) && this.blockX < this.scene.rotatePlatform[coord].x))) {
+                ((this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 4) && this.blockX < this.scene.rotatePlatform[coord].x)))) {
                 return
             }
-            if (!(coord in this.scene.collisionMap) ) {
-                this.isMoving = true;
-                this.actions.moveBy(BLOCK_SIZE, 0, SPEED)
-                this.blockX += 1
-            }
-        } else if (engine.input.keyboard.isHeld(Keys.ArrowLeft) && (this.pos.x - 8) / BLOCK_SIZE === this.blockX) {
+            this.actions.moveBy(BLOCK_SIZE, 0, SPEED)
+            this.blockX += 1
+        } else if ((this.mobileDirection ===  Directon.LEFT ||engine.input.keyboard.isHeld(Keys.ArrowLeft)) && (this.pos.x - 8) / BLOCK_SIZE === this.blockX) {
             if (this.onRotatePlatform === 'Y' || this.onRotatePlatform === 1 || this.onRotatePlatform === 4) {
                 return
             }
             const coord = `${this.blockX - 1}x${this.blockY}`
-            if (coord in this.scene.rotatePlatform && 
+            if (coord in this.scene.collisionMap || (coord in this.scene.rotatePlatform && 
             ((this.scene.rotatePlatform[coord].state === 'Y') || 
             (this.scene.rotatePlatform[coord].state === 1 || this.scene.rotatePlatform[coord].state === 4) && (this.blockX < this.scene.rotatePlatform[coord].x) || 
             (this.scene.rotatePlatform[coord].state === 2 || this.scene.rotatePlatform[coord].state === 3) && (this.blockX > this.scene.rotatePlatform[coord].x)
-            )) {
+            ))) {
                 return
             }
-            if (!(coord in this.scene.collisionMap)) {
-                this.isMoving = true;
                 this.actions.moveBy(-BLOCK_SIZE, 0, SPEED)
                 this.blockX -= 1
-            }
         }
     }
 

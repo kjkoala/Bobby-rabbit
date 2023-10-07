@@ -1,4 +1,4 @@
-import { Color, Engine, Loader } from "excalibur";
+import { Color, Engine, Loader, DisplayMode } from "excalibur";
 import { TiledMapResource } from '@excaliburjs/plugin-tiled';
 import './style.css';
 import { Level } from "src/scenes/level";
@@ -13,6 +13,8 @@ const engine = new Engine({
     width: 256,
     height: 256,
   },
+
+  displayMode: DisplayMode.FitScreenAndFill,
   fixedUpdateFps: 60,
   backgroundColor: Color.Black,
 })
@@ -24,5 +26,5 @@ engine.addScene('endLevel', new EndGame)
 const loader = new Loader([...tileMaps, ...Object.values(resources)])
 engine.start(loader).then(() => {
     engine.goToScene('level')
-    // engine.screen.goFullScreen('root')
+    engine.screen.goFullScreen('root')
 });
