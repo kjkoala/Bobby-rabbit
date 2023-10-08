@@ -12,6 +12,7 @@ import ConvertorUp from 'public/levels/tile_conveyor_up.png'
 import ConvertorDown from 'public/levels/tile_conveyor_down.png'
 import End from 'public/end.png'
 import HUD from 'public/hud.png'
+import Arrow from 'public/arrow.png'
 
 export const resources = {
     Bobby_idle: new ImageSource(BobbyIdle),
@@ -26,5 +27,6 @@ export const resources = {
     ConvertorUp: new ImageSource(ConvertorUp),
     ConvertorDown: new ImageSource(ConvertorDown),
     GameEnd: new ImageSource(End),
-    HUD: new ImageSource(HUD)
+    HUD: new ImageSource(HUD),
+    Arrow: new ImageSource(Arrow),
 }
