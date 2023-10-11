@@ -13,7 +13,7 @@ export class EndGame extends Scene {
         engine.backgroundColor = Color.Black
         const sprite = resources.GameEnd.toSprite()
         this.background.graphics.use(sprite)
-        this.background.pos = vec(engine.halfCanvasWidth, engine. halfCanvasHeight)
+        this.background.pos = vec(0, engine. halfCanvasHeight)
         engine.add(this.background)
     }
 }

@@ -1,14 +1,14 @@
 import { Actor, CollisionType, Engine, vec, Animation, Keys, AnimationDirection } from "excalibur";
-import { downAnim, idleAnim, leftAnim, rightAnim, upAnim, fadeOutAnim, fadeInAnim, deathAnim } from "src/animations/Bobby";
+import { downAnim, idleAnim, leftAnim, rightAnim, upAnim, fadeOutAnim, deathAnim } from "src/animations/Bobby";
 import { BLOCK_SIZE, type Level } from "src/scenes/level";
 import { Directon } from "./types";
+import { resources } from 'src/app/resources'
 const SPEED = 30;
-type TypeAnimation = 'up' | 'down' | 'left' | 'right' | 'idle' | 'fadeOutAnim' | 'fadeInAnim' | 'death';
+type TypeAnimation = 'up' | 'down' | 'left' | 'right' | 'idle' | 'fadeOutAnim' | 'death';
 
 const ListAnimation: Record<Exclude<TypeAnimation, 'start'>, Animation>  = {
     idle: idleAnim,
     fadeOutAnim: fadeOutAnim,
-    fadeInAnim: fadeInAnim,
     up: upAnim,
     down: downAnim,
     left: leftAnim,
@@ -18,15 +18,15 @@ const ListAnimation: Record<Exclude<TypeAnimation, 'start'>, Animation>  = {
 
 export class Bobby extends Actor {
     declare scene: Level
-    direction!: Directon;
+    direction!: Directon | null;
     blockX: number;
     blockY: number;
     playerConvertorCount: number;
     playerRotateCount: number;
     onRotatePlatform: string | number | null = null;
-    isDead: boolean;
     currentAnimation: Animation;
     mobileDirection: Directon| 11 | null = null
+    isFreeze: boolean;
     constructor(x: number, y: number) {
         super({
             name: 'Bobby',
@@ -40,9 +40,8 @@ export class Bobby extends Actor {
         this.blockY = (y - 8) / BLOCK_SIZE;
         this.playerConvertorCount = 0;
         this.playerRotateCount = 0;
-        this.direction = Directon.DOWN;
-        this.isDead = true;
         this.currentAnimation = ListAnimation.fadeOutAnim;
+        this.isFreeze = true;
     }
 
     onInitialize(engine: Engine): void {
@@ -58,13 +57,27 @@ export class Bobby extends Actor {
         // Останавливаем все анимации перед началом уровня
         for(const key in ListAnimation) {
             ListAnimation[key as keyof typeof ListAnimation].pause()
+            ListAnimation[key as keyof typeof ListAnimation].goToFrame(3)
         }
-        // this.scene.on('playerDied', () => {
-        //     // this.isDead = true;
-        //     this.currentAnimation = ListAnimation.death;
-        //     this.currentAnimation.reset()
-        //     this.graphics.use('death')
-        // });
+        
+        // Первая анимация когда пользователь появился, пока так
+        this.graphics.use('fadeOut')
+        this.currentAnimation.reset()
+        if (this.currentAnimation.direction === AnimationDirection.Forward) {
+            this.currentAnimation.reverse()
+        }
+        this.currentAnimation.play()
+
+        // Снятие лока на движение и переход на другую анимацию
+        engine.clock.schedule(() => {
+            this.graphics.use(`${Directon.RIGHT}`)
+            this.currentAnimation = ListAnimation.right
+            this.currentAnimation.goToFrame(3)
+            engine.clock.schedule(() => {
+                this.isFreeze = false;
+            }, 200)
+        }, 700)
+
 
         this.scene.on('mobileButtonPressed', (key: unknown) => {
             this.mobileDirection = Number(key as Directon)
@@ -75,12 +88,16 @@ export class Bobby extends Actor {
         })
 
         this.scene.on('levelComplete', () => {
+            this.isFreeze = true
             engine.clock.schedule(() => {
+                resources.mp3Clered.play(0.5)
                 this.graphics.use('fadeOut')
-                this.currentAnimation.reset()
+                this.currentAnimation = ListAnimation.fadeOutAnim
                 if (this.currentAnimation.direction === AnimationDirection.Backward) {
                     this.currentAnimation.reverse()
                 }
+                this.currentAnimation.reset()
+                this.currentAnimation.play()
             }, 500)
         })
 
@@ -92,9 +109,15 @@ export class Bobby extends Actor {
             } else if (other.name === 'Finish' && !other.graphics.visible) {
                 this.scene.emit('levelComplete', undefined)
             } else if (other.name === 'Trap' && !other.graphics.visible) {
-                // engine.clock.schedule(() => {
+                this.isFreeze = true;
+                this.currentAnimation = ListAnimation.death
+                this.currentAnimation.reset()
+                this.currentAnimation.play()
+                this.graphics.use('death')
+                resources.mp3Death.play(0.5)
+                engine.clock.schedule(() => {
                     this.scene.emit('playerDied', undefined)
-                // }, 300)
+                }, 4000)
             } else if (other.name.startsWith('Convertor_Right')) {
                 // TODO: Работа с коллизиями на конверторе, пересмотреть подход, попробовать найти лучше
                 this.playerConvertorCount += 1
@@ -173,10 +196,11 @@ export class Bobby extends Actor {
     }
 
     update(engine: Engine): void {
+        if (this.isFreeze) return;
         if(this.mobileDirection === 11 || engine.input.keyboard.wasPressed(Keys.R)) {
             this.scene.emit('playerDied', undefined)
         }
-        if (!this.playerConvertorCount && (this.oldPos.x !== this.pos.x || this.oldPos.y !== this.pos.y)) {
+        if ((!this.playerConvertorCount || this.currentAnimation.isPlaying) && (this.oldPos.x !== this.pos.x || this.oldPos.y !== this.pos.y)) {
             if (this.oldPos.x < this.pos.x) {
                 this.direction = Directon.RIGHT
                 this.currentAnimation = ListAnimation.right
