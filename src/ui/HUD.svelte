@@ -9,9 +9,20 @@
   let keySilverNode: HTMLDivElement;
   let keyCopperNode: HTMLDivElement;
   let carrots = scene.carrots;
-
+  let arrowUp: HTMLButtonElement | undefined;
+  let arrowDown: HTMLButtonElement | undefined;
+  let arrowLeft: HTMLButtonElement | undefined;
+  let arrowRight: HTMLButtonElement | undefined;
   
   onMount(() => {
+    const arrowClone1 = resources.Arrow.data.cloneNode()
+    const arrowClone2 = resources.Arrow.data.cloneNode()
+    const arrowClone3 = resources.Arrow.data.cloneNode()
+    const arrowClone4 = resources.Arrow.data.cloneNode()
+    arrowUp?.append(arrowClone1)
+    arrowLeft?.append(arrowClone2)
+    arrowRight?.append(arrowClone3)
+    arrowDown?.append(arrowClone4)
     const hud = document.querySelector<HTMLDivElement>('.hud')
       if (hud) {
         scene.on('takeCarrot', () => {
@@ -62,11 +73,11 @@
   </div>
   {#if scene.isMobile}
   <div class="controls" on:pointerup={() => scene.emit('mobileButtonWasReleased')} on:pointerdown={handleTouchStart} >
-    <button type="button" class="full" data-direction={Directon.UP}>Вверх</button>
-    <button type="button" class="half" data-direction={Directon.LEFT}>Влево</button>
+    <button type="button" class="full button_up" data-direction={Directon.UP} bind:this={arrowUp} />
+    <button type="button" class="half button_left" data-direction={Directon.LEFT} bind:this={arrowLeft} />
     <button type="button" class="half" data-direction={11}>Рестарт</button>
-    <button type="button" class="half"data-direction={Directon.RIGHT}>Вправо</button>
-    <button type="button" class="full"data-direction={Directon.DOWN}>Вниз</button>
+    <button type="button" class="half button_right"data-direction={Directon.RIGHT} bind:this={arrowRight} />
+    <button type="button" class="full button_down"data-direction={Directon.DOWN}  bind:this={arrowDown} />
   </div>
   {/if}
 </div>
@@ -129,6 +140,9 @@
     outline: none;
     touch-action: none;
   }
+  :global(.controls button img) {
+    pointer-events: none;
+  }
   .full {
     width: 100%;
   }
@@ -144,5 +158,15 @@
   }
   :global(.hud_copper img) {
     object-position: -54px 0;
+  }
+
+  :global(.button_right img) {
+    rotate: 90deg;
+  }
+  :global(.button_left img) {
+    rotate: -90deg;
+  }
+  :global(.button_down img) {
+    rotate: -180deg;
   }
 </style>
