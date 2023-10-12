@@ -1,4 +1,4 @@
-import { ImageSource } from "excalibur";
+import { ImageSource, Sound } from "excalibur";
 import BobbyFade from 'public/bobby/bobby_fade.png'
 import BobbyIdle from 'public/bobby/bobby_idle.png'
 import BobbyDown from 'public/bobby/bobby_down.png'
@@ -12,6 +12,8 @@ import ConvertorUp from 'public/levels/tile_conveyor_up.png'
 import ConvertorDown from 'public/levels/tile_conveyor_down.png'
 import End from 'public/end.png'
 import HUD from 'public/hud.png'
+import mp3Death from 'public/music/death.mp3'
+import mp3Clered from 'public/music/cleared.mp3'
 import Arrow from 'public/arrow.png'
 
 export const resources = {
@@ -28,5 +30,7 @@ export const resources = {
     ConvertorDown: new ImageSource(ConvertorDown),
     GameEnd: new ImageSource(End),
     HUD: new ImageSource(HUD),
+    mp3Death: new Sound(mp3Death),
+    mp3Clered: new Sound(mp3Clered),
     Arrow: new ImageSource(Arrow),
 }

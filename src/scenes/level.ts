@@ -146,7 +146,7 @@ export class Level extends Scene {
                     engine.addScene('level', new Level(this.levels, nextLevel));
                     engine.goToScene('level');
                 }
-            }, 1000)
+            }, 5000)
         })
 
         this.on('playerDied', () => {
