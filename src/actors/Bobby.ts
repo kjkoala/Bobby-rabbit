@@ -200,6 +200,8 @@ export class Bobby extends Actor {
         if(this.mobileDirection === 11 || engine.input.keyboard.wasPressed(Keys.R)) {
             this.scene.emit('playerDied', undefined)
         }
+
+        const isOnPoint = this.oldPos.x === this.pos.x && this.oldPos.y === this.pos.y;
         if ((!this.playerConvertorCount || this.currentAnimation.isPlaying) && (this.oldPos.x !== this.pos.x || this.oldPos.y !== this.pos.y)) {
             if (this.oldPos.x < this.pos.x) {
                 this.direction = Directon.RIGHT
@@ -218,7 +220,7 @@ export class Bobby extends Actor {
                 this.graphics.use(`${this.direction}`)
                 this.currentAnimation.play()
             }
-        } else if (this.currentAnimation.isPlaying && (this.oldPos.x === this.pos.x && this.oldPos.y === this.pos.y)) {
+        } else if (isOnPoint && this.currentAnimation.isPlaying) {
             this.currentAnimation.goToFrame(3)
             this.currentAnimation.pause()
         } else if (this.playerConvertorCount && this.currentAnimation.isPlaying) {
@@ -228,7 +230,7 @@ export class Bobby extends Actor {
                     // время расчитано из кол-ва кадров ходьбы (8) на 60мс на 1 кадр 6 * 8 = 48
                 }, 480)
         }
-        if (!this.playerConvertorCount) {
+        if (isOnPoint && !this.playerConvertorCount) {
             this.move(engine)
         }
     }

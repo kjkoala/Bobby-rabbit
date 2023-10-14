@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="294" nextobjectid="1010">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="295" nextobjectid="1010">
  <properties>
   <property name="excalibur" type="bool" value="true"/>
  </properties>
@@ -33,7 +33,7 @@
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
-1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1,
+1,0,0,0,0,3,1,1,1,0,0,0,0,0,0,1,
 1,1,5,5,5,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
@@ -53,7 +53,7 @@
 0,0,19,19,19,19,21,0,0,19,21,21,21,21,19,0,
 0,0,49,32,0,21,21,0,0,19,21,21,21,21,19,0,
 0,0,22,19,0,0,0,0,0,19,19,19,40,19,19,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,18,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
@@ -313,16 +313,16 @@
    <property name="array" value="2_Rotate_1_Y=Y,2_Rotate_1_X=X"/>
    <property name="coords" value="4x9"/>
    <property name="excalibur" type="bool" value="true"/>
-   <property name="state" value="X"/>
+   <property name="state" value="Y"/>
    <property name="x" value="4"/>
    <property name="y" value="9"/>
   </properties>
-  <object id="982" name="2_Rotate_1_Y" gid="30" x="64" y="160" width="16" height="16"/>
   <object id="981" name="2_Rotate_1_X" gid="29" x="64" y="160" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
+  <object id="982" name="2_Rotate_1_Y" gid="30" x="64" y="160" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="281" name="2_Rotate">
   <properties>
@@ -345,16 +345,16 @@
    <property name="array" value="2_Rotate_3_Y=Y,2_Rotate_3_X=X"/>
    <property name="coords" value="4x11"/>
    <property name="excalibur" type="bool" value="true"/>
-   <property name="state" value="X"/>
+   <property name="state" value="Y"/>
    <property name="x" value="4"/>
    <property name="y" value="11"/>
   </properties>
-  <object id="987" name="2_Rotate_3_Y" gid="30" x="64" y="192" width="16" height="16"/>
   <object id="986" name="2_Rotate_3_X" gid="29" x="64" y="192" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
+  <object id="987" name="2_Rotate_3_Y" gid="30" x="64" y="192" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="286" name="2_Rotate">
   <properties>
@@ -489,7 +489,7 @@
 0,2,0,0,0,0,0,3,2,0,0,0,0,0,0,3,
 0,2,0,0,14,0,0,3,2,0,0,0,0,0,0,3,
 0,2,0,0,14,8,5,0,2,0,0,0,0,0,0,3,
-0,2,17,13,18,3,0,0,0,5,5,5,5,5,5,0,
+0,2,17,13,0,0,0,0,0,5,5,5,5,5,5,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>

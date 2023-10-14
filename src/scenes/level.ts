@@ -26,6 +26,7 @@ export class Level extends Scene {
         this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     }
     onInitialize(engine: Engine): void {
+        console.log(engine.scenes)
         const currentMap = this.levels[this.currentLevel];
         this.mapWidth = currentMap.data.width;
         this.collisionMap = {};
