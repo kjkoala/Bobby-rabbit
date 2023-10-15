@@ -1,4 +1,4 @@
-import { Actor, CollisionType, Engine, vec, Animation, Keys, AnimationDirection } from "excalibur";
+import { Actor, CollisionType, Engine, vec, Animation, Keys, AnimationDirection, FrameStats, Vector } from "excalibur";
 import { downAnim, idleAnim, leftAnim, rightAnim, upAnim, fadeOutAnim, deathAnim } from "src/animations/Bobby";
 import { BLOCK_SIZE, type Level } from "src/scenes/level";
 import { Directon } from "./types";
@@ -27,6 +27,7 @@ export class Bobby extends Actor {
     currentAnimation: Animation;
     mobileDirection: Directon| 11 | null = null
     isFreeze: boolean;
+    speedView: number;
     constructor(x: number, y: number) {
         super({
             name: 'Bobby',
@@ -42,6 +43,7 @@ export class Bobby extends Actor {
         this.playerRotateCount = 0;
         this.currentAnimation = ListAnimation.fadeOutAnim;
         this.isFreeze = true;
+        this.speedView = SPEED * 2;
     }
 
     onInitialize(engine: Engine): void {
@@ -75,7 +77,7 @@ export class Bobby extends Actor {
             this.currentAnimation.goToFrame(3)
             engine.clock.schedule(() => {
                 this.isFreeze = false;
-            }, 200)
+            }, 2000)
         }, 700)
 
 
@@ -197,6 +199,20 @@ export class Bobby extends Actor {
 
     update(engine: Engine): void {
         if (this.isFreeze) return;
+        if (!this.scene.lockCamera) {
+            if (this.mobileDirection === Directon.UP) {
+                this.scene.camera.vel = vec(0, -this.speedView)
+            } else if (this.mobileDirection === Directon.DOWN) {
+                this.scene.camera.vel = vec(0, this.speedView)
+            } else if (this.mobileDirection === Directon.LEFT) {
+                this.scene.camera.vel = vec(-this.speedView, 0)
+            } else if (this.mobileDirection === Directon.RIGHT) {
+                this.scene.camera.vel = vec(this.speedView, 0)
+            } else {
+                this.scene.camera.vel = Vector.Zero
+            }
+            return
+        }
         if(this.mobileDirection === 11 || engine.input.keyboard.wasPressed(Keys.R)) {
             this.scene.emit('playerDied', undefined)
         }

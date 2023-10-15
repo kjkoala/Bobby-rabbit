@@ -1,5 +1,5 @@
 import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
-import { Actor, CollisionType, Engine, Scene, BoundingBox } from "excalibur";
+import { Actor, CollisionType, Engine, Scene, BoundingBox, StrategyContainer } from "excalibur";
 import { Bobby } from "src/actors/Bobby";
 import HUD from 'src/ui/HUD.svelte'
 import { convertorDownAnim, convertorLeftAnim, convertorRightAnim, convertorUpAnim } from "src/animations/Convertor";
@@ -19,11 +19,13 @@ export class Level extends Scene {
     locks!: Record<string, string> | null;
     hud!: HUD;
     isMobile: boolean;
+    lockCamera: boolean;
     constructor(tileMaps: TiledMapResource[], currentLevel: number) {
         super()
         this.levels = tileMaps
         this.currentLevel = currentLevel
         this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        this.lockCamera = true;
     }
     onInitialize(engine: Engine): void {
         const currentMap = this.levels[this.currentLevel];
@@ -66,11 +68,7 @@ export class Level extends Scene {
 
         this.player = this.actors.find(actor => actor.name === 'Bobby') as Bobby;
         if (this.isMobile) {
-            this.camera.strategy.lockToActor(this.player)
-            this.camera.zoom = 2.3
-            this.camera.strategy.limitCameraBounds(
-                new BoundingBox(0, 0, 256, 256)
-              )
+            this.lockCameraOnActor(this.lockCamera)
         }
         this.actors.forEach((actor) => {
             // TODO: Пересмотреть работу конвертеров под коллизии
@@ -164,6 +162,20 @@ export class Level extends Scene {
                 scene: this
             }
         })
+    }
+
+
+    lockCameraOnActor(lock: boolean) {
+        if (lock) {
+            this.camera.strategy.lockToActor(this.player)
+        } else {
+            this.camera.clearAllStrategies()
+        }
+        this.camera.zoom = 2.3
+        this.camera.strategy.limitCameraBounds(
+            new BoundingBox(0, 0, 256, 256)
+        )
+        this.lockCamera = lock;
     }
 
     convertorControl(actor?: Actor) {

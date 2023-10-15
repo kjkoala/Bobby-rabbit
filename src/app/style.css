@@ -10,10 +10,6 @@ html {
     font-family: sans-serif;
 }
 
-body, button {
-    background-color: black;
-}
-
 #root {
     display: flex;
     align-items: center;

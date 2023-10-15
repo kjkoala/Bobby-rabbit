@@ -5,6 +5,7 @@
   import { Directon } from "src/actors/types";
   export let scene: Level;
   let carrotNode: HTMLDivElement;
+  let eyeNode: HTMLButtonElement;
   let keyGoldNode: HTMLDivElement;
   let keySilverNode: HTMLDivElement;
   let keyCopperNode: HTMLDivElement;
@@ -13,6 +14,8 @@
   let arrowDown: HTMLButtonElement | undefined;
   let arrowLeft: HTMLButtonElement | undefined;
   let arrowRight: HTMLButtonElement | undefined;
+  let showLevelText: boolean = true;
+  let lockCamera = scene.lockCamera;
   
   onMount(() => {
     const arrowClone1 = resources.Arrow.data.cloneNode()
@@ -33,6 +36,9 @@
         }
         const HUD = resources.HUD.data
         carrotNode.append(HUD.cloneNode())
+        if (scene.isMobile) {
+          eyeNode.append(HUD.cloneNode())
+        }
         scene.on('takeKey', (key) => {
           if (key === 'Key_Yellow') {
             keyGoldNode.append(HUD.cloneNode())
@@ -55,17 +61,34 @@
         window.removeEventListener('resize', onSetWidth)
         window.addEventListener('resize', onSetWidth)
       }
+
+      setTimeout(() => {
+        showLevelText = false
+      }, 2700)
   })
 
 
   const handleTouchStart = (e: any) => {scene.emit('mobileButtonPressed', e.target.dataset.direction)}
 
+  const handleTouchMapVisor = () => {
+    const toggle = !scene.lockCamera
+    scene.lockCameraOnActor(toggle)
+    lockCamera = toggle
+  }
 </script>
 <div class="hud">
-  <div class="hud_carrot">
-    <div class="carrot_score">{carrots}</div>
-    <div class="carrot" bind:this={carrotNode} />
+  <div class="header_hud">
+    {#if scene.isMobile}
+      <button class="hyd_eye_button" class:active_eye={!lockCamera}  type="button" bind:this={eyeNode} on:pointerdown={handleTouchMapVisor} />
+    {/if}
+    <div class="hud_carrot">
+      <div class="carrot_score">{carrots}</div>
+      <div class="carrot" bind:this={carrotNode} />
+    </div>
   </div>
+  {#if showLevelText}
+    <div class="center_text">Уровень {scene.currentLevel + 1}</div>
+  {/if}
   <div class="hud_keys">
     <div class="hud_copper" bind:this={keyCopperNode} />
     <div class="hud_silver" bind:this={keySilverNode} />
@@ -85,6 +108,7 @@
 <style>
   .hud {
     --size: 1px;
+    width: 100%;
     height: 100%;
     color: white;
     position: absolute;
@@ -96,19 +120,47 @@
     touch-action: none;
     text-shadow: 0 var(--size) black, 0 calc(var(--size) * -1) black, var(--size) 0px black, calc(var(--size) * -1) 0 black;
   }
+
+  .header_hud {
+    display: flex;
+    padding: 10px 20px;
+  }
+
+  .hyd_eye_button {
+    background: none;
+    border: none;
+    scale: 2;
+    filter: brightness(0.4);
+    transition: all ease 100ms;
+  }
+
+  .active_eye {
+    scale: 2.5;
+    filter: brightness(1);
+  }
+
+  :global(.hyd_eye_button img) {
+    width: 16px;
+    height: 14px;
+    object-fit: cover;
+    object-position: -25px 0;
+  }
+  .center_text {
+    margin: auto;
+    text-align: center;
+    font-size: 25px;
+  }
   .hud_carrot {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-left: auto;
-    margin-right: 20px;
   }
   .carrot_score {
     font-size: 23px;
   }
-  .carrot {
-    overflow: hidden;
-    width: 13px;
+  :global(.carrot img) {
+    width: 14px;
     height: 13px;
     scale: 2;
     object-fit: cover;
@@ -121,7 +173,6 @@
     height: 15px;
     scale: 2;
     object-fit: cover;
-    margin-left: auto;
     margin-right: 20px;
   }
   .hud_copper, .hud_silver, .hud_gold {
