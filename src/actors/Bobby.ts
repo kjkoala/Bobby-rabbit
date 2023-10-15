@@ -1,4 +1,4 @@
-import { Actor, CollisionType, Engine, vec, Animation, Keys, AnimationDirection, FrameStats, Vector } from "excalibur";
+import { Actor, CollisionType, Engine, vec, Animation, Keys, AnimationDirection, Vector } from "excalibur";
 import { downAnim, idleAnim, leftAnim, rightAnim, upAnim, fadeOutAnim, deathAnim } from "src/animations/Bobby";
 import { BLOCK_SIZE, type Level } from "src/scenes/level";
 import { Directon } from "./types";
