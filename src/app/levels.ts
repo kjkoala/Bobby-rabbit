@@ -22,6 +22,8 @@ import level21 from 'public/levels/21level.tmx';
 import level22 from 'public/levels/22level.tmx';
 import level23 from 'public/levels/23level.tmx';
 import level24 from 'public/levels/24level.tmx';
+import level25 from 'public/levels/25level.tmx';
+import level26 from 'public/levels/26level.tmx';
 
-export const levels1 = [level1,level2,level3,level4,level5,level6,level7,level8,level9,level10,level11,level12,level13,level14,level15,level16,level17,level18,level19,level20,level21,level22,level23,level24];
-export const levels = [level20,level21,level22,level23,level24];
+export const levels = [level1,level2,level3,level4,level5,level6,level7,level8,level9,level10,level11,level12,level13,level14,level15,level16,level17,level18,level19,level20,level21,level22,level23,level24,level25,level26];
+export const levels1 = [level25];
