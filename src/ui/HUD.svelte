@@ -174,6 +174,7 @@
     scale: 2;
     object-fit: cover;
     margin-right: 20px;
+    margin-left: auto;
   }
   .hud_copper, .hud_silver, .hud_gold {
     width: 8px;
