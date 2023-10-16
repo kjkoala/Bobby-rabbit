@@ -16,6 +16,8 @@
   let arrowRight: HTMLButtonElement | undefined;
   let showLevelText: boolean = true;
   let lockCamera = scene.lockCamera;
+  let showResult: boolean = false;
+  let timeFinishLevel: string = '';
   
   onMount(() => {
     const arrowClone1 = resources.Arrow.data.cloneNode()
@@ -28,6 +30,13 @@
     arrowDown?.append(arrowClone4)
     const hud = document.querySelector<HTMLDivElement>('.hud')
       if (hud) {
+        scene.on('levelComplete', () => {
+          setTimeout(() => {
+            const date = new Date(scene.computedTime())
+            timeFinishLevel = [date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds()].map(s => String(s).padStart(2,'0')).join(':');
+            showResult = true
+          }, 500)
+        })
         scene.on('takeCarrot', () => {
           carrots -= 1
         })
@@ -88,6 +97,13 @@
   </div>
   {#if showLevelText}
     <div class="center_text">Уровень {scene.currentLevel + 1}</div>
+  {/if}
+  {#if showResult}
+    <div class="center_text">
+      Время: {timeFinishLevel}
+      <br />
+      Шагов: {scene.player.steps}
+    </div>
   {/if}
   <div class="hud_keys">
     <div class="hud_copper" bind:this={keyCopperNode} />

@@ -28,6 +28,7 @@ export class Bobby extends Actor {
     mobileDirection: Directon| 11 | null = null
     isFreeze: boolean;
     speedView: number;
+    steps: number;
     constructor(x: number, y: number) {
         super({
             name: 'Bobby',
@@ -44,6 +45,7 @@ export class Bobby extends Actor {
         this.currentAnimation = ListAnimation.fadeOutAnim;
         this.isFreeze = true;
         this.speedView = SPEED * 2;
+        this.steps = 0;
     }
 
     onInitialize(engine: Engine): void {
@@ -76,8 +78,10 @@ export class Bobby extends Actor {
             this.currentAnimation = ListAnimation.right
             this.currentAnimation.goToFrame(3)
             engine.clock.schedule(() => {
+                // Установлено время начала уровня
+                this.scene.startLevelTime = engine.clock.now()
                 this.isFreeze = false;
-            }, 2000)
+            }, 1800)
         }, 700)
 
 
@@ -265,6 +269,7 @@ export class Bobby extends Actor {
             }
                 this.actions.moveBy(0, -BLOCK_SIZE, SPEED)
                 this.blockY -= 1
+                this.steps += 1
         } else if ((this.mobileDirection ===  Directon.DOWN || engine.input.keyboard.isHeld(Keys.ArrowDown)) && (this.pos.y - 8) / BLOCK_SIZE === this.blockY) {
             if (this.onRotatePlatform === 'X' || this.onRotatePlatform === 3 || this.onRotatePlatform === 4) {
                 return
@@ -279,6 +284,7 @@ export class Bobby extends Actor {
             }
             this.actions.moveBy(0, BLOCK_SIZE, SPEED)
             this.blockY += 1
+            this.steps += 1
         } else if ((this.mobileDirection ===  Directon.RIGHT ||engine.input.keyboard.isHeld(Keys.ArrowRight)) && (this.pos.x - 8) / BLOCK_SIZE === this.blockX) {
             if (this.onRotatePlatform === 'Y'  || this.onRotatePlatform === 2 || this.onRotatePlatform === 3) {
                 return
@@ -292,6 +298,7 @@ export class Bobby extends Actor {
             }
             this.actions.moveBy(BLOCK_SIZE, 0, SPEED)
             this.blockX += 1
+            this.steps += 1
         } else if ((this.mobileDirection ===  Directon.LEFT ||engine.input.keyboard.isHeld(Keys.ArrowLeft)) && (this.pos.x - 8) / BLOCK_SIZE === this.blockX) {
             if (this.onRotatePlatform === 'Y' || this.onRotatePlatform === 1 || this.onRotatePlatform === 4) {
                 return
@@ -306,6 +313,7 @@ export class Bobby extends Actor {
             }
                 this.actions.moveBy(-BLOCK_SIZE, 0, SPEED)
                 this.blockX -= 1
+                this.steps += 1
         }
     }
 

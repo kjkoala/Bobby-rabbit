@@ -1,5 +1,5 @@
 import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
-import { Actor, CollisionType, Engine, Scene, BoundingBox } from "excalibur";
+import { Actor, CollisionType, Engine, Scene, BoundingBox, FrameStats } from "excalibur";
 import { Bobby } from "src/actors/Bobby";
 import HUD from 'src/ui/HUD.svelte'
 import { convertorDownAnim, convertorLeftAnim, convertorRightAnim, convertorUpAnim } from "src/animations/Convertor";
@@ -20,12 +20,14 @@ export class Level extends Scene {
     hud!: HUD;
     isMobile: boolean;
     lockCamera: boolean;
+    startLevelTime: number;
     constructor(tileMaps: TiledMapResource[], currentLevel: number) {
         super()
         this.levels = tileMaps
         this.currentLevel = currentLevel
         this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         this.lockCamera = true;
+        this.startLevelTime = 0;
     }
     onInitialize(engine: Engine): void {
         const currentMap = this.levels[this.currentLevel];
@@ -286,5 +288,13 @@ export class Level extends Scene {
             }, [])
         }
         return []
+    }
+
+    computedTime() {
+        const finishTime = this.engine.clock.now() - this.startLevelTime;
+        const stogareLevels = JSON.parse(localStorage.getItem('carrots_levels') ?? '[]') as { steps: number; time: number, level: number }[];
+        stogareLevels.push({ time: finishTime, steps: this.player.steps, level: this.currentLevel });
+        localStorage.setItem('carrots_levels', JSON.stringify(stogareLevels));
+        return finishTime;
     }
 }
