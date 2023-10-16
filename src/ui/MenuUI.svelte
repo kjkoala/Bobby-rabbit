@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Menu } from "src/scenes/menu";
+    import { Menu } from "src/scenes/mainMenu";
     import { resources } from 'src/app/resources'
     import { onMount } from 'svelte';
 
@@ -9,7 +9,7 @@
     
     let backgroundUI: HTMLDivElement;
       onMount(() => {
-          const background = resources.GameEnd.data.cloneNode()
+          const background = resources.Title.data.cloneNode()
           backgroundUI.append(background)
       })
 
@@ -28,7 +28,7 @@
     <button type="button">Создатели</button> -->
     {/if}
     {#if newGame}
-        <button type="button" on:click={() => menu.startCarrotsNewGame()}>Сбор урожая марковки</button>
+        <button type="button" on:click={() => menu.startCarrotsNewGame()}>Сбор урожая морковки</button>
         <button type="button" disabled>Пасхальный кролик</button>
         <button type="button" on:click={() => newGame = false}>Назад</button>
     {/if}

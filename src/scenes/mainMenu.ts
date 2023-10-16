@@ -1,5 +1,5 @@
 import { Engine, Scene } from "excalibur";
-import MenuUI from "src/ui/Menu.svelte"
+import MenuUI from "src/ui/MenuUI.svelte"
 import { Level } from "./level";
 import { tileMaps } from "src/app/main";
 

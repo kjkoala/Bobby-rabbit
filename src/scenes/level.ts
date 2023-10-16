@@ -1,5 +1,5 @@
 import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
-import { Actor, CollisionType, Engine, Scene, BoundingBox, FrameStats } from "excalibur";
+import { Actor, CollisionType, Engine, Scene, BoundingBox } from "excalibur";
 import { Bobby } from "src/actors/Bobby";
 import HUD from 'src/ui/HUD.svelte'
 import { convertorDownAnim, convertorLeftAnim, convertorRightAnim, convertorUpAnim } from "src/animations/Convertor";

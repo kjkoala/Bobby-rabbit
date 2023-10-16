@@ -1,11 +1,10 @@
 import { Color, Engine, Loader, DisplayMode } from "excalibur";
 import { TiledMapResource } from '@excaliburjs/plugin-tiled';
 import './style.css';
-import { Level } from "src/scenes/level";
 import { levels } from "./levels";
 import { resources } from "./resources";
 import { EndGame } from "src/scenes/endGame";
-import { Menu } from "src/scenes/Menu";
+import { Menu } from "src/scenes/mainMenu";
 
 const engine = new Engine({
   antialiasing: false,
