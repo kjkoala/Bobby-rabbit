@@ -19,7 +19,6 @@ export class Level extends Scene {
     rotateButtons!: Record<string, boolean> | null;
     locks!: Record<string, string> | null;
     hud!: HUD;
-    isMobile: boolean;
     lockCamera: boolean;
     startLevelTime: number;
     constructor(tileMaps: TiledMapResource[], currentLevel: number) {
