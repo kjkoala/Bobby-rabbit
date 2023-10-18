@@ -5,6 +5,7 @@ import { levels } from "./levels";
 import { resources } from "./resources";
 import { EndGame } from "src/scenes/endGame";
 import { Menu } from "src/scenes/mainMenu";
+import { isMobile } from "src/common/constants";
 
 const engine = new Engine({
   antialiasing: false,
@@ -14,7 +15,7 @@ const engine = new Engine({
     height: 256,
   },
 
-  displayMode: DisplayMode.FitScreenAndFill,
+  displayMode: isMobile ? DisplayMode.FitScreenAndFill : undefined,
   fixedUpdateFps: 60,
   maxFps: 60,
   backgroundColor: Color.Black,

@@ -2,6 +2,7 @@
     import { Menu } from "src/scenes/mainMenu";
     import { resources } from 'src/app/resources'
     import { onMount } from 'svelte';
+    // import Records from "./Records.svelte";
 
     export let menu: Menu;
 
@@ -22,8 +23,9 @@
         <button type="button" on:click={() => menu.continueGame()}>Продолжить</button>
     {/if}
     <button type="button" on:click={() => newGame = true}>Новая игра</button>
-    <!-- <button type="button">Время на уровнях</button>
-    <button type="button">Музыка включена</button>
+    <!-- <button type="button">Рекорды</button> -->
+    <!-- <Records /> -->
+    <!--<button type="button">Музыка включена</button>
     <button type="button">Руководство</button>
     <button type="button">Создатели</button> -->
     {/if}

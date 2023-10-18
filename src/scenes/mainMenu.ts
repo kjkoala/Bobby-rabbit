@@ -2,6 +2,7 @@ import { Engine, Scene } from "excalibur";
 import MenuUI from "src/ui/MenuUI.svelte"
 import { Level } from "./level";
 import { tileMaps } from "src/app/main";
+import { carrots_levels } from "src/common/constants";
 
 export class Menu extends Scene {
     menu!: MenuUI
@@ -19,7 +20,7 @@ export class Menu extends Scene {
 
 
     getLocalStorageCarrotsLevel() {
-        return localStorage.getItem('carrots_levels')
+        return localStorage.getItem(carrots_levels)
     }
 
     startLevel(lvl: number) {
@@ -40,7 +41,7 @@ export class Menu extends Scene {
 
     startCarrotsNewGame () {
         this.menu.$destroy();
-        localStorage.removeItem('carrots_levels');
+        localStorage.removeItem(carrots_levels);
         this.startLevel(0);
     }
 }

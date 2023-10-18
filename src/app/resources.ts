@@ -15,6 +15,7 @@ import HUD from 'public/hud.png'
 import mp3Death from 'public/music/death.mp3'
 import mp3Clered from 'public/music/cleared.mp3'
 import Arrow from 'public/arrow.png'
+import Restart from 'public/restart.png'
 import Title from 'public/title.png'
 
 export const resources = {
@@ -34,5 +35,6 @@ export const resources = {
     mp3Death: new Sound(mp3Death),
     mp3Clered: new Sound(mp3Clered),
     Arrow: new ImageSource(Arrow),
+    Restart: new ImageSource(Restart),
     Title: new ImageSource(Title),
 }

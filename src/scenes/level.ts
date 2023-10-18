@@ -3,6 +3,7 @@ import { Actor, CollisionType, Engine, Scene, BoundingBox } from "excalibur";
 import { Bobby } from "src/actors/Bobby";
 import HUD from 'src/ui/HUD.svelte'
 import { convertorDownAnim, convertorLeftAnim, convertorRightAnim, convertorUpAnim } from "src/animations/Convertor";
+import { carrots_levels, getCarrotsLevelsLocalStorage, isMobile } from "src/common/constants";
 
 export const BLOCK_SIZE = 16;
 
@@ -25,7 +26,6 @@ export class Level extends Scene {
         super()
         this.levels = tileMaps
         this.currentLevel = currentLevel
-        this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         this.lockCamera = true;
         this.startLevelTime = 0;
     }
@@ -69,7 +69,7 @@ export class Level extends Scene {
         }
 
         this.player = this.actors.find(actor => actor.name === 'Bobby') as Bobby;
-        if (this.isMobile) {
+        if (isMobile) {
             this.lockCameraOnActor(this.lockCamera)
         }
         this.actors.forEach((actor) => {
@@ -292,9 +292,28 @@ export class Level extends Scene {
 
     computedTime() {
         const finishTime = this.engine.clock.now() - this.startLevelTime;
-        const stogareLevels = JSON.parse(localStorage.getItem('carrots_levels') ?? '[]') as { steps: number; time: number, level: number }[];
+        const stogareLevels = getCarrotsLevelsLocalStorage()
         stogareLevels.push({ time: finishTime, steps: this.player.steps, level: this.currentLevel });
-        localStorage.setItem('carrots_levels', JSON.stringify(stogareLevels));
+        localStorage.setItem(carrots_levels, JSON.stringify(stogareLevels));
         return finishTime;
+    }
+
+    // TODO: Только для дебага
+    handleNextLevel() {
+        if (this.currentLevel + 1 < this.levels.length) {
+            this.hud.$destroy()
+            this.engine.removeScene('level');
+            this.engine.addScene('level', new Level(this.levels, this.currentLevel + 1));
+            this.engine.goToScene('level');
+        }
+    }
+
+    handlePrevLevel() {
+        if (this.currentLevel > 0) {
+            this.hud.$destroy()
+            this.engine.removeScene('level');
+            this.engine.addScene('level', new Level(this.levels, this.currentLevel - 1));
+            this.engine.goToScene('level');
+        }
     }
 }

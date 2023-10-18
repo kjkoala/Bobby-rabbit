@@ -3,6 +3,7 @@
   import { resources } from 'src/app/resources'
   import { onMount } from "svelte";
   import { Directon } from "src/actors/types";
+  import { isMobile } from "src/common/constants";
   export let scene: Level;
   let carrotNode: HTMLDivElement;
   let eyeNode: HTMLButtonElement;
@@ -14,6 +15,7 @@
   let arrowDown: HTMLButtonElement | undefined;
   let arrowLeft: HTMLButtonElement | undefined;
   let arrowRight: HTMLButtonElement | undefined;
+  let restartButton: HTMLButtonElement | undefined;
   let showLevelText: boolean = true;
   let lockCamera = scene.lockCamera;
   let showResult: boolean = false;
@@ -24,6 +26,8 @@
     const arrowClone2 = resources.Arrow.data.cloneNode()
     const arrowClone3 = resources.Arrow.data.cloneNode()
     const arrowClone4 = resources.Arrow.data.cloneNode()
+    const restartButtonClone = resources.Restart.data.cloneNode();
+    restartButton?.append(restartButtonClone);
     arrowUp?.append(arrowClone1)
     arrowLeft?.append(arrowClone2)
     arrowRight?.append(arrowClone3)
@@ -45,7 +49,7 @@
         }
         const HUD = resources.HUD.data
         carrotNode.append(HUD.cloneNode())
-        if (scene.isMobile) {
+        if (isMobile) {
           eyeNode.append(HUD.cloneNode())
         }
         scene.on('takeKey', (key) => {
@@ -87,8 +91,9 @@
 </script>
 <div class="hud">
   <div class="header_hud">
-    {#if scene.isMobile}
-      <button class="hyd_eye_button" class:active_eye={!lockCamera}  type="button" bind:this={eyeNode} on:pointerdown={handleTouchMapVisor} />
+    {#if isMobile}
+      <button on:pointerdown={handleTouchStart} class="resart_button" type="button" bind:this={restartButton}  data-direction={11} />
+      <button class="hud_eye_button" class:active_eye={!lockCamera}  type="button" bind:this={eyeNode} on:pointerdown={handleTouchMapVisor} />
     {/if}
     <div class="hud_carrot">
       <div class="carrot_score">{carrots}</div>
@@ -110,11 +115,15 @@
     <div class="hud_silver" bind:this={keySilverNode} />
     <div class="hud_gold" bind:this={keyGoldNode} />
   </div>
-  {#if scene.isMobile}
-  <div class="controls" on:pointerup={() => scene.emit('mobileButtonWasReleased')} on:pointerdown={handleTouchStart} >
+  <!-- TODO: Для дебага только -->
+  <div class="controls">
+    <button type="button" on:pointerdown={() => scene.handlePrevLevel()}>Назад</button>
+    <button type="button" on:pointerdown={() => scene.handleNextLevel()}>Вперед</button>
+  </div>
+  {#if isMobile}
+  <div class="controls" on:pointerup={() => scene.emit('mobileButtonWasReleased')} on:pointerdown={handleTouchStart}>
     <button type="button" class="full button_up" data-direction={Directon.UP} bind:this={arrowUp} />
     <button type="button" class="half button_left" data-direction={Directon.LEFT} bind:this={arrowLeft} />
-    <button type="button" class="half" data-direction={11}>Рестарт</button>
     <button type="button" class="half button_right"data-direction={Directon.RIGHT} bind:this={arrowRight} />
     <button type="button" class="full button_down"data-direction={Directon.DOWN}  bind:this={arrowDown} />
   </div>
@@ -137,17 +146,30 @@
     text-shadow: 0 var(--size) black, 0 calc(var(--size) * -1) black, var(--size) 0px black, calc(var(--size) * -1) 0 black;
   }
 
+  button {
+    border: none;
+    background: none;
+    outline: none;
+  }
+
+  .resart_button {
+    scale: 2;
+  }
+
+  :global(.resart_button img) {
+    pointer-events: none;
+  }
+
   .header_hud {
     display: flex;
     padding: 10px 20px;
   }
 
-  .hyd_eye_button {
-    background: none;
-    border: none;
+  .hud_eye_button {
     scale: 2;
     filter: brightness(0.4);
     transition: all ease 100ms;
+    margin-left: 25px;
   }
 
   .active_eye {
@@ -155,7 +177,7 @@
     filter: brightness(1);
   }
 
-  :global(.hyd_eye_button img) {
+  :global(.hud_eye_button img) {
     width: 16px;
     height: 14px;
     object-fit: cover;
@@ -205,7 +227,6 @@
     height: 50px;
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid black;
-    outline: none;
     touch-action: none;
   }
   :global(.controls button img) {

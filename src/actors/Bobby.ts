@@ -3,6 +3,7 @@ import { downAnim, idleAnim, leftAnim, rightAnim, upAnim, fadeOutAnim, deathAnim
 import { BLOCK_SIZE, type Level } from "src/scenes/level";
 import { Directon } from "./types";
 import { resources } from 'src/app/resources'
+import { DEFAULT_VOLUME } from "src/common/constants";
 const SPEED = 30;
 type TypeAnimation = 'up' | 'down' | 'left' | 'right' | 'idle' | 'fadeOutAnim' | 'death';
 
@@ -96,7 +97,7 @@ export class Bobby extends Actor {
         this.scene.on('levelComplete', () => {
             this.isFreeze = true
             engine.clock.schedule(() => {
-                resources.mp3Clered.play(0.5)
+                resources.mp3Clered.play(DEFAULT_VOLUME)
                 this.graphics.use('fadeOut')
                 this.currentAnimation = ListAnimation.fadeOutAnim
                 if (this.currentAnimation.direction === AnimationDirection.Backward) {
@@ -120,7 +121,7 @@ export class Bobby extends Actor {
                 this.currentAnimation.reset()
                 this.currentAnimation.play()
                 this.graphics.use('death')
-                resources.mp3Death.play(0.5)
+                resources.mp3Death.play(DEFAULT_VOLUME)
                 engine.clock.schedule(() => {
                     this.scene.emit('playerDied', undefined)
                 }, 4000)
