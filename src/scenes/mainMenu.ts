@@ -1,8 +1,9 @@
-import { Engine, Scene } from "excalibur";
+import { Engine, Scene, type SceneActivationContext } from "excalibur";
 import MenuUI from "src/ui/MenuUI.svelte"
 import { Level } from "./level";
 import { tileMaps } from "src/app/main";
-import { carrots_levels } from "src/common/constants";
+import { DEFAULT_VOLUME, carrots_levels } from "src/common/constants";
+import { resources } from "src/app/resources";
 
 export class Menu extends Scene {
     menu!: MenuUI
@@ -10,12 +11,26 @@ export class Menu extends Scene {
         super()
     }
     onInitialize(_engine: Engine): void {
+        this.toggleMainMusic(true)
         this.menu = new MenuUI({
             target: document.querySelector('#root')!,
             props: {
                 menu: this
             }
         })
+    }
+    
+    onDeactivate(_context: SceneActivationContext<undefined>): void {
+        this.toggleMainMusic(false);
+    }
+    
+    toggleMainMusic(toggle: boolean) {
+        if(toggle) {
+            resources.mp3Title.loop = true;
+            resources.mp3Title.play(DEFAULT_VOLUME)
+        } else {
+            resources.mp3Title.stop()
+        }
     }
 
 
@@ -37,7 +52,6 @@ export class Menu extends Scene {
         }
         return false
     }
-
 
     startCarrotsNewGame () {
         this.menu.$destroy();

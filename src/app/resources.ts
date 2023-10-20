@@ -13,6 +13,7 @@ import ConvertorDown from 'public/levels/tile_conveyor_down.png'
 import End from 'public/end.png'
 import HUD from 'public/hud.png'
 import mp3Death from 'public/music/death.mp3'
+import mp3Title from 'public/music/title.mp3'
 import mp3Clered from 'public/music/cleared.mp3'
 import Arrow from 'public/arrow.png'
 import Restart from 'public/restart.png'
@@ -34,6 +35,7 @@ export const resources = {
     HUD: new ImageSource(HUD),
     mp3Death: new Sound(mp3Death),
     mp3Clered: new Sound(mp3Clered),
+    mp3Title: new Sound(mp3Title),
     Arrow: new ImageSource(Arrow),
     Restart: new ImageSource(Restart),
     Title: new ImageSource(Title),

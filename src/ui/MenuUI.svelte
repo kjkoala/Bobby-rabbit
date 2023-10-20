@@ -25,8 +25,8 @@
     <button type="button" on:click={() => newGame = true}>Новая игра</button>
     <!-- <button type="button">Рекорды</button> -->
     <!-- <Records /> -->
-    <!--<button type="button">Музыка включена</button>
-    <button type="button">Руководство</button>
+    <button type="button">Музыка вкл.</button>
+    <!--<button type="button">Руководство</button>
     <button type="button">Создатели</button> -->
     {/if}
     {#if newGame}
