@@ -30,7 +30,6 @@ export class Level extends Scene {
         this.startLevelTime = 0;
     }
     onInitialize(engine: Engine): void {
-        VK.countLevel()
         const currentMap = this.levels[this.currentLevel];
         this.mapWidth = currentMap.data.width;
         this.collisionMap = {};
@@ -138,15 +137,18 @@ export class Level extends Scene {
 
         this.on('levelComplete', () => {
             engine.clock.schedule(() => {
-                engine.removeScene('level');
-                this.hud.$destroy()
-                const nextLevel = this.currentLevel + 1
-                if (nextLevel >= this.levels.length) {
-                    engine.goToScene('endLevel')
-                } else {
-                    engine.addScene('level', new Level(this.levels, nextLevel));
-                    engine.goToScene('level');
-                }
+                VK.countLevel()
+                .finally(() => {
+                    engine.removeScene('level');
+                    this.hud.$destroy()
+                    const nextLevel = this.currentLevel + 1
+                    if (nextLevel >= this.levels.length) {
+                        engine.goToScene('endLevel')
+                    } else {
+                        engine.addScene('level', new Level(this.levels, nextLevel));
+                        engine.goToScene('level');
+                    }
+                })
             }, 5000)
         })
 

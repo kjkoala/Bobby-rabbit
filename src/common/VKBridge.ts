@@ -15,13 +15,8 @@ class VK {
     }
 
     showAds() {
-        bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
-  .then((data) => {
-    if (data.result)
-      console.log('Реклама показана');
-    else
-      console.log('Ошибка при показе');
-  })
+        return bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
+  .then((data) => data)
   .catch((error) => { console.log(error); /* Ошибка */ });
     }
 
@@ -31,8 +26,10 @@ class VK {
         this.checkAds()
       } else if (this.countLevels >= 5) {
         this.countLevels = 0;
-        this.showAds()
+        return this.showAds()
       }
+
+      return Promise.resolve()
     }
 }
 
