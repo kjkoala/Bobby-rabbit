@@ -6,9 +6,6 @@ import { resources } from "./resources";
 import { EndGame } from "src/scenes/endGame";
 import { Menu } from "src/scenes/mainMenu";
 import { isMobile } from "src/common/constants";
-import { VK } from "src/common/VKBridge";
-
-VK.init();
 
 const engine = new Engine({
   antialiasing: false,

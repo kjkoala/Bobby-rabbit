@@ -1,15 +1,20 @@
 import bridge, { EAdsFormats } from '@vkontakte/vk-bridge';
 
-export class VK {
+class VK {
+  private countLevels: number;
+  constructor() {
+    this.countLevels = 0;
+  }
     static init() {
         bridge.send("VKWebAppInit", {});
+        return new VK()
     }
 
-    static checkAds() {
+    checkAds() {
         bridge.send('VKWebAppCheckNativeAds', { ad_format: EAdsFormats.INTERSTITIAL});
     }
 
-    static showAds() {
+    showAds() {
         bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
   .then((data) => {
     if (data.result)
@@ -19,4 +24,16 @@ export class VK {
   })
   .catch((error) => { console.log(error); /* Ошибка */ });
     }
+
+    countLevel() {
+      this.countLevels += 1
+      if (this.countLevels === 4) {
+        this.checkAds()
+      } else if (this.countLevels >= 5) {
+        this.countLevels = 0;
+        this.showAds()
+      }
+    }
 }
+
+export default VK.init()
