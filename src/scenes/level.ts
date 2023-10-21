@@ -4,6 +4,7 @@ import { Bobby } from "src/actors/Bobby";
 import HUD from 'src/ui/HUD.svelte'
 import { convertorDownAnim, convertorLeftAnim, convertorRightAnim, convertorUpAnim } from "src/animations/Convertor";
 import { carrots_levels, getCarrotsLevelsLocalStorage, isMobile } from "src/common/constants";
+import { VK } from "src/common/VKBridge";
 
 export const BLOCK_SIZE = 16;
 
@@ -29,6 +30,7 @@ export class Level extends Scene {
         this.startLevelTime = 0;
     }
     onInitialize(engine: Engine): void {
+        VK.showAds();
         const currentMap = this.levels[this.currentLevel];
         this.mapWidth = currentMap.data.width;
         this.collisionMap = {};
@@ -135,6 +137,7 @@ export class Level extends Scene {
         })
 
         this.on('levelComplete', () => {
+            VK.checkAds()
             engine.clock.schedule(() => {
                 engine.removeScene('level');
                 this.hud.$destroy()
