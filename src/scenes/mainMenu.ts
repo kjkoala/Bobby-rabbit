@@ -1,9 +1,10 @@
 import { Engine, Scene, type SceneActivationContext } from "excalibur";
 import MenuUI from "src/ui/MenuUI.svelte"
 import { Level } from "./level";
-import { tileMaps } from "src/app/main";
-import { DEFAULT_VOLUME, carrots_levels } from "src/common/constants";
+import { carrotsMaps, eggsMaps } from "src/app/main";
+import { DEFAULT_VOLUME, carrots_levels, eggs_levels } from "src/common/constants";
 import { resources } from "src/app/resources";
+import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
 
 export class Menu extends Scene {
     menu!: MenuUI
@@ -38,8 +39,8 @@ export class Menu extends Scene {
         return localStorage.getItem(carrots_levels)
     }
 
-    startLevel(lvl: number) {
-        this.engine.addScene('level', new Level(tileMaps, lvl))
+    startLevel(world: TiledMapResource[], lvl: number) {
+        this.engine.addScene('level', new Level(world, lvl))
         this.engine.goToScene('level');
     }
 
@@ -48,14 +49,20 @@ export class Menu extends Scene {
         if (levels) {
             const lvl = JSON.parse(levels)
             this.menu.$destroy();
-            this.startLevel(lvl.at(-1).level + 1)
+            this.startLevel(carrotsMaps, lvl.at(-1).level + 1)
         }
         return false
+    }
+
+    startEggsNewGame() {
+        this.menu.$destroy();
+        localStorage.removeItem(eggs_levels)
+        this.startLevel(eggsMaps, 0)
     }
 
     startCarrotsNewGame () {
         this.menu.$destroy();
         localStorage.removeItem(carrots_levels);
-        this.startLevel(0);
+        this.startLevel(carrotsMaps, 0);
     }
 }

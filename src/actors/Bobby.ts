@@ -198,6 +198,8 @@ export class Bobby extends Actor {
                 if (this.playerRotateCount === 0) {
                     this.onRotatePlatform = null;
                 }
+            }  else if (other.name === 'Nest') {
+                this.onNestEgg(other)
             }
         })
     }
@@ -321,5 +323,11 @@ export class Bobby extends Actor {
     onTakeCarrot(carrot: Actor) {
         carrot.kill();
         this.scene.emit('takeCarrot', undefined)
+    }
+    
+    onNestEgg(nest: Actor) {
+        nest.graphics.add(this.scene.levels[this.scene.currentLevel].getSpriteForGid(47))
+        const lockPos = `${nest.pos.x / BLOCK_SIZE}x${nest.pos.y / BLOCK_SIZE - 1}` 
+        this.scene.collisionMap[lockPos] = true
     }
 }

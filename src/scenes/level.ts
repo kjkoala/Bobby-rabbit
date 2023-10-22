@@ -21,9 +21,9 @@ export class Level extends Scene {
     hud!: HUD;
     lockCamera: boolean;
     startLevelTime: number;
-    constructor(tileMaps: TiledMapResource[], currentLevel: number) {
+    constructor(carrotsMaps: TiledMapResource[], currentLevel: number) {
         super()
-        this.levels = tileMaps
+        this.levels = carrotsMaps
         this.currentLevel = currentLevel
         this.lockCamera = true;
         this.startLevelTime = 0;

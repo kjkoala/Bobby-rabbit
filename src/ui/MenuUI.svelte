@@ -31,7 +31,7 @@
     {/if}
     {#if newGame}
         <button type="button" on:click={() => menu.startCarrotsNewGame()}>Сбор урожая морковки</button>
-        <button type="button" disabled>Пасхальный кролик</button>
+        <button type="button" on:click={() => menu.startEggsNewGame()}>Пасхальный кролик</button>
         <button type="button" on:click={() => newGame = false}>Назад</button>
     {/if}
 </div>
