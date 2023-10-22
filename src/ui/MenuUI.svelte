@@ -48,6 +48,7 @@
     }
 
     .background {
+        pointer-events: none;
         position: absolute;
         z-index: 0;
         width: min(100%, 700px);

@@ -6,9 +6,6 @@ import { resources } from "./resources";
 import { EndGame } from "src/scenes/endGame";
 import { Menu } from "src/scenes/mainMenu";
 import { isMobile } from "src/common/constants";
-import bridge from '@vkontakte/vk-bridge';
-
-bridge.send("VKWebAppInit", {});
 
 const engine = new Engine({
   antialiasing: false,
