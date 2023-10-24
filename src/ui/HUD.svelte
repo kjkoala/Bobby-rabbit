@@ -10,7 +10,7 @@
   let keyGoldNode: HTMLDivElement;
   let keySilverNode: HTMLDivElement;
   let keyCopperNode: HTMLDivElement;
-  let carrots = scene.carrots;
+  let count = scene.carrots || scene.nests || 0;
   let arrowUp: HTMLButtonElement | undefined;
   let arrowDown: HTMLButtonElement | undefined;
   let arrowLeft: HTMLButtonElement | undefined;
@@ -41,8 +41,11 @@
             showResult = true
           }, 500)
         })
+        scene.on('nestEgg', () => {
+          count -= 1
+        })
         scene.on('takeCarrot', () => {
-          carrots -= 1
+          count -= 1
         })
         const onSetWidth = () => {
           hud.style.width = document.querySelector<HTMLDivElement>('#game')?.style.width!
@@ -96,8 +99,8 @@
       <button class="hud_eye_button" class:active_eye={!lockCamera}  type="button" bind:this={eyeNode} on:pointerdown={handleTouchMapVisor} />
     {/if}
     <div class="hud_carrot">
-      <div class="carrot_score">{carrots}</div>
-      <div class="carrot" bind:this={carrotNode} />
+      <div class="carrot_score">{count}</div>
+      <div class:carrot={Boolean(scene.carrots)} class:egg={Boolean(scene.nests)} bind:this={carrotNode} />
     </div>
   </div>
   {#if showLevelText}
@@ -196,6 +199,14 @@
   }
   .carrot_score {
     font-size: 23px;
+  }
+
+  :global(.egg img) {
+    width: 9px;
+    height: 13px;
+    scale: 2;
+    object-fit: cover;
+    object-position: -14px 0;
   }
   :global(.carrot img) {
     width: 14px;

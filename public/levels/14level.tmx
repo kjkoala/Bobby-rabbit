@@ -174,22 +174,12 @@
  </objectgroup>
  <objectgroup id="116" name="2_Rotate" locked="1">
   <properties>
-   <property name="array" value="2_Rotate_Y=Y,2_Rotate_X=X"/>
-   <property name="coords" value="7x8"/>
-   <property name="excalibur" type="bool" value="true"/>
+   <property name="name" value="2_Rotate"/>
    <property name="state" value="Y"/>
-   <property name="x" value="7"/>
-   <property name="y" value="8"/>
   </properties>
-  <object id="425" name="2_Rotate_X" gid="29" x="112" y="144" width="16" height="16">
-   <properties>
-    <property name="ZIndex" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="410" name="2_Rotate_Y" gid="30" x="112" y="144" width="16" height="16">
+  <object id="410" name="2_Rotate" gid="30" x="112" y="144" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
-    <property name="ZIndex" type="float" value="1"/>
    </properties>
   </object>
  </objectgroup>
@@ -224,36 +214,21 @@
  </objectgroup>
  <objectgroup id="121" name="4_Rotate">
   <properties>
-   <property name="array" value="4_Rotate_1_1=1,4_Rotate_1_2=2,4_Rotate_1_3=3,4_Rotate_1_4=4"/>
-   <property name="coords" value="7x12"/>
-   <property name="excalibur" type="bool" value="true"/>
+   <property name="name" value="4_Rotate_1"/>
    <property name="state" value="4"/>
-   <property name="x" value="7"/>
-   <property name="y" value="12"/>
   </properties>
-  <object id="440" name="4_Rotate_1_1" gid="25" x="112" y="208" width="16" height="16"/>
-  <object id="441" name="4_Rotate_1_2" gid="26" x="112" y="208" width="16" height="16"/>
-  <object id="442" name="4_Rotate_1_3" gid="27" x="112" y="208" width="16" height="16"/>
-  <object id="443" name="4_Rotate_1_4" gid="28" x="112" y="208" width="16" height="16">
+  <object id="443" name="4_Rotate_1" gid="28" x="112" y="208" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
-    <property name="excalibur" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="122" name="4_Rotate">
   <properties>
-   <property name="array" value="4_Rotate_2_1=1,4_Rotate_2_2=2,4_Rotate_2_3=3,4_Rotate_2_4=4"/>
-   <property name="coords" value="7x4"/>
-   <property name="excalibur" type="bool" value="true"/>
+   <property name="name" value="4_Rotate_2"/>
    <property name="state" value="2"/>
-   <property name="x" value="7"/>
-   <property name="y" value="4"/>
   </properties>
-  <object id="444" name="4_Rotate_2_1" gid="25" x="112" y="80" width="16" height="16"/>
-  <object id="445" name="4_Rotate_2_3" gid="27" x="112" y="80" width="16" height="16"/>
-  <object id="446" name="4_Rotate_2_4" gid="28" x="112" y="80" width="16" height="16"/>
-  <object id="447" name="4_Rotate_2_2" gid="26" x="112" y="80" width="16" height="16">
+  <object id="447" name="4_Rotate_2" gid="26" x="112" y="80" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>

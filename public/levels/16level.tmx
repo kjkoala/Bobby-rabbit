@@ -65,10 +65,6 @@
 </data>
  </layer>
  <objectgroup id="133" name="Convertor">
-  <object id="486" name="Convertor_Right" gid="42" x="96" y="144" width="16" height="16"/>
-  <object id="487" name="Convertor_Right" gid="42" x="112" y="144" width="16" height="16"/>
-  <object id="488" name="Convertor_Right" gid="42" x="96" y="208" width="16" height="16"/>
-  <object id="489" name="Convertor_Right" gid="42" x="112" y="208" width="16" height="16"/>
   <object id="490" name="Convertor_Left" gid="41" x="112" y="208" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
@@ -89,21 +85,16 @@
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="494" name="Convertor_Up" gid="43" x="192" y="128" width="16" height="16"/>
   <object id="495" name="Convertor_Down" gid="44" x="192" y="128" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="501" name="Convertor_Right" gid="42" x="160" y="144" width="16" height="16"/>
   <object id="502" name="Convertor_Left" gid="41" x="160" y="144" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="509" name="Convertor_Down" gid="44" x="128" y="160" width="16" height="16"/>
-  <object id="510" name="Convertor_Down" gid="44" x="128" y="176" width="16" height="16"/>
-  <object id="511" name="Convertor_Down" gid="44" x="128" y="192" width="16" height="16"/>
   <object id="512" name="Convertor_Up" gid="43" x="128" y="192" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
@@ -149,7 +140,7 @@
 0,14,0,0,0,0,0,0,0,0,0,0,0,0,14,0,
 0,14,0,0,0,0,8,9,0,14,0,0,0,0,14,0,
 0,17,18,0,17,18,0,2,0,14,0,0,0,0,14,0,
-2,0,0,0,0,0,7,0,0,14,0,0,0,0,14,0,
+2,0,0,0,0,0,3,2,0,14,0,0,0,0,14,0,
 2,0,0,0,0,0,0,0,0,14,0,0,0,0,14,0,
 2,0,0,0,0,0,8,9,0,17,13,13,13,13,0,0,
 0,9,0,0,0,8,0,0,5,0,0,0,0,0,0,0,
@@ -158,15 +149,14 @@
  </layer>
  <objectgroup id="130" name="2_Rotate">
   <properties>
-   <property name="array" value="2_Rotate_Y=Y,2_Rotate_X=X"/>
    <property name="coords" value="3x10"/>
    <property name="excalibur" type="bool" value="true"/>
+   <property name="name" value="2_Rotate"/>
    <property name="state" value="X"/>
    <property name="x" value="3"/>
    <property name="y" value="10"/>
   </properties>
-  <object id="455" name="2_Rotate_Y" gid="30" x="48" y="176" width="16" height="16"/>
-  <object id="456" name="2_Rotate_X" gid="29" x="48" y="176" width="16" height="16">
+  <object id="456" name="2_Rotate" gid="29" x="48" y="176" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
