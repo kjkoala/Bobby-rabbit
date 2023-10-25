@@ -59,14 +59,17 @@ export class Level extends Scene {
     this.convertorButtons = null;
     this.rotateButtons = null;
     this.locks = null;
-    const rotatePlatform = currentMap.data.objectGroups.filter(
-      (object) => object.name === "2_Rotate" || object.name === "4_Rotate"
+    const rotatePlatform = currentMap.data.objectGroups.find(
+      (object) => object.name === "Rotate"
     );
     const convertorButtons = currentMap.data.objectGroups.find(
       (object) => object.name === "ConvertorButtons"
     );
     const rotateButtons = currentMap.data.objectGroups.find(
       (object) => object.name === "RotateButtons"
+    );
+    const traps = currentMap.data.objectGroups.find(
+      (object) => object.name === "Traps"
     );
 
     const wall = this.findIndexLayer(currentMap, "Wall");
@@ -143,35 +146,28 @@ export class Level extends Scene {
             [actor.name]: lockPos,
           };
         }
-      }
-    });
-
-    if (rotatePlatform.length > 0) {
-      rotatePlatform.forEach((platform) => {
-        // const coords = platform.properties.find(prop => prop.name === 'coords')
-        const state = platform.properties.find((prop) => prop.name === "state");
-        const name = platform.properties.find((prop) => prop.name === "name");
-        // const x = platform.properties.find(prop => prop.name === 'x')
-        // const y = platform.properties.find(prop => prop.name === 'y')
-        const actor = this.actors.find(
-          (actor) => actor.name === name!.value
-        ) as Actor;
-        const x = actor.pos.x / BLOCK_SIZE;
-        const y = actor.pos.y / BLOCK_SIZE - 1;
-        this.rotatePlatform.set(`${x}x${y}`, {
+      } else if (actor.name === 'Trap') {
+        const trap = traps?.objects.find(trap => trap.x === actor.pos.x && trap.y === actor.pos.y)
+        const hide = trap?.properties.find((prop) => prop.name === 'hide')
+        if (hide?.value) {
+          actor.graphics.visible = false
+        }
+      } else if (actor.name === '2_Rotate' || actor.name === '4_Rotate') {
+        const platform = rotatePlatform?.objects.find(rotate => rotate.x === actor.pos.x && rotate.y === actor.pos.y)
+        if (platform) {
+          const state = platform.properties.find((prop) => prop.name === "state");
+          const x = actor.pos.x / BLOCK_SIZE;
+          const y = actor.pos.y / BLOCK_SIZE - 1;
+          this.rotatePlatform.set(`${x}x${y}`, {
           state: state!.value as string,
           x,
           y,
           actor,
         });
-        // this.rotatePlatform[`${x}x${y}`] = {
-        //     state: state!.value as string,
-        //     x,
-        //     y,
-        //     actor,
-        // }
-      });
-    }
+        }
+      }
+    });
+
     this.on("takeCarrot", () => {
       this.countEntity("carrots");
     });

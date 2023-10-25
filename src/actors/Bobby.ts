@@ -189,8 +189,8 @@ export class Bobby extends Actor {
             this.blockY = (this.pos.y - 8) / BLOCK_SIZE;
           });
       } else if (
-        other.name.startsWith("2_Rotate") ||
-        other.name.startsWith("4_Rotate")
+        other.name === '2_Rotate' ||
+        other.name === '4_Rotate'
       ) {
         const platform = this.scene.rotatePlatform.get(
           `${other.pos.x / BLOCK_SIZE}x${other.pos.y / BLOCK_SIZE - 1}`
@@ -221,13 +221,13 @@ export class Bobby extends Actor {
     this.on("collisionend", ({ other }) => {
       if (other.name === "Trap") {
         other.graphics.visible = false;
-      } else if (other.name.startsWith("2_Rotate")) {
+      } else if (other.name === '2_Rotate') {
         this.playerRotateCount -= 1;
         this.scene.rotate2Platform(other.pos.x, other.pos.y);
         if (this.playerRotateCount === 0) {
           this.onRotatePlatform = null;
         }
-      } else if (other.name.startsWith("4_Rotate")) {
+      } else if (other.name === '4_Rotate') {
         this.playerRotateCount -= 1;
         this.scene.rotate4Platform(other.pos.x, other.pos.y);
         if (this.playerRotateCount === 0) {
@@ -320,7 +320,8 @@ export class Bobby extends Actor {
             ((platform.state === 1 || platform.state === 2) &&
               this.blockY < platform.y) ||
             ((platform.state === 3 || platform.state === 4) &&
-              this.blockY > platform.y)))
+              this.blockY > platform.y)) ||
+              this.scene.convertorPlatform.get(coord) === "Convertor_Down")
       ) {
         return;
       }
@@ -348,7 +349,8 @@ export class Bobby extends Actor {
             ((platform.state === 3 || platform.state === 4) &&
               this.blockY > platform.y) ||
             ((platform.state === 1 || platform.state === 2) &&
-              this.blockY < platform.y)))
+              this.blockY < platform.y)) ||
+              this.scene.convertorPlatform.get(coord) === "Convertor_Up")
       ) {
         return;
       }
