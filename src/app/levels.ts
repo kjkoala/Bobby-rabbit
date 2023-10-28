@@ -34,7 +34,9 @@ import level_egg_2 from 'public/levels/egg_2level.tmx';
 import level_egg_3 from 'public/levels/egg_3level.tmx';
 import level_egg_4 from 'public/levels/egg_4level.tmx';
 import level_egg_5 from 'public/levels/egg_5level.tmx';
+import level_egg_6 from 'public/levels/egg_6level.tmx';
+import level_egg_7 from 'public/levels/egg_7level.tmx';
 
 export const levels1 = [level1,level2,level3,level4,level5,level6,level7,level8,level9,level10,level11,level12,level13,level14,level15,level16,level17,level18,level19,level20,level21,level22,level23,level24,level25,level26,level27, level28, level29, level30];
 export const levels = [level17];
-export const eggs_levels = [level_egg_5];
+export const eggs_levels = [level_egg_7];

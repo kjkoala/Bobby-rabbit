@@ -128,18 +128,18 @@ export class Bobby extends Actor {
         }
         this.currentAnimation.reset();
         this.currentAnimation.play();
-      }, 500);
+      }, 480);
     });
 
     this.on("collisionstart", ({ other }) => {
       if (other.name === "Carrot") {
         engine.clock.schedule(() => {
           this.onTakeCarrot(other);
-        }, 500);
+        }, 480);
       } else if (other.name === "Nest") {
         engine.clock.schedule(() => {
           this.onNestEgg(other);
-        }, 500);
+        }, 480);
       } else if (other.name === "Finish" && !other.graphics.visible) {
         this.scene.emit("levelComplete");
       } else if (other.name === "Trap" && !other.graphics.visible) {
@@ -153,6 +153,10 @@ export class Bobby extends Actor {
           this.scene.emit("playerDied");
         }, 4000);
       } else if (other.hasTag("Convertor_Right")) {
+        const coord = `${this.blockX + 1}x${this.blockY}`;
+        if (this.scene.collisionMap.get(coord)) {
+          return
+        }
         this.playerConvertorCount += 1;
         this.actions
           .moveBy(BLOCK_SIZE, 0, SPEED)
@@ -162,6 +166,10 @@ export class Bobby extends Actor {
             this.blockX = (this.pos.x - 8) / BLOCK_SIZE;
           });
       } else if (other.hasTag("Convertor_Left")) {
+        const coord = `${this.blockX - 1}x${this.blockY}`;
+        if (this.scene.collisionMap.get(coord)) {
+          return
+        }
         this.playerConvertorCount += 1;
         this.actions
           .moveBy(-BLOCK_SIZE, 0, SPEED)
@@ -171,6 +179,10 @@ export class Bobby extends Actor {
             this.blockX = (this.pos.x - 8) / BLOCK_SIZE;
           });
       } else if (other.hasTag("Convertor_Up")) {
+        const coord = `${this.blockX}x${this.blockY - 1}`;
+        if (this.scene.collisionMap.get(coord)) {
+          return
+        }
         this.playerConvertorCount += 1;
         this.actions
           .moveBy(0, -BLOCK_SIZE, SPEED)
@@ -180,6 +192,10 @@ export class Bobby extends Actor {
             this.blockY = (this.pos.y - 8) / BLOCK_SIZE;
           });
       } else if (other.hasTag("Convertor_Down")) {
+        const coord = `${this.blockX}x${this.blockY + 1}`;
+        if (this.scene.collisionMap.get(coord)) {
+          return
+        }
         this.playerConvertorCount += 1;
         this.actions
           .moveBy(0, BLOCK_SIZE, SPEED)
@@ -198,9 +214,9 @@ export class Bobby extends Actor {
         this.onRotatePlatform = platform!.state;
         this.playerRotateCount += 1;
       } else if (other.name.startsWith("ConvertorButton")) {
-        engine.clock.schedule(() => this.scene.convertorControl(), 500);
+        engine.clock.schedule(() => this.scene.convertorControl(), 480);
       } else if (other.name.startsWith("RotateButton")) {
-        engine.clock.schedule(() => this.scene.rotateControl(), 500);
+        engine.clock.schedule(() => this.scene.rotateControl(), 480);
       } else if (other.name.startsWith("Key")) {
         engine.clock.schedule(() => {
           other.kill();
