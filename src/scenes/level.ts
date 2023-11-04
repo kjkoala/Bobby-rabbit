@@ -17,10 +17,12 @@ import {
 } from "src/animations/Convertor";
 import {
   carrots_levels,
-  getCarrotsLevelsLocalStorage,
+  eggs_levels,
+  getLevelsLocalStorage,
   isMobile,
 } from "src/common/constants";
 import VK from "src/common/VKBridge";
+import { Menu } from "./mainMenu";
 
 export const BLOCK_SIZE = 16;
 
@@ -28,7 +30,7 @@ export class Level extends Scene {
   declare player: Bobby;
   levels: TiledMapResource[];
   currentLevel: number;
-  carrots!: number;
+  carrots: number | undefined;
   nests: number | undefined;
   mapWidth!: number;
   convertorPlatform!: Map<any, any>;
@@ -77,7 +79,7 @@ export class Level extends Scene {
 
     this.carrots =
       currentMap.data.objectGroups.find((obj) => obj.name === "Carrots")
-        ?.objects.length || 0;
+        ?.objects.length;
 
     if (!this.carrots) {
       this.nests = currentMap.data.objectGroups.find(
@@ -179,8 +181,7 @@ export class Level extends Scene {
     this.on("levelComplete", () => {
       engine.clock.schedule(() => {
         VK.countLevel().finally(() => {
-          engine.removeScene("level");
-          this.hud.$destroy();
+          engine.removeScene(this);
           const nextLevel = this.currentLevel + 1;
           if (nextLevel >= this.levels.length) {
             engine.goToScene("endLevel");
@@ -194,8 +195,7 @@ export class Level extends Scene {
 
     this.on("playerDied", () => {
       // engine.clock.schedule(() => {
-      this.hud.$destroy();
-      engine.removeScene("level");
+      engine.removeScene(this);
       engine.addScene("level", new Level(this.levels, this.currentLevel));
       engine.goToScene("level");
       // }, 1000)
@@ -209,14 +209,26 @@ export class Level extends Scene {
     });
   }
 
-  countEntity(name: "carrots" | "nests") {
-    this[name] -= 1;
-    if (this[name]! <= 0) {
-      const finish = this.actors.find((obj) => obj.name === "Finish");
-      if (finish) {
-        finish.graphics.visible = false;
-      }
+  goToMenu() {
+    if (!this.player.isFreeze) {
+      this.engine.addScene('menu', new Menu)
+      this.engine.goToScene('menu')
     }
+  }
+
+  onDeactivate() {
+    this.engine.removeScene(this);
+    this.hud.$destroy();
+  }
+
+  countEntity(name: "carrots" | "nests") {
+      this[name]! -= 1;
+      if (this[name]! <= 0) {
+        const finish = this.actors.find((obj) => obj.name === "Finish");
+        if (finish) {
+          finish.graphics.visible = false;
+        }
+      }
   }
 
   lockCameraOnActor(lock: boolean) {
@@ -403,21 +415,21 @@ export class Level extends Scene {
 
   computedTime() {
     const finishTime = this.engine.clock.now() - this.startLevelTime;
-    const stogareLevels = getCarrotsLevelsLocalStorage();
-    stogareLevels.push({
-      time: finishTime,
-      steps: this.player.steps,
-      level: this.currentLevel,
-    });
-    localStorage.setItem(carrots_levels, JSON.stringify(stogareLevels));
+    const nameStorage = this.carrots !== undefined ? carrots_levels : eggs_levels;
+      const stogareLevels = getLevelsLocalStorage(nameStorage);
+      stogareLevels.push({
+        time: finishTime,
+        steps: this.player.steps,
+        level: this.currentLevel,
+      });
+      localStorage.setItem(nameStorage, JSON.stringify(stogareLevels));
     return finishTime;
   }
 
   // TODO: Только для дебага
   handleNextLevel() {
     if (this.currentLevel + 1 < this.levels.length) {
-      this.hud.$destroy();
-      this.engine.removeScene("level");
+      this.engine.removeScene(this);
       this.engine.addScene(
         "level",
         new Level(this.levels, this.currentLevel + 1)
@@ -428,8 +440,7 @@ export class Level extends Scene {
 
   handlePrevLevel() {
     if (this.currentLevel > 0) {
-      this.hud.$destroy();
-      this.engine.removeScene("level");
+      this.engine.removeScene(this);
       this.engine.addScene(
         "level",
         new Level(this.levels, this.currentLevel - 1)

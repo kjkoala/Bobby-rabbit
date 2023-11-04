@@ -67,7 +67,7 @@ const deathImage = SpriteSheet.fromImageSource({
     }
 });
 
-export const idleAnim = Animation.fromSpriteSheet(idleImage, range(0, 3), 120, AnimationStrategy.Loop)
+export const idleAnim = Animation.fromSpriteSheet(idleImage, range(0, 3), 80, AnimationStrategy.Loop)
 export const deathAnim = Animation.fromSpriteSheet(deathImage, range(0, 8), 80, AnimationStrategy.Freeze)
 export const fadeOutAnim = Animation.fromSpriteSheet(fadeImage, range(0, 9), 90, AnimationStrategy.End)
 export const leftAnim = Animation.fromSpriteSheet(leftImage, range(0, 8), 60, AnimationStrategy.Loop)

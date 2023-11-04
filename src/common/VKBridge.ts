@@ -2,8 +2,12 @@ import bridge, { EAdsFormats } from '@vkontakte/vk-bridge';
 
 class VK {
   private countLevels: number;
+  private whenShowAds: number;
+  private prev: number;
   constructor() {
     this.countLevels = 0;
+    this.whenShowAds = 9;
+    this.prev = this.whenShowAds - 1;
   }
     static init() {
         bridge.send("VKWebAppInit", {});
@@ -22,9 +26,9 @@ class VK {
 
     countLevel() {
       this.countLevels += 1
-      if (this.countLevels === 4) {
+      if (this.countLevels === this.prev) {
         this.checkAds()
-      } else if (this.countLevels >= 5) {
+      } else if (this.countLevels >= this.whenShowAds) {
         this.countLevels = 0;
         return this.showAds()
       }

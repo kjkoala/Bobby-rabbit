@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="404" nextobjectid="1541">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="405" nextobjectid="1543">
  <properties>
   <property name="excalibur" type="bool" value="true"/>
  </properties>
@@ -196,50 +196,12 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="398" name="4_Rotate">
-  <properties>
-   <property name="array" value="4_Rotate_1_1=1,4_Rotate_1_2=2,4_Rotate_1_3=3,4_Rotate_1_4=4"/>
-   <property name="coords" value="4x11"/>
-   <property name="excalibur" type="bool" value="true"/>
-   <property name="state" value="1"/>
-   <property name="x" value="4"/>
-   <property name="y" value="11"/>
-  </properties>
-  <object id="1517" name="4_Rotate_1_2" gid="26" x="64" y="192" width="16" height="16"/>
-  <object id="1518" name="4_Rotate_1_3" gid="27" x="64" y="192" width="16" height="16"/>
-  <object id="1519" name="4_Rotate_1_4" gid="28" x="64" y="192" width="16" height="16"/>
-  <object id="1516" name="4_Rotate_1_1" gid="25" x="64" y="192" width="16" height="16">
-   <properties>
-    <property name="CollisionType" value="Passive"/>
-   </properties>
-  </object>
- </objectgroup>
- <objectgroup id="399" name="4_Rotate">
-  <properties>
-   <property name="array" value="4_Rotate_2_1=1,4_Rotate_2_2=2,4_Rotate_2_3=3,4_Rotate_2_4=4"/>
-   <property name="coords" value="14x11"/>
-   <property name="excalibur" type="bool" value="true"/>
-   <property name="state" value="2"/>
-   <property name="x" value="14"/>
-   <property name="y" value="11"/>
-  </properties>
-  <object id="1521" name="4_Rotate_2_3" gid="27" x="224" y="192" width="16" height="16"/>
-  <object id="1522" name="4_Rotate_2_4" gid="28" x="224" y="192" width="16" height="16"/>
-  <object id="1523" name="4_Rotate_2_1" gid="25" x="224" y="192" width="16" height="16">
-   <properties>
-    <property name="CollisionType" value="Passive"/>
-   </properties>
-  </object>
-  <object id="1520" name="4_Rotate_2_2" gid="26" x="224" y="192" width="16" height="16"/>
- </objectgroup>
  <objectgroup id="400" name="Convertor">
-  <object id="1530" name="Convertor_Right" gid="42" x="208" y="144" width="16" height="16"/>
   <object id="1531" name="Convertor_Left" gid="41" x="208" y="144" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
    </properties>
   </object>
-  <object id="1533" name="Convertor_Left" gid="41" x="80" y="144" width="16" height="16"/>
   <object id="1532" name="Convertor_Right" gid="42" x="80" y="144" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
@@ -265,6 +227,20 @@
   <object id="1540" name="Finish" gid="45" x="144" y="192" width="16" height="16">
    <properties>
     <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="404" name="Rotate">
+  <object id="1541" name="4_Rotate" gid="25" x="64" y="192" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+    <property name="state" value="1"/>
+   </properties>
+  </object>
+  <object id="1542" name="4_Rotate" gid="26" x="224" y="192" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+    <property name="state" value="2"/>
    </properties>
   </object>
  </objectgroup>

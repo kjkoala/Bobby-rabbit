@@ -7,6 +7,7 @@
     export let menu: Menu;
 
     let newGame = false;
+    let continueGame = false;
     
     let backgroundUI: HTMLDivElement;
       onMount(() => {
@@ -18,9 +19,9 @@
 
 <div class="wrapper">
     <div class="background" bind:this={backgroundUI} />
-    {#if !newGame}
+    {#if !newGame && !continueGame}
     {#if Boolean(menu.getLocalStorageCarrotsLevel())}
-        <button type="button" on:click={() => menu.continueGame()}>Продолжить</button>
+        <button type="button" on:click={() => continueGame = true}>Продолжить</button>
     {/if}
     <button type="button" on:click={() => newGame = true}>Новая игра</button>
     <!-- <button type="button">Рекорды</button> -->
@@ -33,6 +34,11 @@
         <button type="button" on:click={() => menu.startCarrotsNewGame()}>Сбор урожая морковки</button>
         <button type="button" on:click={() => menu.startEggsNewGame()}>Пасхальный кролик</button>
         <button type="button" on:click={() => newGame = false}>Назад</button>
+        {/if}
+    {#if continueGame}
+        <button type="button" on:click={() => menu.startCarrotsNewGame()}>Сбор урожая морковки</button>
+        <button type="button" on:click={() => menu.startEggsNewGame()}>Пасхальный кролик</button>
+        <button type="button" on:click={() => continueGame = false}>Назад</button>
     {/if}
 </div>
 <style>

@@ -20,7 +20,7 @@ import {
 import { BLOCK_SIZE, type Level } from "src/scenes/level";
 import { Directon } from "./types";
 import { resources } from "src/app/resources";
-import { DEFAULT_VOLUME } from "src/common/constants";
+import { DEFAULT_VOLUME, isMobile } from "src/common/constants";
 const SPEED = 30;
 type TypeAnimation =
   | "up"
@@ -54,6 +54,8 @@ export class Bobby extends Actor {
   isFreeze: boolean;
   speedView: number;
   steps: number;
+  idleFrame: number;
+  isSendRestartMessage: boolean
   constructor(x: number, y: number) {
     super({
       name: "Bobby",
@@ -71,6 +73,8 @@ export class Bobby extends Actor {
     this.isFreeze = true;
     this.speedView = SPEED * 2;
     this.steps = 0;
+    this.idleFrame = 0;
+    this.isSendRestartMessage = false;
   }
 
   onInitialize(engine: Engine): void {
@@ -89,7 +93,7 @@ export class Bobby extends Actor {
       ListAnimation[key as keyof typeof ListAnimation].goToFrame(3);
     }
 
-    // Первая анимация когда пользователь появился, пока так
+    // Первая анимация когда кролик появился, пока так
     this.graphics.use("fadeOut");
     this.currentAnimation.reset();
     if (this.currentAnimation.direction === AnimationDirection.Forward) {
@@ -106,7 +110,7 @@ export class Bobby extends Actor {
         // Установлено время начала уровня
         this.scene.startLevelTime = engine.clock.now();
         this.isFreeze = false;
-      }, 1800);
+      }, 500);
     }, 700);
 
     this.scene.on("mobileButtonPressed", (key: unknown) => {
@@ -278,10 +282,7 @@ export class Bobby extends Actor {
 
     const isOnPoint =
       this.oldPos.x === this.pos.x && this.oldPos.y === this.pos.y;
-    if (
-      (!this.playerConvertorCount || this.currentAnimation.isPlaying) &&
-      (this.oldPos.x !== this.pos.x || this.oldPos.y !== this.pos.y)
-    ) {
+    if (!isOnPoint) {
       if (this.oldPos.x < this.pos.x) {
         this.direction = Directon.RIGHT;
         this.currentAnimation = ListAnimation.right;
@@ -295,19 +296,32 @@ export class Bobby extends Actor {
         this.direction = Directon.UP;
         this.currentAnimation = ListAnimation.up;
       }
-      if (!this.currentAnimation.isPlaying) {
-        this.graphics.use(`${this.direction}`);
+      this.graphics.use(`${this.direction}`);
+      if (!this.currentAnimation.isPlaying && !this.playerConvertorCount) {
         this.currentAnimation.play();
       }
-    } else if (isOnPoint && this.currentAnimation.isPlaying) {
+      if (!isMobile && this.isSendRestartMessage) {
+        this.isSendRestartMessage = false;
+        this.scene.emit('hideRestartMessage');
+      }
+    } else if (this.currentAnimation.isPlaying) {
+      this.idleFrame = 0;
       this.currentAnimation.goToFrame(3);
       this.currentAnimation.pause();
-    } else if (this.playerConvertorCount && this.currentAnimation.isPlaying) {
-      engine.clock.schedule(() => {
-        this.currentAnimation.goToFrame(3);
-        this.currentAnimation.pause();
-        // время расчитано из кол-ва кадров ходьбы (8) на 60мс на 1 кадр 6 * 8 = 48
-      }, 480);
+    } else {
+      // Эта ветка активируется когда кролик афк
+      if (this.idleFrame <= 300) {
+        this.idleFrame += 1
+      }
+      if (this.idleFrame === 300) {
+        ListAnimation.idle.reset()
+        ListAnimation.idle.play()
+        this.graphics.use('idle')
+        if (!isMobile) {
+          this.scene.emit('showRestartMessage')
+          this.isSendRestartMessage = true;
+        }
+      }
     }
     if (isOnPoint && !this.playerConvertorCount) {
       this.move(engine);

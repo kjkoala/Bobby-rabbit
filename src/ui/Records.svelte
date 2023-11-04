@@ -1,7 +1,7 @@
 <script>
-  import { carrots_levels, getCarrotsLevelsLocalStorage } from "src/common/constants";
+  import { carrots_levels, getLevelsLocalStorage } from "src/common/constants";
 
-  const carrotsLevels =  getCarrotsLevelsLocalStorage()
+  const carrotsLevels =  getLevelsLocalStorage()
 </script>
 
 <ul>

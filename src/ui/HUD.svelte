@@ -16,22 +16,31 @@
   let arrowLeft: HTMLButtonElement | undefined;
   let arrowRight: HTMLButtonElement | undefined;
   let restartButton: HTMLButtonElement | undefined;
+  let menuButton: HTMLButtonElement | undefined;
   let showLevelText: boolean = true;
   let lockCamera = scene.lockCamera;
   let showResult: boolean = false;
-  let timeFinishLevel: string = '';
+  let timeFinishLevel: string = ''
+  let showRestartMessage = false;
   
   onMount(() => {
+
+    setTimeout(() => {
+        showLevelText = false
+      }, 1200)
+
     const arrowClone1 = resources.Arrow.data.cloneNode()
     const arrowClone2 = resources.Arrow.data.cloneNode()
     const arrowClone3 = resources.Arrow.data.cloneNode()
     const arrowClone4 = resources.Arrow.data.cloneNode()
+    const menuButtonColne = resources.Menu.data.cloneNode()
     const restartButtonClone = resources.Restart.data.cloneNode();
     restartButton?.append(restartButtonClone);
     arrowUp?.append(arrowClone1)
     arrowLeft?.append(arrowClone2)
     arrowRight?.append(arrowClone3)
     arrowDown?.append(arrowClone4)
+    menuButton?.append(menuButtonColne)
     const hud = document.querySelector<HTMLDivElement>('.hud')
       if (hud) {
         scene.on('levelComplete', () => {
@@ -40,6 +49,12 @@
             timeFinishLevel = [date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds()].map(s => String(s).padStart(2,'0')).join(':');
             showResult = true
           }, 500)
+        })
+        scene.on('showRestartMessage', () => {
+          showRestartMessage = true
+        })
+        scene.on('hideRestartMessage', () => {
+          showRestartMessage = false
         })
         scene.on('nestEgg', () => {
           count -= 1
@@ -74,13 +89,13 @@
           }
         })
         onSetWidth()
-        window.removeEventListener('resize', onSetWidth)
+        
         window.addEventListener('resize', onSetWidth)
-      }
 
-      setTimeout(() => {
-        showLevelText = false
-      }, 2700)
+        return () => {
+          window.removeEventListener('resize', onSetWidth)
+        }
+      }
   })
 
 
@@ -94,9 +109,10 @@
 </script>
 <div class="hud">
   <div class="header_hud">
+    <button class="scale_button" type="button" bind:this={menuButton} on:click={() => scene.goToMenu()} />
     {#if isMobile}
-      <button on:pointerdown={handleTouchStart} class="resart_button" type="button" bind:this={restartButton}  data-direction={11} />
-      <button class="hud_eye_button" class:active_eye={!lockCamera}  type="button" bind:this={eyeNode} on:pointerdown={handleTouchMapVisor} />
+      <button on:pointerdown={handleTouchStart} class="scale_button margin_button" type="button" bind:this={restartButton}  data-direction={11} />
+      <button class="hud_eye_button margin_button" class:active_eye={!lockCamera}  type="button" bind:this={eyeNode} on:pointerdown={handleTouchMapVisor} />
     {/if}
     <div class="hud_carrot">
       <div class="carrot_score">{count}</div>
@@ -112,6 +128,9 @@
       <br />
       Шагов: {scene.player.steps}
     </div>
+  {/if}
+  {#if showRestartMessage}
+  <div class="center_text">R = Рестарт</div>
   {/if}
   <div class="hud_keys">
     <div class="hud_copper" bind:this={keyCopperNode} />
@@ -153,13 +172,18 @@
     border: none;
     background: none;
     outline: none;
+    cursor: pointer;
   }
 
-  .resart_button {
+  .scale_button {
     scale: 2;
   }
 
-  :global(.resart_button img) {
+  .margin_button {
+    margin-left: 25px;
+  }
+
+  :global(.scale_button img) {
     pointer-events: none;
   }
 
@@ -172,7 +196,6 @@
     scale: 2;
     filter: brightness(0.4);
     transition: all ease 100ms;
-    margin-left: 25px;
   }
 
   .active_eye {
