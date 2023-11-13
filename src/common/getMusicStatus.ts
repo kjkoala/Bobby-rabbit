@@ -1,3 +1,4 @@
 export const getMusicStatus = () =>  {
-    return localStorage.getItem('enableMusic') === '1' ? true : false
+    const musicStatus = localStorage.getItem('enableMusic')
+    return musicStatus === '1' || musicStatus === null ? true : false
 } 
