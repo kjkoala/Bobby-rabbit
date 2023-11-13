@@ -1,13 +1,20 @@
 <script lang="ts">
     import { Menu } from "src/scenes/mainMenu";
     import { resources } from 'src/app/resources'
-    import { onMount } from 'svelte';
+    import { onDestroy, onMount } from 'svelte';
+  import { getMusicStatus } from "src/common/getMusicStatus";
+  import { getLevelsLocalStorage, isMobile } from "src/common/constants";
+  import { InputTypes } from '../common/types'
+  import { getInputType } from "src/common/getInputType";
     // import Records from "./Records.svelte";
 
     export let menu: Menu;
 
     let newGame = false;
     let continueGame = false;
+    let musicEnable = getMusicStatus()
+    let currentInputType = getInputType()
+    let levelsDisabled = [getLevelsLocalStorage('carrots_levels').length === 0, getLevelsLocalStorage('eggs_levels').length === 0]
     
     let backgroundUI: HTMLDivElement;
       onMount(() => {
@@ -15,18 +22,44 @@
           backgroundUI.append(background)
       })
 
+      onDestroy(() => {
+        localStorage.setItem('inputType', currentInputType);
+      })
+
+      let onChangeMusicStatus = () => {
+        musicEnable = !musicEnable
+        menu.toggleMusic(musicEnable)
+      }
+
+      const changeInputType = () => {
+        let nextInputType = currentInputType;
+        if (currentInputType === InputTypes.right) {
+           nextInputType = InputTypes.left
+        } else if (currentInputType === InputTypes.left) {
+            nextInputType = InputTypes.center
+        } else if (currentInputType === InputTypes.center) {
+            nextInputType = InputTypes.classic
+        } else if (currentInputType === InputTypes.classic) {
+            nextInputType = InputTypes.right
+        }
+        currentInputType = nextInputType;
+      }
+
 </script>
 
 <div class="wrapper">
     <div class="background" bind:this={backgroundUI} />
     {#if !newGame && !continueGame}
-    {#if Boolean(menu.getLocalStorageCarrotsLevel())}
+    {#if !levelsDisabled[0] || !levelsDisabled[1]}
         <button type="button" on:click={() => continueGame = true}>Продолжить</button>
     {/if}
     <button type="button" on:click={() => newGame = true}>Новая игра</button>
     <!-- <button type="button">Рекорды</button> -->
     <!-- <Records /> -->
-    <button type="button">Музыка вкл.</button>
+    <button type="button" on:click={onChangeMusicStatus}>Музыка {musicEnable ? 'выкл.' : 'вкл.'}</button>
+    {#if isMobile}
+    <button type="button" on:click={changeInputType}>Управление ({ currentInputType === InputTypes.classic ? 'классика' : currentInputType === InputTypes.center ? 'центр' : currentInputType === InputTypes.left ? 'слева' : 'справа'  })</button>
+    {/if}
     <!--<button type="button">Руководство</button>
     <button type="button">Создатели</button> -->
     {/if}
@@ -36,8 +69,8 @@
         <button type="button" on:click={() => newGame = false}>Назад</button>
         {/if}
     {#if continueGame}
-        <button type="button" on:click={() => menu.startCarrotsNewGame()}>Сбор урожая морковки</button>
-        <button type="button" on:click={() => menu.startEggsNewGame()}>Пасхальный кролик</button>
+        <button type="button" disabled={levelsDisabled[0]} on:click={() => menu.continueGame('carrots_levels')}>Сбор урожая морковки</button>
+        <button type="button" disabled={levelsDisabled[1]} on:click={() => menu.continueGame('eggs_levels')}>Пасхальный кролик</button>
         <button type="button" on:click={() => continueGame = false}>Назад</button>
     {/if}
 </div>

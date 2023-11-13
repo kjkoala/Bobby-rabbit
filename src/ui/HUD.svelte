@@ -4,6 +4,7 @@
   import { onMount } from "svelte";
   import { Directon } from "src/actors/types";
   import { isMobile } from "src/common/constants";
+  import { getInputType } from "src/common/getInputType";
   export let scene: Level;
   let carrotNode: HTMLDivElement;
   let eyeNode: HTMLButtonElement;
@@ -22,6 +23,7 @@
   let showResult: boolean = false;
   let timeFinishLevel: string = ''
   let showRestartMessage = false;
+  const currentInputType = getInputType();
   
   onMount(() => {
 
@@ -119,6 +121,11 @@
       <div class:carrot={Boolean(scene.carrots)} class:egg={Boolean(scene.nests)} bind:this={carrotNode} />
     </div>
   </div>
+  <div class="hud_keys">
+    <div class="hud_copper" bind:this={keyCopperNode} />
+    <div class="hud_silver" bind:this={keySilverNode} />
+    <div class="hud_gold" bind:this={keyGoldNode} />
+  </div>
   {#if showLevelText}
     <div class="center_text">Уровень {scene.currentLevel + 1}</div>
   {/if}
@@ -132,22 +139,19 @@
   {#if showRestartMessage}
   <div class="center_text">R = Рестарт</div>
   {/if}
-  <div class="hud_keys">
-    <div class="hud_copper" bind:this={keyCopperNode} />
-    <div class="hud_silver" bind:this={keySilverNode} />
-    <div class="hud_gold" bind:this={keyGoldNode} />
-  </div>
   <!-- TODO: Для дебага только -->
   <div class="controls">
     <button type="button" on:pointerdown={() => scene.handlePrevLevel()}>Назад</button>
     <button type="button" on:pointerdown={() => scene.handleNextLevel()}>Вперед</button>
   </div>
   {#if isMobile}
-  <div class="controls" on:pointerup={() => scene.emit('mobileButtonWasReleased')} on:pointerdown={handleTouchStart}>
-    <button type="button" class="full button_up" data-direction={Directon.UP} bind:this={arrowUp} />
-    <button type="button" class="half button_left" data-direction={Directon.LEFT} bind:this={arrowLeft} />
-    <button type="button" class="half button_right"data-direction={Directon.RIGHT} bind:this={arrowRight} />
-    <button type="button" class="full button_down"data-direction={Directon.DOWN}  bind:this={arrowDown} />
+  <div class={`controls ${currentInputType}`} on:pointerup={() => scene.emit('mobileButtonWasReleased')} on:pointerdown={handleTouchStart}>
+    <button type="button" class="button_up" data-direction={Directon.UP} bind:this={arrowUp} />
+    <div class="lr_buttons">
+      <button type="button" class="button_left lr_button" data-direction={Directon.LEFT} bind:this={arrowLeft} />
+      <button type="button" class="button_right lr_button"data-direction={Directon.RIGHT} bind:this={arrowRight} />
+    </div>
+    <button type="button" class="button_down"data-direction={Directon.DOWN}  bind:this={arrowDown} />
   </div>
   {/if}
 </div>
@@ -256,23 +260,43 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: auto;
+    flex-direction: column;
   }
   .controls button {
-    height: 50px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 1px solid black;
+    height: 45px;
     touch-action: none;
   }
+
+  .lr_buttons {
+    display: flex;
+  }
+  .lr_button {
+    flex: 1
+  }
+
+  
+  .controls.classic button {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid black;
+  }
+
+  .controls:not(.classic) {
+    width: 50%;
+  }
+
+  .controls.right {
+    margin-left: auto;
+  }
+
+  .controls.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   :global(.controls button img) {
     pointer-events: none;
   }
-  .full {
-    width: 100%;
-  }
 
-  .half {
-    flex: 1;
-  }
   :global(.hud_silver img) {
     object-position: -38px 0;
   }

@@ -5,6 +5,7 @@ import { carrotsMaps, eggsMaps } from "src/app/main";
 import { DEFAULT_VOLUME, carrots_levels, eggs_levels, getLevelsLocalStorage } from "src/common/constants";
 import { resources } from "src/app/resources";
 import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
+import { getMusicStatus } from "src/common/getMusicStatus";
 
 export class Menu extends Scene {
     menu!: MenuUI
@@ -12,7 +13,7 @@ export class Menu extends Scene {
         super()
     }
     onInitialize(_engine: Engine): void {
-        this.toggleMainMusic(true)
+        this.toggleMusic(getMusicStatus());
         this.menu = new MenuUI({
             target: document.querySelector('#root')!,
             props: {
@@ -22,13 +23,14 @@ export class Menu extends Scene {
     }
     
     onDeactivate(_context: SceneActivationContext<undefined>): void {
-        this.toggleMainMusic(false);
+        resources.mp3Title.stop()
         this.menu.$destroy();
         this.engine.removeScene(this);
     }
     
-    toggleMainMusic(toggle: boolean) {
-        if(toggle) {
+    toggleMusic(enable?: boolean) {
+        localStorage.setItem('enableMusic', `${Number(enable)}`)
+        if (enable) {
             resources.mp3Title.loop = true;
             resources.mp3Title.play(DEFAULT_VOLUME)
         } else {
@@ -41,12 +43,16 @@ export class Menu extends Scene {
         this.engine.goToScene('level');
     }
 
-    continueGame() {
-        const levels = getLevelsLocalStorage(carrots_levels)
-        if (levels.length > 0 && levels.at(-1)?.level) {
-            this.startLevel(carrotsMaps, levels.at(-1)!.level + 1)
+    continueGame(lvl: 'carrots_levels' | 'eggs_levels') {
+        const levels = getLevelsLocalStorage(lvl)
+        if (levels.length > 0) {
+            const nextlevel = levels.at(-1)!.level + 1
+            if (lvl === 'carrots_levels') {
+                this.startLevel(carrotsMaps, nextlevel)
+            } else if (lvl === 'eggs_levels') {
+                this.startLevel(eggsMaps, nextlevel)
+            }
         }
-        return false
     }
 
     startEggsNewGame() {

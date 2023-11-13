@@ -16,6 +16,7 @@ import {
   convertorUpAnim,
 } from "src/animations/Convertor";
 import {
+  DEFAULT_VOLUME,
   carrots_levels,
   eggs_levels,
   getLevelsLocalStorage,
@@ -23,6 +24,8 @@ import {
 } from "src/common/constants";
 import VK from "src/common/VKBridge";
 import { Menu } from "./mainMenu";
+import { getMusicStatus } from "src/common/getMusicStatus";
+import { resources } from "src/app/resources";
 
 export const BLOCK_SIZE = 16;
 
@@ -411,6 +414,12 @@ export class Level extends Scene {
       }, []);
     }
     return [];
+  }
+
+  playSound(title: 'mp3Death' | 'mp3Clered') {
+    if (getMusicStatus()) {
+      resources[title].play(DEFAULT_VOLUME)
+    }
   }
 
   computedTime() {

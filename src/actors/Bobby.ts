@@ -19,8 +19,7 @@ import {
 } from "src/animations/Bobby";
 import { BLOCK_SIZE, type Level } from "src/scenes/level";
 import { Directon } from "./types";
-import { resources } from "src/app/resources";
-import { DEFAULT_VOLUME, isMobile } from "src/common/constants";
+import { isMobile } from "src/common/constants";
 const SPEED = 30;
 type TypeAnimation =
   | "up"
@@ -124,7 +123,7 @@ export class Bobby extends Actor {
     this.scene.on("levelComplete", () => {
       this.isFreeze = true;
       engine.clock.schedule(() => {
-        resources.mp3Clered.play(DEFAULT_VOLUME);
+        this.scene.playSound('mp3Clered');
         this.graphics.use("fadeOut");
         this.currentAnimation = ListAnimation.fadeOutAnim;
         if (this.currentAnimation.direction === AnimationDirection.Backward) {
@@ -152,7 +151,7 @@ export class Bobby extends Actor {
         this.currentAnimation.reset();
         this.currentAnimation.play();
         this.graphics.use("death");
-        resources.mp3Death.play(DEFAULT_VOLUME);
+        this.scene.playSound("mp3Death")
         engine.clock.schedule(() => {
           this.scene.emit("playerDied");
         }, 4000);
