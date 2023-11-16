@@ -58,7 +58,7 @@
     <!-- <Records /> -->
     <button type="button" on:click={onChangeMusicStatus}>Музыка {musicEnable ? 'выкл.' : 'вкл.'}</button>
     {#if isMobile}
-    <button type="button" on:click={changeInputType}>Управление ({ currentInputType === InputTypes.classic ? 'классика' : currentInputType === InputTypes.center ? 'центр' : currentInputType === InputTypes.left ? 'слева' : 'справа'  })</button>
+    <button type="button" on:click={changeInputType}>Управление ({ currentInputType === InputTypes.classic ? 'стандартное' : currentInputType === InputTypes.center ? 'центр' : currentInputType === InputTypes.left ? 'слева' : 'справа'  })</button>
     {/if}
     <!--<button type="button">Руководство</button>
     <button type="button">Создатели</button> -->
