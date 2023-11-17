@@ -24,12 +24,12 @@
  </layer>
  <layer id="499" name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYKAfEIZibOKU6hdG4xOrF109MerQ5YXxYHzqCLkFHyBHvwQS25BId4kRaQ+usMEFSHW/BAPh8EMWx8XGxkcWw+cuXGmMULyjqx9MAAAF+gUS
+   eJxjYKA+EMAhLgzFMCCEJE4MQNePS5wYNehypKiD0cjux4WxuYFYt+AD5OiXQGIbEukuMQL28KPxaeV+CQbC4YcsjouNzhdEE8PnLlxpjFC8o6snFwgisYVwqiINAADnrgWJ
   </data>
  </layer>
  <layer id="500" name="Wall" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJyNUkEOwyAMi6Cs62F06/8f2yLFmpWZLpYiUmJjSGpmtlgOi+AWX/crXh5voS2Uf4iH/U51zuH5EGf2cC6j3tQy+pU8d/t903jDkfCATxf7T1+bx0Z+3Ed4xbz6GnuE/oI3QzXd1wh+P+fVv6NPvD9z4v1VX6AHT3Hu9DO+0vN9on7Mh+ei9LMa6gP//vE2CcZm37lmZpvFCVnABCY=
+   eJydU1sOgDAII87nh/Nx/8PqEpo02E1jEwIZhTKmZma9fUMvuJ377bbVTaGj+CAezjPlOYbmKHrm0JeRGrkv9RNplrvtIX+4f9OAThbns/vBbSG9lTSL1ini5D7uCPsFr4Zkeq8RfH+OoR914vxbY361F9SDpzit+hpf1Zs950d9eR9+F1Vfy3H/t298qBgDOq1/7A8ufwUDsQ==
   </data>
  </layer>
  <objectgroup id="501" name="Nests">
