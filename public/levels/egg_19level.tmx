@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="637" nextobjectid="2708">
+ <properties>
+  <property name="excalibur" type="bool" value="true"/>
+ </properties>
+ <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="48" columns="8">
+  <image source="1level.png" width="128" height="96"/>
+ </tileset>
+ <tileset firstgid="49" name="tile_finish" tilewidth="16" tileheight="16" tilecount="4" columns="4">
+  <image source="tile_finish.png" width="64" height="16"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="90"/>
+    <frame tileid="1" duration="90"/>
+    <frame tileid="2" duration="90"/>
+    <frame tileid="3" duration="90"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer id="626" name="Grass" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYKQQkwso0TsKhh8YTQ+kAWz5j5WBtLwLAE1UACY=
+  </data>
+ </layer>
+ <layer id="625" name="Wall" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJylUgEKwCAIjNpWMRa0/z92BsZELMMODtE6zjTn9nEY2eA3fAPRF4wJeAKzUR+xtwvzCnyAL7vH9RZI/lqspBeLfuS/ipE/n/vNcs0/YPSDc7rfLJzTvZWJnnvO3h/d/w+KUJvNfwWSf9P3WWrskGqr+ADCgwL9
+  </data>
+ </layer>
+ <layer id="627" name="Ground" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjYBhcQBgND1aA7DYNHGokiDQLXR26vw2JNAeXfmLEkeWIdTchc9EBsrm4wgwGxEh0AzUBtdMeqeFJTwAAZOgCBw==
+  </data>
+ </layer>
+ <objectgroup id="628" name="RotateButtons">
+  <properties>
+   <property name="array" value="RotateButton1=true,RotateButton2=true,RotateButton3=false,RotateButton4=false,RotateButton5=true"/>
+  </properties>
+  <object id="2601" name="RotateButton5" gid="23" x="176" y="160" width="16" height="16"/>
+  <object id="2602" name="RotateButton4" gid="23" x="144" y="224" width="16" height="16"/>
+  <object id="2603" name="RotateButton3" gid="23" x="80" y="144" width="16" height="16"/>
+  <object id="2604" name="RotateButton2" gid="23" x="16" y="112" width="16" height="16"/>
+  <object id="2605" name="RotateButton1" gid="23" x="112" y="96" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="629" name="ConvertorButtons">
+  <properties>
+   <property name="array" value="ConvertorButton1=true,ConvertorButton2=false"/>
+  </properties>
+  <object id="2606" name="ConvertorButton2" gid="39" x="224" y="160" width="16" height="16"/>
+  <object id="2607" name="ConvertorButton1" gid="39" x="16" y="96" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="630" name="Convertor">
+  <object id="2608" name="Convertor_Up" gid="43" x="224" y="112" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2609" name="Convertor_Down" gid="44" x="96" y="192" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="631" name="Locks">
+  <object id="2610" name="Lock_Red" gid="38" x="112" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2611" name="Lock_Silver" gid="34" x="16" y="144" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2612" name="Lock_Yellow" gid="36" x="80" y="208" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="632" name="Keys">
+  <object id="2613" name="Key_Yellow" gid="35" x="16" y="160" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2614" name="Key_Silver" gid="33" x="80" y="128" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2615" name="Key_Red" gid="37" x="176" y="128" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="633" name="Rotate">
+  <object id="2616" name="4_Rotate" gid="28" x="48" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+    <property name="state" value="4"/>
+   </properties>
+  </object>
+  <object id="2617" name="4_Rotate" gid="26" x="80" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+    <property name="state" value="2"/>
+   </properties>
+  </object>
+  <object id="2618" name="2_Rotate" gid="29" x="176" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+    <property name="state" value="X"/>
+   </properties>
+  </object>
+  <object id="2619" name="4_Rotate" gid="27" x="144" y="144" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+    <property name="state" value="3"/>
+   </properties>
+  </object>
+  <object id="2620" name="4_Rotate" gid="27" x="16" y="208" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+    <property name="state" value="3"/>
+   </properties>
+  </object>
+  <object id="2621" name="4_Rotate" gid="25" x="112" y="144" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+    <property name="state" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="634" name="Nests">
+  <object id="2622" name="Nest" gid="46" x="128" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2623" name="Nest" gid="46" x="144" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2624" name="Nest" gid="46" x="160" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2625" name="Nest" gid="46" x="176" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2626" name="Nest" gid="46" x="192" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2627" name="Nest" gid="46" x="208" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2628" name="Nest" gid="46" x="112" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2629" name="Nest" gid="46" x="128" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2630" name="Nest" gid="46" x="144" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2631" name="Nest" gid="46" x="160" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2632" name="Nest" gid="46" x="176" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2633" name="Nest" gid="46" x="192" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2634" name="Nest" gid="46" x="224" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2635" name="Nest" gid="46" x="224" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2636" name="Nest" gid="46" x="208" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2637" name="Nest" gid="46" x="208" y="80" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2638" name="Nest" gid="46" x="192" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2639" name="Nest" gid="46" x="224" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2640" name="Nest" gid="46" x="208" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2641" name="Nest" gid="46" x="176" y="80" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2642" name="Nest" gid="46" x="112" y="80" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2643" name="Nest" gid="46" x="96" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2644" name="Nest" gid="46" x="64" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2645" name="Nest" gid="46" x="32" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2646" name="Nest" gid="46" x="16" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2647" name="Nest" gid="46" x="32" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2648" name="Nest" gid="46" x="48" y="48" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2649" name="Nest" gid="46" x="48" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2650" name="Nest" gid="46" x="48" y="80" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2651" name="Nest" gid="46" x="16" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2652" name="Nest" gid="46" x="16" y="80" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2653" name="Nest" gid="46" x="16" y="128" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2654" name="Nest" gid="46" x="16" y="176" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2655" name="Nest" gid="46" x="16" y="192" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2656" name="Nest" gid="46" x="16" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2657" name="Nest" gid="46" x="16" y="240" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2658" name="Nest" gid="46" x="112" y="112" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2659" name="Nest" gid="46" x="112" y="128" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2660" name="Nest" gid="46" x="48" y="112" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2661" name="Nest" gid="46" x="48" y="128" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2662" name="Nest" gid="46" x="48" y="144" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2663" name="Nest" gid="46" x="64" y="144" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2664" name="Nest" gid="46" x="32" y="240" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2665" name="Nest" gid="46" x="48" y="240" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2666" name="Nest" gid="46" x="32" y="208" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2667" name="Nest" gid="46" x="48" y="208" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2668" name="Nest" gid="46" x="64" y="208" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2669" name="Nest" gid="46" x="80" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2670" name="Nest" gid="46" x="96" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2671" name="Nest" gid="46" x="112" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2672" name="Nest" gid="46" x="160" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2673" name="Nest" gid="46" x="176" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2674" name="Nest" gid="46" x="192" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2675" name="Nest" gid="46" x="192" y="128" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2676" name="Nest" gid="46" x="208" y="128" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2677" name="Nest" gid="46" x="224" y="128" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2678" name="Nest" gid="46" x="128" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2679" name="Nest" gid="46" x="144" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2680" name="Nest" gid="46" x="160" y="96" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2681" name="Nest" gid="46" x="80" y="160" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2682" name="Nest" gid="46" x="80" y="176" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2683" name="Nest" gid="46" x="144" y="192" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2684" name="Nest" gid="46" x="144" y="208" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2685" name="Nest" gid="46" x="144" y="160" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2686" name="Nest" gid="46" x="144" y="176" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2687" name="Nest" gid="46" x="176" y="176" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2688" name="Nest" gid="46" x="176" y="192" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2689" name="Nest" gid="46" x="224" y="176" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2690" name="Nest" gid="46" x="224" y="192" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2691" name="Nest" gid="46" x="176" y="208" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2692" name="Nest" gid="46" x="224" y="208" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2693" name="Nest" gid="46" x="224" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2694" name="Nest" gid="46" x="208" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2695" name="Nest" gid="46" x="192" y="160" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2696" name="Nest" gid="46" x="208" y="160" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2697" name="Nest" gid="46" x="160" y="144" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2698" name="Nest" gid="46" x="176" y="144" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2699" name="Nest" gid="46" x="48" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2700" name="Nest" gid="46" x="128" y="224" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2701" name="Nest" gid="46" x="224" y="144" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2702" name="Nest" gid="46" x="144" y="128" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2703" name="Nest" gid="46" x="176" y="112" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2704" name="Nest" gid="46" x="128" y="144" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+  <object id="2705" name="Nest" gid="46" x="96" y="144" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="635" name="Finish">
+  <object id="2706" name="Finish" gid="45" x="144" y="112" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="636" name="Camera">
+  <object id="2707" name="player-start" x="104" y="168">
+   <point/>
+  </object>
+ </objectgroup>
+</map>
