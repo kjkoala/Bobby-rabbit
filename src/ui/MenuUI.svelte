@@ -6,15 +6,18 @@
   import { getLevelsLocalStorage, isMobile } from "src/common/constants";
   import { InputTypes } from '../common/types'
   import { getInputType } from "src/common/getInputType";
+  import { carrotsMaps, eggsMaps } from "src/app/main";
     // import Records from "./Records.svelte";
 
     export let menu: Menu;
-
+    const storageLevelsCarrots = getLevelsLocalStorage('carrots_levels')
+    const storageLevelsEggs = getLevelsLocalStorage('eggs_levels')
     let newGame = false;
     let continueGame = false;
     let musicEnable = getMusicStatus()
     let currentInputType = getInputType()
-    let levelsDisabled = [getLevelsLocalStorage('carrots_levels').length === 0, getLevelsLocalStorage('eggs_levels').length === 0]
+    let levelsDontStart = [storageLevelsCarrots.length === 0, storageLevelsEggs.length === 0]
+    let levelsFinished = [storageLevelsCarrots.length > 0 && storageLevelsCarrots.at(-1)!.level + 1 === carrotsMaps.length, storageLevelsEggs.length > 0 && storageLevelsEggs.at(-1)!.level + 1 === eggsMaps.length  ]
     
     let backgroundUI: HTMLDivElement;
       onMount(() => {
@@ -50,18 +53,16 @@
 <div class="wrapper">
     <div class="background" bind:this={backgroundUI} />
     {#if !newGame && !continueGame}
-    {#if !levelsDisabled[0] || !levelsDisabled[1]}
+    {#if !levelsDontStart[0] || !levelsDontStart[1]}
         <button type="button" on:click={() => continueGame = true}>Продолжить</button>
     {/if}
     <button type="button" on:click={() => newGame = true}>Новая игра</button>
-    <!-- <button type="button">Рекорды</button> -->
-    <!-- <Records /> -->
+    <!-- <button type="button">Рекорды</button>
+    <Records /> -->
     <button type="button" on:click={onChangeMusicStatus}>Музыка {musicEnable ? 'выкл.' : 'вкл.'}</button>
     {#if isMobile}
     <button type="button" on:click={changeInputType}>Управление ({ currentInputType === InputTypes.classic ? 'стандартное' : currentInputType === InputTypes.center ? 'центр' : currentInputType === InputTypes.left ? 'слева' : 'справа'  })</button>
     {/if}
-    <!--<button type="button">Руководство</button>
-    <button type="button">Создатели</button> -->
     {/if}
     {#if newGame}
         <button type="button" on:click={() => menu.startCarrotsNewGame()}>Сбор урожая морковки</button>
@@ -69,8 +70,8 @@
         <button type="button" on:click={() => newGame = false}>Назад</button>
         {/if}
     {#if continueGame}
-        <button type="button" disabled={levelsDisabled[0]} on:click={() => menu.continueGame('carrots_levels')}>Сбор урожая морковки</button>
-        <button type="button" disabled={levelsDisabled[1]} on:click={() => menu.continueGame('eggs_levels')}>Пасхальный кролик</button>
+        <button type="button" disabled={levelsDontStart[0] || levelsFinished[0]} on:click={() => menu.continueGame('carrots_levels')}>Сбор урожая морковки {#if levelsFinished[0]}(пройдено){/if}</button>
+        <button type="button" disabled={levelsDontStart[1] || levelsFinished[1]} on:click={() => menu.continueGame('eggs_levels')}>Пасхальный кролик {#if levelsFinished[1]}(пройдено){/if}</button>
         <button type="button" on:click={() => continueGame = false}>Назад</button>
     {/if}
 </div>

@@ -16,6 +16,7 @@ import {
   convertorUpAnim,
 } from "src/animations/Convertor";
 import {
+  BLOCK_SIZE,
   DEFAULT_VOLUME,
   carrots_levels,
   eggs_levels,
@@ -27,7 +28,6 @@ import { Menu } from "./mainMenu";
 import { getMusicStatus } from "src/common/getMusicStatus";
 import { resources } from "src/app/resources";
 
-export const BLOCK_SIZE = 0x10;
 
 export class Level extends Scene {
   declare player: Bobby;

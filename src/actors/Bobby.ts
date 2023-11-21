@@ -17,9 +17,10 @@ import {
   fadeOutAnim,
   deathAnim,
 } from "src/animations/Bobby";
-import { BLOCK_SIZE, type Level } from "src/scenes/level";
+import { type Level } from "src/scenes/level";
 import { Directon } from "./types";
-import { isMobile } from "src/common/constants";
+import { BLOCK_SIZE, isMobile } from "src/common/constants";
+import { getNextPosition, moveDirectionOnConvertor } from "src/common/getNextPosition";
 const SPEED = 30;
 type TypeAnimation =
   | "up"
@@ -39,7 +40,6 @@ const ListAnimation: Record<Exclude<TypeAnimation, "start">, Animation> = {
   right: rightAnim,
   death: deathAnim,
 };
-
 export class Bobby extends Actor {
   declare scene: Level;
   direction!: Directon | null;
@@ -156,37 +156,13 @@ export class Bobby extends Actor {
           this.scene.emit("playerDied");
         }, 4000);
       } else if (other.hasTag("Convertor_Right")) {
-        const coord = `${this.blockX + 1}x${this.blockY}`;
-        if (this.scene.collisionMap.get(coord)) {
-          return
-        }
-        this.playerConvertorCount += 1;
-        this.actions
-          .moveBy(BLOCK_SIZE, 0, SPEED)
+        this.checkNextConvertorCollision(other, Directon.RIGHT)
       } else if (other.hasTag("Convertor_Left")) {
-        const coord = `${this.blockX - 1}x${this.blockY}`;
-        if (this.scene.collisionMap.get(coord)) {
-          return
-        }
-        this.playerConvertorCount += 1;
-        this.actions
-          .moveBy(-BLOCK_SIZE, 0, SPEED)
+        this.checkNextConvertorCollision(other, Directon.LEFT)
       } else if (other.hasTag("Convertor_Up")) {
-        const coord = `${this.blockX}x${this.blockY - 1}`;
-        if (this.scene.collisionMap.get(coord)) {
-          return
-        }
-        this.playerConvertorCount += 1;
-        this.actions
-          .moveBy(0, -BLOCK_SIZE, SPEED)
+        this.checkNextConvertorCollision(other, Directon.UP)
       } else if (other.hasTag("Convertor_Down")) {
-        const coord = `${this.blockX}x${this.blockY + 1}`;
-        if (this.scene.collisionMap.get(coord)) {
-          return
-        }
-        this.playerConvertorCount += 1;
-        this.actions
-          .moveBy(0, BLOCK_SIZE, SPEED)
+        this.checkNextConvertorCollision(other, Directon.DOWN)
       } else if (
         other.name === '2_Rotate' ||
         other.name === '4_Rotate'
@@ -232,29 +208,22 @@ export class Bobby extends Actor {
         if (this.playerRotateCount === 0) {
           this.onRotatePlatform = null;
         }
-      } 
-      else if (other.hasTag("Convertor_Up") || other.hasTag('Convertor_Down')) {
+      } else if ((other.hasTag("Convertor_Up") || other.hasTag('Convertor_Down') || other.hasTag("Convertor_Right") || other.hasTag('Convertor_Left')) && this.playerConvertorCount > 0) {
         this.playerConvertorCount -= 1;
-          const y = (other.pos.y - BLOCK_SIZE) / BLOCK_SIZE;
-          if (other.hasTag("Convertor_Up")) {
-            this.blockY = y - 1
-          } else if (other.hasTag('Convertor_Down')) {
-            this.blockY = y + 1
-          }
-      } else if (other.hasTag("Convertor_Right") || other.hasTag('Convertor_Left')) {
-        this.playerConvertorCount -= 1;
-        const x = other.pos.x / BLOCK_SIZE;
-        if (other.hasTag("Convertor_Right")) {
-          this.blockX = x + 1
-        } else if (other.hasTag('Convertor_Left')) {
-          this.blockX = x - 1
-        }
+        this.blockX = this.pos.x / BLOCK_SIZE ^ 0;
+        this.blockY = this.pos.y / BLOCK_SIZE ^ 0;
       }
     });
   }
 
   update(engine: Engine): void {
     if (this.isFreeze) return;
+    if (
+      this.mobileDirection === 11 ||
+      engine.input.keyboard.wasPressed(Keys.R)
+    ) {
+      this.scene.emit("playerDied", undefined);
+    }
     if (!this.scene.lockCamera) {
       if (this.mobileDirection === Directon.UP) {
         this.scene.camera.vel = vec(0, -this.speedView);
@@ -268,12 +237,6 @@ export class Bobby extends Actor {
         this.scene.camera.vel = Vector.Zero;
       }
       return;
-    }
-    if (
-      this.mobileDirection === 11 ||
-      engine.input.keyboard.wasPressed(Keys.R)
-    ) {
-      this.scene.emit("playerDied", undefined);
     }
 
     const isOnPoint =
@@ -447,6 +410,20 @@ export class Bobby extends Actor {
   onTakeCarrot(carrot: Actor) {
     carrot.kill();
     this.scene.emit("takeCarrot");
+  }
+
+  checkNextConvertorCollision(actor: Actor, Dir: Directon) {
+    if (this.scene.carrots === undefined) {
+      const x = actor.pos.x / BLOCK_SIZE,
+        y = actor.pos.y / BLOCK_SIZE - 1;
+
+      if (this.scene.collisionMap.get(getNextPosition(Dir, x, y))) {
+        return 
+      }
+    }
+      this.playerConvertorCount += 1;
+      this.actions
+      .moveBy(...moveDirectionOnConvertor[Dir], SPEED)
   }
 
   onNestEgg(nest: Actor) {

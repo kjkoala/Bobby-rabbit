@@ -28,5 +28,5 @@ engine.addScene('endLevel', new EndGame)
 
 const loader = new Loader([...carrotsMaps, ...eggsMaps, ...Object.values(resources)])
 engine.start(loader).then(() => {
-    engine.goToScene('menu')
+    engine.goToScene('endLevel')
 });
