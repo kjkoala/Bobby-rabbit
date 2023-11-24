@@ -20,6 +20,12 @@ const engine = new Engine({
   backgroundColor: Color.Black,
 })
 
+navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  for(let registration of registrations) {
+      registration.unregister();
+  }
+});
+
 export const carrotsMaps = levels.map(level => new TiledMapResource(level))
 export const eggsMaps = eggs_levels.map(level => new TiledMapResource(level))
 engine.addScene('menu', new Menu)
