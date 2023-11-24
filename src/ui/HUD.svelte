@@ -328,6 +328,14 @@
   .controls:not(.classic) {
     width: 50%;
   }
+  .controls:not(.classic) button {
+    width: 45px;
+  }
+
+  .controls:not(.classic) > button {
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   .controls.right {
     margin-left: auto;
