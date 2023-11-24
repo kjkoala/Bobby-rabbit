@@ -1,0 +1,1 @@
+export const computedTimeUTC = (date: Date) => [date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds()].map(s => String(s).padStart(2,'0')).join(':');

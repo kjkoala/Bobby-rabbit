@@ -5,6 +5,8 @@
   import { Directon } from "src/actors/types";
   import { isMobile } from "src/common/constants";
   import { getInputType } from "src/common/getInputType";
+  import ResizeWidthHUD from "src/common/ResizeWidthHUD.svelte";
+  import { computedTimeUTC } from "src/common/computedTimeUTC";
   export let scene: Level;
   let carrotNode: HTMLDivElement;
   let eyeNode: HTMLButtonElement;
@@ -24,7 +26,7 @@
   let timeFinishLevel: string = ''
   let showRestartMessage = false;
   const currentInputType = getInputType();
-  
+
   onMount(() => {
 
     setTimeout(() => {
@@ -48,7 +50,7 @@
         scene.on('levelComplete', () => {
           setTimeout(() => {
             const date = new Date(scene.computedTime())
-            timeFinishLevel = [date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds()].map(s => String(s).padStart(2,'0')).join(':');
+            timeFinishLevel = computedTimeUTC(date);
             showResult = true
           }, 500)
         })
@@ -64,9 +66,6 @@
         scene.on('takeCarrot', () => {
           count -= 1
         })
-        const onSetWidth = () => {
-          hud.style.width = document.querySelector<HTMLDivElement>('#game')?.style.width!
-        }
         const HUD = resources.HUD.data
         carrotNode.append(HUD.cloneNode())
         if (isMobile) {
@@ -90,13 +89,6 @@
             keySilverNode.remove()
           }
         })
-        onSetWidth()
-        
-        window.addEventListener('resize', onSetWidth)
-
-        return () => {
-          window.removeEventListener('resize', onSetWidth)
-        }
       }
   })
 
@@ -110,6 +102,7 @@
   }
 </script>
 <div class="hud">
+  <ResizeWidthHUD nameSelector=".hud" />
   <div class="header_hud">
     <button class="scale_button" type="button" bind:this={menuButton} on:click={() => scene.goToMenu()} />
     {#if isMobile}

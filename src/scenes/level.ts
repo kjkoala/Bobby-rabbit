@@ -27,6 +27,7 @@ import VK from "src/common/VKBridge";
 import { Menu } from "./mainMenu";
 import { getMusicStatus } from "src/common/getMusicStatus";
 import { resources } from "src/app/resources";
+import { EndGameScene } from "./endGame";
 
 
 export class Level extends Scene {
@@ -187,7 +188,7 @@ export class Level extends Scene {
           engine.removeScene(this);
           const nextLevel = this.currentLevel + 1;
           if (nextLevel >= this.levels.length) {
-            engine.goToScene("endLevel");
+            this.endScene();
           } else {
             engine.addScene("level", new Level(this.levels, nextLevel));
             engine.goToScene("level");
@@ -197,11 +198,9 @@ export class Level extends Scene {
     });
 
     this.on("playerDied", () => {
-      // engine.clock.schedule(() => {
       engine.removeScene(this);
       engine.addScene("level", new Level(this.levels, this.currentLevel));
       engine.goToScene("level");
-      // }, 1000)
     });
 
     this.hud = new HUD({
@@ -217,6 +216,11 @@ export class Level extends Scene {
       this.engine.addScene('menu', new Menu)
       this.engine.goToScene('menu')
     }
+  }
+
+  endScene() {
+    this.engine.addScene("endLevel", new EndGameScene);
+    this.engine.goToScene("endLevel");
   }
 
   onDeactivate() {
@@ -240,7 +244,9 @@ export class Level extends Scene {
     } else {
       this.camera.clearAllStrategies();
     }
-    this.camera.zoom = 2.3;
+    const min = Math.min(window.innerHeight, window.innerWidth);
+    const max = Math.max(window.innerHeight, window.innerWidth);
+    this.camera.zoom = (max - min) / min + 1.4;
     this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 256, 256));
     this.lockCamera = lock;
   }
@@ -426,11 +432,22 @@ export class Level extends Scene {
     const finishTime = this.engine.clock.now() - this.startLevelTime;
     const nameStorage = this.carrots !== undefined ? carrots_levels : eggs_levels;
       const stogareLevels = getLevelsLocalStorage(nameStorage);
+      const updateLevel = stogareLevels.findIndex((lvl) => lvl.level === this.currentLevel)
+    if (updateLevel > -1) {
+      if (this.player.steps < stogareLevels[updateLevel].steps || finishTime < stogareLevels[updateLevel].time) {
+        stogareLevels.splice(updateLevel, 1, {
+          time: finishTime,
+          steps: this.player.steps,
+          level: this.currentLevel,
+        })
+      }
+    } else {
       stogareLevels.push({
         time: finishTime,
         steps: this.player.steps,
         level: this.currentLevel,
       });
+    }
       localStorage.setItem(nameStorage, JSON.stringify(stogareLevels));
     return finishTime;
   }

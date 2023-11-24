@@ -7,6 +7,7 @@ import { resources } from "src/app/resources";
 import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
 import { getMusicStatus } from "src/common/getMusicStatus";
 
+type TypeLevels = 'carrots_levels' | 'eggs_levels'
 export class Menu extends Scene {
     menu!: MenuUI
     constructor() {
@@ -43,11 +44,11 @@ export class Menu extends Scene {
         this.engine.goToScene('level');
     }
 
-    continueGame(lvl: 'carrots_levels' | 'eggs_levels') {
+    continueGame(lvl: TypeLevels) {
         const levels = getLevelsLocalStorage(lvl)
         if (levels.length > 0) {
             const nextlevel = levels.at(-1)!.level + 1
-            if (lvl === 'carrots_levels') {
+            if (lvl === carrots_levels) {
                 this.startLevel(carrotsMaps, nextlevel)
             } else if (lvl === 'eggs_levels') {
                 this.startLevel(eggsMaps, nextlevel)
@@ -64,4 +65,8 @@ export class Menu extends Scene {
         localStorage.removeItem(carrots_levels);
         this.startLevel(carrotsMaps, 0);
     }
+
+    handleNextLevel(type: TypeLevels, level: number) {
+        this.startLevel(type === carrots_levels ? carrotsMaps : eggsMaps, level)
+      }
 }
