@@ -198,9 +198,11 @@ export class Level extends Scene {
     });
 
     this.on("playerDied", () => {
-      engine.removeScene(this);
-      engine.addScene("level", new Level(this.levels, this.currentLevel));
-      engine.goToScene("level");
+      VK.countLevel().finally(() => {
+        engine.removeScene(this);
+        engine.addScene("level", new Level(this.levels, this.currentLevel));
+        engine.goToScene("level");
+      })
     });
 
     this.hud = new HUD({
