@@ -15,7 +15,9 @@ class VK {
     }
 
     checkAds() {
-        bridge.send('VKWebAppCheckNativeAds', { ad_format: EAdsFormats.INTERSTITIAL});
+        bridge.send('VKWebAppCheckNativeAds', { ad_format: EAdsFormats.INTERSTITIAL})
+        .then(console.log)
+        .catch(console.error)
     }
 
     showAds() {
