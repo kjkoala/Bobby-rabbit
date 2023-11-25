@@ -18,7 +18,7 @@ import mp3Clered from 'public/music/cleared.mp3'
 import mp3End from 'public/music/end.mp3'
 import Arrow from 'public/arrow.png'
 import Restart from 'public/restart.png'
-import Title from 'public/title.png'
+import Title from 'public/title.webp'
 import Menu from 'public/menu.png'
 
 export const resources = {
