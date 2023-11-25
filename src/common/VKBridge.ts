@@ -16,14 +16,13 @@ class VK {
 
     checkAds() {
         bridge.send('VKWebAppCheckNativeAds', { ad_format: EAdsFormats.INTERSTITIAL})
-        .then(console.log)
         .catch(console.error)
     }
 
     showAds() {
         return bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
-  .then((data) => data)
-  .catch((error) => { console.log(error); /* Ошибка */ });
+        .then((data) => data)
+        .catch(console.log);
     }
 
     countLevel() {
