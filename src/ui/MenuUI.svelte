@@ -4,6 +4,8 @@
   import { onDestroy, onMount } from "svelte";
   import { getMusicStatus } from "src/common/getMusicStatus";
   import {
+  CARROT_LEVEL_TITLE,
+    EGG_LEVEL_TITLE,
     carrots_levels,
     eggs_levels,
     getLevelsLocalStorage,
@@ -92,10 +94,10 @@
   {/if}
   {#if newGame}
     <button type="button" on:click={() => menu.startCarrotsNewGame()}
-      >Сбор урожая морковки</button
+      >{CARROT_LEVEL_TITLE}</button
     >
     <button type="button" on:click={() => menu.startEggsNewGame()}
-      >Пасхальный кролик</button
+      >{EGG_LEVEL_TITLE}</button
     >
     <button type="button" on:click={() => (newGame = false)}>Назад</button>
   {/if}
@@ -104,34 +106,34 @@
       type="button"
       disabled={levelsDontStart[0] || levelsFinished[0]}
       on:click={() => menu.continueGame(carrots_levels)}
-      >Сбор урожая морковки {#if levelsFinished[0]}(пройдено){/if}</button
+      >{CARROT_LEVEL_TITLE} {#if levelsFinished[0]}(пройдено){/if}</button
     >
     <button
       type="button"
       disabled={levelsDontStart[1] || levelsFinished[1]}
       on:click={() => menu.continueGame(eggs_levels)}
-      >Пасхальный кролик {#if levelsFinished[1]}(пройдено){/if}</button
+      >{EGG_LEVEL_TITLE} {#if levelsFinished[1]}(пройдено){/if}</button
     >
     <button type="button" on:click={() => (continueGame = false)}>Назад</button>
   {/if}
   {#if records === "both"}
     <button type="button" on:click={() => (records = "carrots")}
-      >Сбор урожая морковки</button
+      >{CARROT_LEVEL_TITLE}</button
     >
     <button type="button" on:click={() => (records = "eggs")}
-      >Пасхальный кролик</button
+      >{EGG_LEVEL_TITLE}</button
     >
     <button type="button" on:click={() => (records = false)}>Назад</button>
   {/if}
   {#if records === "eggs"}
     <div class="records">
-      <div class="title">Пасхальный кролик</div>
+      <div class="title">{EGG_LEVEL_TITLE}</div>
       <div class="levels" class:mobile={isMobile}>
         {#each storageLevelsEggs as eggs}
           <button
             class="level"
             on:click={() => {
-              menu.handleNextLevel(carrots_levels, eggs.level);
+              menu.handleNextLevel(eggs_levels, eggs.level);
             }}
             >Уровень {eggs.level + 1}<br />
             Время: {computedTimeUTC(new Date(eggs.time))}<br />
@@ -144,7 +146,7 @@
   {/if}
   {#if records === "carrots"}
     <div class="records">
-      <div class="title">Сбор урожая марковки</div>
+      <div class="title">{CARROT_LEVEL_TITLE}</div>
       <div class="levels" class:mobile={isMobile}>
         {#each storageLevelsCarrots as carrot}
           <button

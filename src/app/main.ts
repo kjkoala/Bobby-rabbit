@@ -25,6 +25,8 @@ export const eggsMaps = eggs_levels.map(level => new TiledMapResource(level))
 engine.addScene('menu', new Menu)
 
 const loader = new Loader([...carrotsMaps, ...eggsMaps, ...Object.values(resources)])
+
+loader.playButtonText = "Запустить игру";
 engine.start(loader).then(() => {
     engine.goToScene('menu')
 });

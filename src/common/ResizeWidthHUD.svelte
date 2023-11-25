@@ -14,9 +14,7 @@
     onSetWidth();
 
     window.addEventListener("resize", onSetWidth);
-    console.log("mount");
     return () => {
-      console.log("unmount");
       window.removeEventListener("resize", onSetWidth);
     };
   });
