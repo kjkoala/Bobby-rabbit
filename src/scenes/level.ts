@@ -453,27 +453,4 @@ export class Level extends Scene {
       localStorage.setItem(nameStorage, JSON.stringify(stogareLevels));
     return finishTime;
   }
-
-  // TODO: Только для дебага
-  handleNextLevel() {
-    if (this.currentLevel + 1 < this.levels.length) {
-      this.engine.removeScene(this);
-      this.engine.addScene(
-        "level",
-        new Level(this.levels, this.currentLevel + 1)
-      );
-      this.engine.goToScene("level");
-    }
-  }
-
-  handlePrevLevel() {
-    if (this.currentLevel > 0) {
-      this.engine.removeScene(this);
-      this.engine.addScene(
-        "level",
-        new Level(this.levels, this.currentLevel - 1)
-      );
-      this.engine.goToScene("level");
-    }
-  }
 }

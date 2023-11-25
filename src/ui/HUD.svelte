@@ -154,15 +154,6 @@
   {#if showRestartMessage}
     <div class="center_text">R = Рестарт</div>
   {/if}
-  <!-- TODO: Для дебага только -->
-  <div class="controls">
-    <button type="button" on:pointerdown={() => scene.handlePrevLevel()}
-      >Назад</button
-    >
-    <button type="button" on:pointerdown={() => scene.handleNextLevel()}
-      >Вперед</button
-    >
-  </div>
   {#if isMobile}
     <div
       class={`controls ${currentInputType}`}
