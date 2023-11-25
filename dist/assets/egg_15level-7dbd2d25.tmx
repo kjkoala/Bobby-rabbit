@@ -24,7 +24,7 @@
  </layer>
  <layer id="576" name="Wall" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYKAcsODBhAATAXleHFiISP34ADMJ+vmwsJmhtCAWdxGrn5D9/HjMxacf5iYBLG6EiSHrR1ePzd3oYtjsR1ePzhfEYT+x+sm1H1sckWs/DGALP/R4QraXGPtJAbD0x0omBgEAm1IDuA==
+   eJylUlsKwCAMK3P73EPvf9htH4URYqpdIKDVmGBr9h+rYIQlOK8Pd8I2qFcoE/qDrAvJ2Iyjp4/8T/Gu0numi2T02leP91lurDF/vI/72vEf1Wf9WY+y/g72f9gnNr/KfwY+f1uSL26o0gO8
   </data>
  </layer>
  <layer id="591" name="Ground" width="16" height="16">
