@@ -6,7 +6,7 @@ class VK {
   private prev: number;
   constructor() {
     this.countLevels = 0;
-    this.whenShowAds = 9;
+    this.whenShowAds = 6;
     this.prev = this.whenShowAds - 1;
   }
     static init() {
