@@ -248,7 +248,7 @@ export class Level extends Scene {
     }
     const min = Math.min(window.innerHeight, window.innerWidth);
     const max = Math.max(window.innerHeight, window.innerWidth);
-    this.camera.zoom = (max - min) / min + 1.4;
+    this.camera.zoom = (max - min) / min + 1.2;
     this.camera.strategy.limitCameraBounds(new BoundingBox(0, 0, 256, 256));
     this.lockCamera = lock;
   }
