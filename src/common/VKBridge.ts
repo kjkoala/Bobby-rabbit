@@ -38,13 +38,11 @@ class VK {
         key,
         value
       })
-      .then(noop)
       .catch(noop)
     }
 
     inviteFriend() {
       bridge.send('VKWebAppShowInviteBox')
-      .then(noop)
       .catch(noop)
     }
 
