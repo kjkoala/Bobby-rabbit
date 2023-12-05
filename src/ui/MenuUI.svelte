@@ -17,6 +17,7 @@
   import { carrotsMaps, eggsMaps } from "src/app/main";
   import { computedTimeUTC } from "src/common/computedTimeUTC";
   import ResizeWidthHUD from "src/common/ResizeWidthHUD.svelte";
+  import VKBridge from "src/common/VKBridge";
 
   export let menu: Menu;
   const storageLevelsCarrots = getLevelsLocalStorage(carrots_levels);
@@ -78,7 +79,7 @@
       >
     {/if}
     <button type="button" on:click={() => (newGame = true)}>Новая игра</button>
-    <button type="button">Пригласить друга</button>
+    <button type="button" on:click={VKBridge.inviteFriend}>Пригласить друга</button>
     <button type="button" on:click={() => (rules = "1")}>Правила</button>
     <button type="button" on:click={() => (records = "both")}>Рекорды</button>
     <button type="button" on:click={onChangeMusicStatus}

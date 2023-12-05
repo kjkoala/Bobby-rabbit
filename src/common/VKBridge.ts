@@ -14,7 +14,7 @@ class VK {
         return new VK()
     }
 
-    static inviteFriend() {
+    inviteFriend() {
       bridge.send('VKWebAppShowInviteBox')
       .then(() => {})
       .catch(console.error)
