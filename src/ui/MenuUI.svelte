@@ -4,7 +4,7 @@
   import { onDestroy, onMount } from "svelte";
   import { getMusicStatus } from "src/common/getMusicStatus";
   import {
-  CARROT_LEVEL_TITLE,
+    CARROT_LEVEL_TITLE,
     EGG_LEVEL_TITLE,
     carrots_levels,
     eggs_levels,
@@ -78,7 +78,8 @@
       >
     {/if}
     <button type="button" on:click={() => (newGame = true)}>Новая игра</button>
-    <button type="button" on:click={() => (rules = '1')}>Правила</button>
+    <button type="button">Пригласить друга</button>
+    <button type="button" on:click={() => (rules = "1")}>Правила</button>
     <button type="button" on:click={() => (records = "both")}>Рекорды</button>
     <button type="button" on:click={onChangeMusicStatus}
       >Музыка {musicEnable ? "выкл." : "вкл."}</button
@@ -109,13 +110,15 @@
       type="button"
       disabled={levelsDontStart[0] || levelsFinished[0]}
       on:click={() => menu.continueGame(carrots_levels)}
-      >{CARROT_LEVEL_TITLE} {#if levelsFinished[0]}(пройдено){/if}</button
+      >{CARROT_LEVEL_TITLE}
+      {#if levelsFinished[0]}(пройдено){/if}</button
     >
     <button
       type="button"
       disabled={levelsDontStart[1] || levelsFinished[1]}
       on:click={() => menu.continueGame(eggs_levels)}
-      >{EGG_LEVEL_TITLE} {#if levelsFinished[1]}(пройдено){/if}</button
+      >{EGG_LEVEL_TITLE}
+      {#if levelsFinished[1]}(пройдено){/if}</button
     >
     <button type="button" on:click={() => (continueGame = false)}>Назад</button>
   {/if}
@@ -166,123 +169,152 @@
       <button type="button" on:click={() => (records = "both")}>Назад</button>
     </div>
   {/if}
-  {#if rules === '1'}
+  {#if rules === "1"}
     <div class="records rules" class:rules_mobile={isMobile}>
-      Кролик идёт по направлению нажатой стрелки.
-      <div>
-        <span class="arrow">←</span><span class="arrow">↑</span><span class="arrow">↓</span><span class="arrow">→</span>
+      Кролик идёт по направлению нажатой кнопки.
+      <div class="arrow_keys">
+        <span class="arrow"
+          ><div>←</div>
+          <div>A</div>
+          </span
+        ><span class="arrow top"
+          ><div>W</div>
+          <div>↑</div></span
+        ><span class="arrow"
+          ><div>S</div>
+          <div>↓</div></span
+        ><span class="arrow"
+          ><div>D</div>
+          <div>→</div></span
+        >
       </div>
-      <button type="button" on:click={() => (rules = '2')}>Далее (1 / 9)</button>
+      <button type="button" on:click={() => (rules = "2")}>Далее (1 / 9)</button
+      >
     </div>
   {/if}
-  {#if rules === '2'}
+  {#if rules === "2"}
     <div class="records rules" class:rules_mobile={isMobile}>
       <div class="rules_wrap_img carrots_img_wrap">
-        <img class="rules_img carrots_img" src={tilemap} alt="">
+        <img class="rules_img carrots_img" src={tilemap} alt="" />
       </div>
       Морковка:
       <div>
         Встань на морковку - кролик подберёт её. <br />
-        Собери всю морковку на уровне для активации выхода. 
+        Собери всю морковку на уровне для активации выхода.
       </div>
-      <button type="button" on:click={() => (rules = '3')}>Далее (2 / 9)</button>
+      <button type="button" on:click={() => (rules = "3")}>Далее (2 / 9)</button
+      >
     </div>
   {/if}
-  {#if rules === '3'}
+  {#if rules === "3"}
     <div class="records rules" class:rules_mobile={isMobile}>
       <div class="rules_wrap_img carrots_img_wrap">
-        <img class="rules_img eggs_img"  src={tilemap} alt="">
+        <img class="rules_img eggs_img" src={tilemap} alt="" />
       </div>
       Пасхальные яйца:
       <div>
-       Проходи через пустые кувшинки - кролик будет оставлять в них пасхальное яйцо.<br />
-       Пасхальное яйцо заблокирует дорогу, обратного пути не будет, продумывай ходы. <br />
-       Нужно заполнить все кувшинки для активации выхода.
+        Проходи через пустые кувшинки - кролик будет оставлять в них пасхальное
+        яйцо.<br />
+        Пасхальное яйцо заблокирует дорогу, обратного пути не будет, продумывай ходы.
+        <br />
+        Нужно заполнить все кувшинки для активации выхода.
       </div>
-      <button type="button" on:click={() => (rules = '4')}>Далее (3 / 9)</button>
+      <button type="button" on:click={() => (rules = "4")}>Далее (3 / 9)</button
+      >
     </div>
   {/if}
-  {#if rules === '4'}
+  {#if rules === "4"}
     <div class="records rules" class:rules_mobile={isMobile}>
       <div class="rules_wrap_img locks_img_wrap">
-        <img class="rules_img lock_img"  src={tilemap} alt="">
+        <img class="rules_img lock_img" src={tilemap} alt="" />
       </div>
       Замок и ключ:
       <div>
         На карте есть места закрытые замком. <br />
         Кролику надо найти подходящий по цвету ключ.<br />
-        После того, как кролик подберёт ключ, он может идти смело к замку. <br />
+        После того, как кролик подберёт ключ, он может идти смело к замку.
+        <br />
       </div>
-      <button type="button" on:click={() => (rules = '5')}>Далее (4 / 9)</button>
+      <button type="button" on:click={() => (rules = "5")}>Далее (4 / 9)</button
+      >
     </div>
   {/if}
-  {#if rules === '5'}
+  {#if rules === "5"}
     <div class="records rules" class:rules_mobile={isMobile}>
       <div class="rules_wrap_img carrots_img_wrap">
-        <img class="rules_img traps_img"  src={tilemap} alt="">
+        <img class="rules_img traps_img" src={tilemap} alt="" />
       </div>
       Ловушки:
       <div>
-       Если так случилось, <br />что кролик пробежал по ловушке,<br />
-       ловушка активируется. <br /> после чего второй раз на неё наступать нельзя.
+        Если так случилось, <br />что кролик пробежал по ловушке,<br />
+        ловушка активируется. <br /> после чего второй раз на неё наступать нельзя.
       </div>
-      <button type="button" on:click={() => (rules = '6')}>Далее (5 / 9)</button>
+      <button type="button" on:click={() => (rules = "6")}>Далее (5 / 9)</button
+      >
     </div>
   {/if}
-  {#if rules === '6'}
+  {#if rules === "6"}
     <div class="records rules" class:rules_mobile={isMobile}>
       <div class="rules_wrap_img travolator_img_wrap">
-        <img class="rules_img travolator_img"  src={tilemap} alt="">
+        <img class="rules_img travolator_img" src={tilemap} alt="" />
       </div>
       Траволатор:
       <div>
-       Кролик на платформе двигается только в одном направлении. <br />
-       Кролик не может уйти с платформы или двигаться в другом направлении до конца платформы.
+        Кролик на платформе двигается только в одном направлении. <br />
+        Кролик не может уйти с платформы или двигаться в другом направлении до конца
+        платформы.
       </div>
-      <button type="button" on:click={() => (rules = '7')}>Далее (6 / 9)</button>
+      <button type="button" on:click={() => (rules = "7")}>Далее (6 / 9)</button
+      >
     </div>
   {/if}
-  {#if rules === '7'}
+  {#if rules === "7"}
     <div class="records rules" class:rules_mobile={isMobile}>
       <div class="rules_wrap_img carrots_img_wrap">
-        <img class="rules_img travolator_switch_img"  src={tilemap} alt="">
+        <img class="rules_img travolator_switch_img" src={tilemap} alt="" />
       </div>
       Переключатели направления:
       <div>
-       Вставая на эти кнопки, <br /> траволатор будет двигаться в противоположном направлении.
+        Вставая на эти кнопки, <br /> траволатор будет двигаться в противоположном
+        направлении.
       </div>
-      <button type="button" on:click={() => (rules = '8')}>Далее (7 / 9)</button>
+      <button type="button" on:click={() => (rules = "8")}>Далее (7 / 9)</button
+      >
     </div>
   {/if}
-  {#if rules === '8'}
+  {#if rules === "8"}
     <div class="records rules" class:rules_mobile={isMobile}>
       <div class="rules_wrap_img locks_img_wrap">
-        <img class="rules_img rotate_block_img"  src={tilemap} alt="">
+        <img class="rules_img rotate_block_img" src={tilemap} alt="" />
       </div>
       Вращающийся камень:
       <div>
-       Через этот камень можно пройти только в определенном направлении. <br />
-       Когда кролик уходит с платформы, она двигается на 90 градусов по часовой стрелке.
+        Через этот камень можно пройти только в определенном направлении. <br />
+        Когда кролик уходит с платформы, она двигается на 90 градусов по часовой
+        стрелке.
       </div>
-      <button type="button" on:click={() => (rules = '9')}>Далее (8 / 9)</button>
+      <button type="button" on:click={() => (rules = "9")}>Далее (8 / 9)</button
+      >
     </div>
   {/if}
-  {#if rules === '9'}
+  {#if rules === "9"}
     <div class="records rules" class:rules_mobile={isMobile}>
       <div class="rules_wrap_img carrots_img_wrap">
-        <img class="rules_img rotate_switch_img"  src={tilemap} alt="">
+        <img class="rules_img rotate_switch_img" src={tilemap} alt="" />
       </div>
       Переключатель вращения:
       <div>
-       Эти красные переключатели поворачивают все вращающиеся камни на 90 градусов.
+        Эти красные переключатели поворачивают все вращающиеся камни на 90
+        градусов.
       </div>
-      <button type="button" on:click={() => (rules = false)}>Меню (9 / 9)</button>
+      <button type="button" on:click={() => (rules = false)}
+        >Меню (9 / 9)</button
+      >
     </div>
   {/if}
 </div>
 
 <style>
-
   .rotate_switch_img {
     object-position: -96px -32px;
   }
@@ -338,7 +370,7 @@
     font-size: 20px;
     text-align: center;
   }
-  
+
   .rules_mobile {
     font-size: 16px;
   }
@@ -349,6 +381,15 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .arrow.top {
+    position: absolute;
+    margin-top: -44px;
+  }
+
+  .arrow_keys {
+    margin-top: 45px;
   }
   .records {
     color: white;

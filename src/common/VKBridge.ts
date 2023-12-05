@@ -14,6 +14,12 @@ class VK {
         return new VK()
     }
 
+    static inviteFriend() {
+      bridge.send('VKWebAppShowInviteBox')
+      .then(() => {})
+      .catch(console.error)
+    }
+
     checkAds() {
         bridge.send('VKWebAppCheckNativeAds', { ad_format: EAdsFormats.INTERSTITIAL})
         .catch(console.error)
@@ -22,7 +28,7 @@ class VK {
     showAds() {
         return bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
         .then((data) => data)
-        .catch(console.log);
+        .catch(console.error);
     }
 
     countLevel() {

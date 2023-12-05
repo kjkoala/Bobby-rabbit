@@ -290,7 +290,7 @@ export class Bobby extends Actor {
   move(engine: Engine) {
     if (
       (this.mobileDirection === Directon.UP ||
-        engine.input.keyboard.isHeld(Keys.ArrowUp)) &&
+        engine.input.keyboard.isHeld(Keys.KeyW)) &&
       (this.pos.y - 0x8) / BLOCK_SIZE === this.blockY
     ) {
       if (
@@ -319,7 +319,7 @@ export class Bobby extends Actor {
       this.steps += 1;
     } else if (
       (this.mobileDirection === Directon.DOWN ||
-        engine.input.keyboard.isHeld(Keys.ArrowDown)) &&
+        engine.input.keyboard.isHeld(Keys.KeyS)) &&
       (this.pos.y - 0x8) / BLOCK_SIZE === this.blockY
     ) {
       if (
@@ -348,7 +348,7 @@ export class Bobby extends Actor {
       this.steps += 1;
     } else if (
       (this.mobileDirection === Directon.RIGHT ||
-        engine.input.keyboard.isHeld(Keys.ArrowRight)) &&
+        engine.input.keyboard.isHeld(Keys.KeyD)) &&
       (this.pos.x - 0x8) / BLOCK_SIZE === this.blockX
     ) {
       if (
@@ -377,7 +377,7 @@ export class Bobby extends Actor {
       this.steps += 1;
     } else if (
       (this.mobileDirection === Directon.LEFT ||
-        engine.input.keyboard.isHeld(Keys.ArrowLeft)) &&
+        engine.input.keyboard.isHeld(Keys.KeyA)) &&
       (this.pos.x - 0x8) / BLOCK_SIZE === this.blockX
     ) {
       if (
