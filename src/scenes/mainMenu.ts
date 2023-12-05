@@ -51,8 +51,10 @@ export class Menu extends Scene {
             const nextlevel = levels.at(-1)!.level + 1
             if (lvl === carrots_levels) {
                 this.startLevel(carrotsMaps, nextlevel)
+                ym(95784994,'reachGoal', 'continue_carrots_levels');
             } else if (lvl === 'eggs_levels') {
                 this.startLevel(eggsMaps, nextlevel)
+                ym(95784994,'reachGoal','continue_eggs_levels')
             }
         }
     }
@@ -60,12 +62,14 @@ export class Menu extends Scene {
     startEggsNewGame() {
         localStorage.removeItem(eggs_levels);
         VKBridge.setSave(eggs_levels, '');
+        ym(95784994,'reachGoal', 'eggs_levels');
         this.startLevel(eggsMaps, 0)
     }
 
     startCarrotsNewGame () {
         localStorage.removeItem(carrots_levels);
         VKBridge.setSave(carrots_levels, '');
+        ym(95784994,'reachGoal', 'carrots_levels');
         this.startLevel(carrotsMaps, 0);
     }
 
