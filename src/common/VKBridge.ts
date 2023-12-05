@@ -27,9 +27,7 @@ class VK {
       }).then((data) => {
         if(data.keys) {
           data.keys.forEach((level) => {
-            if (level.value !== "") {
-              window.localStorage.setItem(level.key, level.value)
-            }
+              window.localStorage.setItem(level.key, level.value || '[]')
           })
         }
       })
