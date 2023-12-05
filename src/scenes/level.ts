@@ -452,7 +452,6 @@ export class Level extends Scene {
       });
     }
     const stringify = JSON.stringify(stogareLevels);
-    ym(95784994,'reachGoal',`finish_level ${nameStorage} ${this.currentLevel}`);
     VKBridge.setSave(nameStorage, stringify);
     window.localStorage.setItem(nameStorage, stringify);
     return finishTime;
