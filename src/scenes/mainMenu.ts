@@ -6,6 +6,7 @@ import { DEFAULT_VOLUME, carrots_levels, eggs_levels, getLevelsLocalStorage } fr
 import { resources } from "src/app/resources";
 import type { TiledMapResource } from "@excaliburjs/plugin-tiled";
 import { getMusicStatus } from "src/common/getMusicStatus";
+import VKBridge from "src/common/VKBridge";
 
 type TypeLevels = 'carrots_levels' | 'eggs_levels'
 export class Menu extends Scene {
@@ -57,12 +58,14 @@ export class Menu extends Scene {
     }
 
     startEggsNewGame() {
-        localStorage.removeItem(eggs_levels)
+        localStorage.removeItem(eggs_levels);
+        VKBridge.setSave(eggs_levels, '');
         this.startLevel(eggsMaps, 0)
     }
 
     startCarrotsNewGame () {
         localStorage.removeItem(carrots_levels);
+        VKBridge.setSave(carrots_levels, '');
         this.startLevel(carrotsMaps, 0);
     }
 

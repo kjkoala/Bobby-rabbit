@@ -25,12 +25,13 @@ class VK {
           eggs_levels
         ]
       }).then((data) => {
-        console.log(data)
-        data.keys.forEach((level) => {
-          if (level.value !== "") {
-            window.localStorage.setItem(level.key, level.value)
-          }
-        })
+        if(data.keys) {
+          data.keys.forEach((level) => {
+            if (level.value !== "") {
+              window.localStorage.setItem(level.key, level.value)
+            }
+          })
+        }
       })
     }
 
