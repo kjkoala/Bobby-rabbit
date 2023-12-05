@@ -25,6 +25,7 @@ class VK {
           eggs_levels
         ]
       }).then((data) => {
+        console.log(data)
         data.keys.forEach((level) => {
           window.localStorage.setItem(level.key, level.value)
         })
