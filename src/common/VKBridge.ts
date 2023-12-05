@@ -53,7 +53,6 @@ class VK {
 
     showAds() {
         return bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
-        .then((data) => data)
         .catch(noop);
     }
 
