@@ -1,5 +1,6 @@
 import bridge, { EAdsFormats } from '@vkontakte/vk-bridge';
-
+import { carrots_levels, eggs_levels } from './constants';
+const noop = () => {}
 class VK {
   private countLevels: number;
   private whenShowAds: number;
@@ -10,25 +11,50 @@ class VK {
     this.prev = this.whenShowAds - 1;
   }
     static init() {
-        bridge.send("VKWebAppInit", {});
+        bridge.send("VKWebAppInit", {})
+        .then(this.getVKSaves)
+        .catch(console.error)
+
         return new VK()
+    }
+
+    static getVKSaves() {
+      return bridge.send("VKWebAppStorageGet", {
+        keys: [
+          carrots_levels,
+          eggs_levels
+        ]
+      }).then((data) => {
+        data.keys.forEach((level) => {
+          window.localStorage.setItem(level.key, level.value)
+        })
+      })
+    }
+
+    setSave(key: string, value: string){
+      bridge.send("VKWebAppStorageSet", {
+        key,
+        value
+      })
+      .then(noop)
+      .catch(noop)
     }
 
     inviteFriend() {
       bridge.send('VKWebAppShowInviteBox')
-      .then(() => {})
-      .catch(console.error)
+      .then(noop)
+      .catch(noop)
     }
 
     checkAds() {
         bridge.send('VKWebAppCheckNativeAds', { ad_format: EAdsFormats.INTERSTITIAL})
-        .catch(console.error)
+        .catch(noop)
     }
 
     showAds() {
         return bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
         .then((data) => data)
-        .catch(console.error);
+        .catch(noop);
     }
 
     countLevel() {

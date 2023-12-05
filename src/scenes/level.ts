@@ -28,6 +28,7 @@ import { Menu } from "./mainMenu";
 import { getMusicStatus } from "src/common/getMusicStatus";
 import { resources } from "src/app/resources";
 import { EndGameScene } from "./endGame";
+import VKBridge from "src/common/VKBridge";
 
 
 export class Level extends Scene {
@@ -450,7 +451,9 @@ export class Level extends Scene {
         level: this.currentLevel,
       });
     }
-      localStorage.setItem(nameStorage, JSON.stringify(stogareLevels));
+    const stringify = JSON.stringify(stogareLevels);
+    VKBridge.setSave(nameStorage, stringify);
+    window.localStorage.setItem(nameStorage, stringify);
     return finishTime;
   }
 }

@@ -46,7 +46,7 @@
   });
 
   onDestroy(() => {
-    localStorage.setItem("inputType", currentInputType);
+    window.localStorage.setItem("inputType", currentInputType);
   });
 
   let onChangeMusicStatus = () => {
