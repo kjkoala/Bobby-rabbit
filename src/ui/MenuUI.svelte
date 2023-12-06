@@ -469,6 +469,7 @@
     z-index: 1;
     font-size: 20px;
     width: 100%;
+    background-color: rgba(0, 0, 0, 0.15);
   }
 
   button[disabled] {

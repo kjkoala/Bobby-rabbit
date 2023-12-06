@@ -32,10 +32,10 @@
       showLevelText = false;
     }, 1200);
 
-    const arrowClone1 = resources.Arrow.data.cloneNode();
-    const arrowClone2 = resources.Arrow.data.cloneNode();
-    const arrowClone3 = resources.Arrow.data.cloneNode();
-    const arrowClone4 = resources.Arrow.data.cloneNode();
+    const arrowClone1 = resources.Arrows.data.cloneNode();
+    const arrowClone2 = resources.Arrows.data.cloneNode();
+    const arrowClone3 = resources.Arrows.data.cloneNode();
+    const arrowClone4 = resources.Arrows.data.cloneNode();
     const menuButtonColne = resources.Menu.data.cloneNode();
     const restartButtonClone = resources.Restart.data.cloneNode();
     restartButton?.append(restartButtonClone);
@@ -339,6 +339,9 @@
 
   :global(.controls button img) {
     pointer-events: none;
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
   }
 
   :global(.hud_silver img) {
@@ -351,13 +354,17 @@
     object-position: -54px 0;
   }
 
+  :global(.button_up img) {
+    object-position: 0 0;
+  }
+
   :global(.button_right img) {
-    rotate: 90deg;
+    object-position: -32px 0;
   }
   :global(.button_left img) {
-    rotate: -90deg;
+    object-position: -64px 0;
   }
   :global(.button_down img) {
-    rotate: -180deg;
+    object-position: -96px 0;
   }
 </style>

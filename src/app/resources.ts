@@ -16,10 +16,10 @@ import mp3Death from 'public/music/death.mp3'
 import mp3Title from 'public/music/title.mp3'
 import mp3Clered from 'public/music/cleared.mp3'
 import mp3End from 'public/music/end.mp3'
-import Arrow from 'public/arrow.png'
 import Restart from 'public/restart.png'
 import Title from 'public/title.webp'
 import Menu from 'public/menu.png'
+import Arrows from 'public/arrows.png'
 
 export const resources = {
     Bobby_idle: new ImageSource(BobbyIdle),
@@ -39,7 +39,7 @@ export const resources = {
     mp3Clered: new Sound(mp3Clered),
     mp3End: new Sound(mp3End),
     mp3Title: new Sound(mp3Title),
-    Arrow: new ImageSource(Arrow),
+    Arrows: new ImageSource(Arrows),
     Restart: new ImageSource(Restart),
     Menu: new ImageSource(Menu),
     Title: new ImageSource(Title),
