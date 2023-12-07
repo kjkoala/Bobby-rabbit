@@ -80,7 +80,6 @@
     {/if}
     <button type="button" on:click={() => (newGame = true)}>Новая игра</button>
     <button type="button" on:click={VKBridge.inviteFriend}>Пригласить друга</button>
-    <button type="button" on:click={() => (rules = "1")}>Правила</button>
     <button type="button" on:click={() => (records = "both")}>Рекорды</button>
     <button type="button" on:click={onChangeMusicStatus}
       >Музыка {musicEnable ? "выкл." : "вкл."}</button
@@ -96,6 +95,7 @@
           : "справа"})</button
       >
     {/if}
+    <button type="button" on:click={() => (rules = "1")}>Правила</button>
   {/if}
   {#if newGame}
     <button type="button" on:click={() => menu.startCarrotsNewGame()}
