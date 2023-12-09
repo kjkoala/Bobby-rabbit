@@ -215,7 +215,7 @@
   }
 
   .scale_button {
-    scale: 2;
+    transform: scale(2);
   }
 
   .margin_button {
@@ -232,13 +232,13 @@
   }
 
   .hud_eye_button {
-    scale: 2;
+    transform: scale(2);
     filter: brightness(0.4);
     transition: all ease 100ms;
   }
 
   .active_eye {
-    scale: 2.5;
+    transform: scale(2.5);
     filter: brightness(1);
   }
 
@@ -266,14 +266,14 @@
   :global(.egg img) {
     width: 9px;
     height: 13px;
-    scale: 2;
+    transform: scale(2);
     object-fit: cover;
     object-position: -14px 0;
   }
   :global(.carrot img) {
     width: 14px;
     height: 13px;
-    scale: 2;
+    transform: scale(2);
     object-fit: cover;
     object-position: 0 0;
   }
@@ -282,7 +282,7 @@
     overflow: hidden;
     width: 24px;
     height: 15px;
-    scale: 2;
+    transform: scale(2);
     object-fit: cover;
     margin-right: 20px;
     margin-left: auto;

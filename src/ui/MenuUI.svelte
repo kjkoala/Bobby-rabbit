@@ -355,7 +355,7 @@
     width: 16px;
     height: 16px;
     overflow: hidden;
-    scale: 3;
+    transform: scale(3);
     margin-bottom: 16px;
     border-radius: 5px;
   }
