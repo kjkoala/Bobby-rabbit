@@ -41,6 +41,6 @@
     pointer-events: none;
   }
   .scale_button {
-    scale: 2;
+    transform: scale(2);
   }
 </style>
