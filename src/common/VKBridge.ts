@@ -57,7 +57,6 @@ class VK {
     }
 
     countLevel() {
-      console.log('this.countLevels', this.countLevels)
       this.countLevels += 1
       if (this.countLevels === this.prev) {
         this.checkAds()
