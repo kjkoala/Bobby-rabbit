@@ -28,6 +28,7 @@
   let musicEnable = getMusicStatus();
   let currentInputType = getInputType();
   let rules: boolean | string = false;
+  let ready: boolean = false;
   let levelsDontStart = [
     storageLevelsCarrots.length === 0,
     storageLevelsEggs.length === 0,
@@ -43,6 +44,10 @@
   onMount(() => {
     const background = resources.Title.data.cloneNode();
     backgroundUI.append(background);
+
+    setTimeout(() => {
+      ready = true
+    }, 100)
   });
 
   onDestroy(() => {
@@ -72,7 +77,7 @@
 <div class="wrapper">
   <ResizeWidthHUD nameSelector=".wrapper" />
   <div class="background" bind:this={backgroundUI} />
-  {#if !newGame && !continueGame && !records && !rules}
+  {#if !newGame && !continueGame && !records && !rules && ready}
     {#if !levelsDontStart[0] || !levelsDontStart[1]}
       <button type="button" on:click={() => (continueGame = true)}
         >Продолжить</button
