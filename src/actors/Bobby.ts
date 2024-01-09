@@ -40,6 +40,13 @@ const ListAnimation: Record<Exclude<TypeAnimation, "start">, Animation> = {
   right: rightAnim,
   death: deathAnim,
 };
+
+const MoveKeys = {
+  Up: [Keys.W, Keys.ArrowUp],
+  Left: [Keys.A, Keys.ArrowLeft],
+  Right: [Keys.D, Keys.ArrowRight],
+  Down: [Keys.S, Keys.ArrowDown],
+}
 export class Bobby extends Actor {
   declare scene: Level;
   direction!: Directon | null;
@@ -290,7 +297,7 @@ export class Bobby extends Actor {
   move(engine: Engine) {
     if (
       (this.mobileDirection === Directon.UP ||
-        engine.input.keyboard.isHeld(Keys.KeyW)) &&
+      MoveKeys.Up.find(key => engine.input.keyboard.isHeld(key))) &&
       (this.pos.y - 0x8) / BLOCK_SIZE === this.blockY
     ) {
       if (
@@ -319,7 +326,7 @@ export class Bobby extends Actor {
       this.steps += 1;
     } else if (
       (this.mobileDirection === Directon.DOWN ||
-        engine.input.keyboard.isHeld(Keys.KeyS)) &&
+        MoveKeys.Down.find(key => engine.input.keyboard.isHeld(key))) &&
       (this.pos.y - 0x8) / BLOCK_SIZE === this.blockY
     ) {
       if (
@@ -348,7 +355,7 @@ export class Bobby extends Actor {
       this.steps += 1;
     } else if (
       (this.mobileDirection === Directon.RIGHT ||
-        engine.input.keyboard.isHeld(Keys.KeyD)) &&
+        MoveKeys.Right.find(key => engine.input.keyboard.isHeld(key))) &&
       (this.pos.x - 0x8) / BLOCK_SIZE === this.blockX
     ) {
       if (
@@ -377,7 +384,7 @@ export class Bobby extends Actor {
       this.steps += 1;
     } else if (
       (this.mobileDirection === Directon.LEFT ||
-        engine.input.keyboard.isHeld(Keys.KeyA)) &&
+        MoveKeys.Left.find(key => engine.input.keyboard.isHeld(key))) &&
       (this.pos.x - 0x8) / BLOCK_SIZE === this.blockX
     ) {
       if (

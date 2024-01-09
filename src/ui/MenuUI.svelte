@@ -448,14 +448,14 @@
     pointer-events: none;
     position: absolute;
     z-index: 0;
-    width: min(100%, 700px);
+    width: 100%;
     aspect-ratio: 1 / 1;
     left: 50%;
     transform: translateX(-50%);
   }
 
   :global(.background img) {
-    width: min(100%, 700px);
+    width: 100%;
     aspect-ratio: 1 / 1;
   }
 
