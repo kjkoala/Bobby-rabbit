@@ -27,6 +27,7 @@
     "@excaliburjs/plugin-tiled": "^0.28.0",
     "@vkontakte/vk-bridge": "^2.11.2",
     "excalibur": "^0.28.1",
-    "svelte": "^4.0.0"
+    "svelte": "^4.0.0",
+    "touchsweep": "^2.2.0"
   }
 }

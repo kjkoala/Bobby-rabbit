@@ -46,8 +46,8 @@
     backgroundUI.append(background);
 
     setTimeout(() => {
-      ready = true
-    }, 100)
+      ready = true;
+    }, 100);
   });
 
   onDestroy(() => {
@@ -61,14 +61,16 @@
 
   const changeInputType = () => {
     let nextInputType = currentInputType;
-    if (currentInputType === InputTypes.right) {
+    if (currentInputType === InputTypes.swipe) {
+      nextInputType = InputTypes.classic;
+    } else if (currentInputType === InputTypes.classic) {
+      nextInputType = InputTypes.right;
+    } else if (currentInputType === InputTypes.right) {
       nextInputType = InputTypes.left;
     } else if (currentInputType === InputTypes.left) {
       nextInputType = InputTypes.center;
     } else if (currentInputType === InputTypes.center) {
-      nextInputType = InputTypes.classic;
-    } else if (currentInputType === InputTypes.classic) {
-      nextInputType = InputTypes.right;
+      nextInputType = InputTypes.swipe;
     }
     currentInputType = nextInputType;
   };
@@ -84,20 +86,24 @@
       >
     {/if}
     <button type="button" on:click={() => (newGame = true)}>Новая игра</button>
-    <button type="button" on:click={VKBridge.inviteFriend}>Пригласить друга</button>
+    <button type="button" on:click={VKBridge.inviteFriend}
+      >Пригласить друга</button
+    >
     <button type="button" on:click={() => (records = "both")}>Рекорды</button>
     <button type="button" on:click={onChangeMusicStatus}
       >Музыка {musicEnable ? "выкл." : "вкл."}</button
     >
     {#if isMobile}
       <button type="button" on:click={changeInputType}
-        >Управление ({currentInputType === InputTypes.classic
-          ? "стандартное"
+        >Управление ({currentInputType === InputTypes.swipe
+          ? "свайпами"
+          : currentInputType === InputTypes.classic
+          ? "стрелки стандартное"
           : currentInputType === InputTypes.center
-          ? "центр"
+          ? "стрелки центр"
           : currentInputType === InputTypes.left
-          ? "слева"
-          : "справа"})</button
+          ? "стрелки слева"
+          : "стрелки справа"})</button
       >
     {/if}
     <button type="button" on:click={() => (rules = "1")}>Правила</button>
@@ -182,8 +188,7 @@
         <span class="arrow"
           ><div>←</div>
           <div>A</div>
-          </span
-        ><span class="arrow top"
+        </span><span class="arrow top"
           ><div>W</div>
           <div>↑</div></span
         ><span class="arrow"

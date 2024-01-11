@@ -7,6 +7,7 @@
   import { getInputType } from "src/common/getInputType";
   import ResizeWidthHUD from "src/common/ResizeWidthHUD.svelte";
   import { computedTimeUTC } from "src/common/computedTimeUTC";
+  import { InputTypes } from "src/common/types";
   export let scene: Level;
   let carrotNode: HTMLDivElement;
   let eyeNode: HTMLButtonElement;
@@ -154,7 +155,7 @@
   {#if showRestartMessage}
     <div class="center_text">R = Рестарт</div>
   {/if}
-  {#if isMobile}
+  {#if isMobile && currentInputType !== InputTypes.swipe}
     <div
       class={`controls ${currentInputType}`}
       on:pointerup={() => scene.emit("mobileButtonWasReleased")}
