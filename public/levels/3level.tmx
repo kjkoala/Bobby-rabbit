@@ -19,9 +19,9 @@
  </tileset>
  <layer id="46" name="Grass" width="16" height="16">
   <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,
 1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,
-1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,
 1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,
 1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,
 1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,
@@ -39,10 +39,10 @@
  </layer>
  <layer id="39" name="Wall" width="16" height="16">
   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,6,0,2684354566,0,0,0,0,0,0,0,
-0,0,0,0,0,6,0,0,0,2684354566,0,0,0,0,0,0,
-0,0,0,0,6,0,0,0,0,0,2684354566,0,0,0,0,0,
+0,0,0,0,0,0,6,0,7,0,0,0,0,0,0,0,
+0,0,0,0,4,6,0,0,0,7,4,0,0,0,0,0,
 0,0,0,2,0,0,0,0,0,0,0,3,0,0,0,0,
 0,0,0,0,5,2684354572,3221225483,0,3221225483,2684354572,5,0,0,0,0,0,
 0,0,0,0,2,0,0,0,0,0,3,0,0,0,0,0,
@@ -57,22 +57,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="43" name="Finish" locked="1">
-  <properties>
-   <property name="excalibur" type="bool" value="true"/>
-  </properties>
-  <object id="90" name="Finish" type="Finish" gid="45" x="112" y="48" width="16" height="16">
-   <properties>
-    <property name="CollisionType" value="Passive"/>
-   </properties>
-  </object>
- </objectgroup>
  <layer id="40" name="Ground" width="16" height="16" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,19,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,19,49,19,0,0,0,0,0,0,0,
-0,0,0,0,0,19,19,19,19,19,0,0,0,0,0,0,
 0,0,0,0,19,19,19,19,19,19,19,0,0,0,0,0,
 0,0,0,0,0,0,0,19,0,0,0,0,0,0,0,0,
 0,0,0,0,0,21,21,32,21,21,0,0,0,0,0,0,
@@ -87,6 +77,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="43" name="Finish">
+  <properties>
+   <property name="excalibur" type="bool" value="true"/>
+  </properties>
+  <object id="90" name="Finish" type="Finish" gid="45" x="112" y="64" width="16" height="16">
+   <properties>
+    <property name="CollisionType" value="Passive"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="44" name="Traps" locked="1">
   <properties>
    <property name="excalibur" type="bool" value="true"/>
