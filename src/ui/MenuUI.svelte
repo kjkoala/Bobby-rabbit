@@ -17,7 +17,6 @@
   import { carrotsMaps, eggsMaps } from "src/app/main";
   import { computedTimeUTC } from "src/common/computedTimeUTC";
   import ResizeWidthHUD from "src/common/ResizeWidthHUD.svelte";
-  import VKBridge from "src/common/VKBridge";
 
   export let menu: Menu;
   const storageLevelsCarrots = getLevelsLocalStorage(carrots_levels);
