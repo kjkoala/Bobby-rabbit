@@ -194,8 +194,8 @@
         if (!isBusy) {
           scene.emit("mobileButtonWasReleased")
         }
-      }} onMove={(move) => {
-          scene.emit("mobileButtonPressed", move[0]);
+      }} onMove={(direction) => {
+          scene.emit("mobileButtonPressed", direction);
       }} />
   {/if}
 </div>

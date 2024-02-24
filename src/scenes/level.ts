@@ -8,7 +8,6 @@ import {
   Graphic,
 } from "excalibur";
 import { Bobby } from "src/actors/Bobby";
-import TouchSweep from 'touchsweep';
 import HUD from "src/ui/HUD.svelte";
 import {
   convertorDownAnim,
@@ -52,7 +51,6 @@ export class Level extends Scene {
   hud!: HUD;
   lockCamera: boolean;
   startLevelTime: number;
-  instanceTouchSweep!: TouchSweep;
   currentInputType!: InputTypes;
   constructor(carrotsMaps: TiledMapResource[], currentLevel: number) {
     super();

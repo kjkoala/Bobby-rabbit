@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   export let onBusy: (isBusy: boolean) => void = () => {};
-  export let onMove: (coords: [number, number]) => void = () => {};
+  export let onMove: (coords: number) => void = () => {};
 
   const DIRECTIONS: [number, number][] = [
       [-135, -45],  // top
@@ -15,6 +15,7 @@
   let stick: HTMLDivElement;
   let stickRoot: HTMLDivElement;
   let stickControl: HTMLDivElement;
+  let prevCoord: number = -1;
 
   // sizes
   let stickSize: number;
@@ -96,14 +97,17 @@
     if (isStickBusy) {
       let coordinates = getStickCoordinates(event as TouchEvent);
       let direction = getStickDirection(coordinates);
-
-      onMove(direction);
       updateStickPosition(coordinates);
+      if (prevCoord !== direction[0]) {
+        prevCoord = direction[0];
+        onMove(direction[0]);
+      }
     }
   }
 
   function stickEnd() {
     isStickBusy = false;
+    prevCoord = -1;
     onBusy(false);
     updateStickPosition();
   }
