@@ -30,11 +30,8 @@ import { getMusicStatus } from "src/common/getMusicStatus";
 import { resources } from "src/app/resources";
 import { EndGameScene } from "./endGame";
 import VKBridge from "src/common/VKBridge";
-import { Directon } from "src/actors/types";
 import { getInputType } from "src/common/getInputType";
 import { InputTypes } from "src/common/types";
-
-const area = document.querySelector('#root') as HTMLElement;
 
 export class Level extends Scene {
   declare player: Bobby;
@@ -66,11 +63,6 @@ export class Level extends Scene {
   }
   override onInitialize(engine: Engine): void {
     this.currentInputType = getInputType();
-    if (isMobile && this.currentInputType === InputTypes.swipe) {
-     this.instanceTouchSweep = new TouchSweep(
-        area
-      )
-    }
     const currentMap = this.levels[this.currentLevel];
     this.mapWidth = currentMap.data.width;
     this.collisionMap = new Map();
@@ -225,47 +217,6 @@ export class Level extends Scene {
         scene: this,
       },
     });
-
-    if (isMobile && this.currentInputType === InputTypes.swipe) {
-      const debounceEvent = (event: any) => {
-        var coords = event.detail.coords;
-        var distanceX = Math.abs(coords.moveX - coords.startX);
-            var distanceY = Math.abs(coords.moveY - coords.startY);
-            var isSwipeX = distanceX > distanceY;
-  
-            if (isSwipeX) {
-              if (coords.moveX < coords.startX) {
-                this.emit("mobileButtonPressed", Directon.LEFT);
-              }
-  
-              if (coords.moveX > coords.startX) {
-                this.emit("mobileButtonPressed", Directon.RIGHT);
-              }
-            } else {
-              if (coords.moveY < coords.startY) {
-                this.emit("mobileButtonPressed", Directon.UP);
-              }
-  
-              if (coords.moveY > coords.startY) {
-                this.emit("mobileButtonPressed", Directon.DOWN);
-              }
-            }
-      };
-    
-      const releasedFn = () => {
-        this.emit("mobileButtonWasReleased")
-      }
-      area.addEventListener('swipemove', debounceEvent);
-      area.addEventListener('swipeleft', releasedFn)
-      area.addEventListener('swiperight', releasedFn)
-      area.addEventListener('swipedown', releasedFn)
-      area.addEventListener('swipeup', releasedFn)
-  
-      this.on('deactivate', () => {
-        releasedFn()
-        this.instanceTouchSweep.unbind()
-      })
-    }
   }
 
   goToMenu() {

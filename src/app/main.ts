@@ -5,6 +5,7 @@ import { eggs_levels, levels } from "./levels";
 import { resources } from "./resources";
 import { Menu } from "src/scenes/mainMenu";
 import { isMobile, tileFinish, tilemap } from "src/common/constants";
+import { bobbyCarrotLogo } from "./bobbyCarrot";
 
 const convertPath = (map: TiledMapResource) => {
   map.convertPath = (_originPath: string, relativePath: string): string => {
@@ -42,6 +43,11 @@ eggsMaps.forEach(convertPath)
 carrotsMaps.forEach(convertPath)
 
 const loader = new Loader([...Object.values(resources), ...carrotsMaps, ...eggsMaps])
+
+
+loader.logoWidth = 186;
+loader.logoHeight = 168;
+loader.logo = bobbyCarrotLogo
 
 loader.playButtonText = "Запустить игру";
 engine.start(loader).then(() => {

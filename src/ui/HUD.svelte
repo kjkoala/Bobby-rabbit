@@ -8,6 +8,7 @@
   import ResizeWidthHUD from "src/common/ResizeWidthHUD.svelte";
   import { computedTimeUTC } from "src/common/computedTimeUTC";
   import { InputTypes } from "src/common/types";
+  import Stick from "./Stick.svelte";
   export let scene: Level;
   let carrotNode: HTMLDivElement;
   let eyeNode: HTMLButtonElement;
@@ -105,7 +106,7 @@
 
 <div class="hud">
   <ResizeWidthHUD nameSelector=".hud" />
-  <div class="header_hud">
+  <div class="header_hud" on:touchstart|stopPropagation={() => {}}>
     <button
       class="scale_button"
       type="button"
@@ -114,7 +115,7 @@
     />
     {#if isMobile}
       <button
-        on:pointerdown={handleTouchStart}
+        on:pointerdown ={handleTouchStart}
         class="scale_button margin_button"
         type="button"
         bind:this={restartButton}
@@ -125,7 +126,7 @@
         class:active_eye={!lockCamera}
         type="button"
         bind:this={eyeNode}
-        on:pointerdown={handleTouchMapVisor}
+        on:pointerdown ={handleTouchMapVisor}
       />
     {/if}
     <div class="hud_carrot">
@@ -155,7 +156,7 @@
   {#if showRestartMessage}
     <div class="center_text">R = Рестарт</div>
   {/if}
-  {#if isMobile && currentInputType !== InputTypes.swipe}
+  {#if isMobile && currentInputType !== InputTypes.stick}
     <div
       class={`controls ${currentInputType}`}
       on:pointerup={() => scene.emit("mobileButtonWasReleased")}
@@ -188,6 +189,14 @@
         bind:this={arrowDown}
       />
     </div>
+    {:else if isMobile && currentInputType === InputTypes.stick}
+      <Stick onBusy={(isBusy) => {
+        if (!isBusy) {
+          scene.emit("mobileButtonWasReleased")
+        }
+      }} onMove={(move) => {
+          scene.emit("mobileButtonPressed", move[0]);
+      }} />
   {/if}
 </div>
 
@@ -230,7 +239,8 @@
   .header_hud {
     display: flex;
     padding: 10px 20px;
-  }
+    z-index: 99;
+    }
 
   .hud_eye_button {
     transform: scale(2);
@@ -287,6 +297,7 @@
     object-fit: cover;
     margin-right: 20px;
     margin-left: auto;
+    z-index: 99;
   }
   .hud_copper,
   .hud_silver,
