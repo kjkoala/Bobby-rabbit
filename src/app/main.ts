@@ -6,6 +6,7 @@ import { resources } from "./resources";
 import { Menu } from "src/scenes/mainMenu";
 import { isMobile, tileFinish, tilemap } from "src/common/constants";
 import { bobbyCarrotLogo } from "./bobbyCarrot";
+import VKBridge from "src/common/VKBridge";
 
 const convertPath = (map: TiledMapResource) => {
   map.convertPath = (_originPath: string, relativePath: string): string => {
@@ -49,7 +50,11 @@ loader.logoWidth = 186;
 loader.logoHeight = 168;
 loader.logo = bobbyCarrotLogo
 
+loader.areResourcesLoaded()
+.then(VKBridge.loadingComplete)
+
 loader.playButtonText = "Запустить игру";
+
 engine.start(loader).then(() => {
     engine.goToScene('menu')
 });

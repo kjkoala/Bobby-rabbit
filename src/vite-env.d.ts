@@ -10,3 +10,7 @@ declare module "*.svelte" {
     const component: ComponentType;
     export default component;
 }
+
+declare class YaGames {
+   static init(): Promise<any>
+}

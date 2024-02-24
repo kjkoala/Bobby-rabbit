@@ -5,17 +5,20 @@ class VK {
   private countLevels: number;
   private whenShowAds: number;
   private prev: number;
+  private Ysdk: any;
   constructor() {
     this.countLevels = 0;
     this.whenShowAds = 5;
     this.prev = this.whenShowAds - 1;
+
+    
+    YaGames.init()
+    .then((sdk) => {
+      this.Ysdk = sdk
+    })
   }
     static init() {
-        bridge.send("VKWebAppInit", {})
-        .then(this.getVKSaves)
-        .catch(console.error)
-
-        return new VK()
+      return new VK()
     }
 
     static getVKSaves() {
@@ -33,7 +36,12 @@ class VK {
       })
     }
 
+    loadingComplete() {
+      this.Ysdk.features.LoadingAPI?.ready();
+    }
+
     setSave(key: string, value: string){
+      return undefined
       bridge.send("VKWebAppStorageSet", {
         key,
         value
@@ -42,16 +50,20 @@ class VK {
     }
 
     inviteFriend() {
+      return undefined
       bridge.send('VKWebAppShowInviteBox')
       .catch(noop)
     }
 
     checkAds() {
+      return Promise.resolve()
         bridge.send('VKWebAppCheckNativeAds', { ad_format: EAdsFormats.INTERSTITIAL})
         .catch(noop)
     }
 
     showAds() {
+      this.Ysdk.adv.showFullscreenAdv({})
+      return Promise.resolve()
         return bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
         .catch(noop);
     }

@@ -5,7 +5,7 @@ import preprocess from "svelte-preprocess"
 
 export default defineConfig({
   assetsInclude: ['**/*.tmx'],
-  base: '/bobby/',
+  base: '/',
     plugins: [
         svelte({
             preprocess: preprocess()
