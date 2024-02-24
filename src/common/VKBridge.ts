@@ -37,7 +37,7 @@ class VK {
     }
 
     loadingComplete() {
-      this.Ysdk.features.LoadingAPI?.ready();
+      this.Ysdk?.features.LoadingAPI?.ready();
     }
 
     setSave(key: string, value: string){
@@ -62,10 +62,16 @@ class VK {
     }
 
     showAds() {
-      this.Ysdk.adv.showFullscreenAdv({})
-      return Promise.resolve()
-        return bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
-        .catch(noop);
+      return new Promise((resolve, reject) => {
+        this.Ysdk.adv.showFullscreenAdv({
+          callback: {
+            onClose: resolve,
+            onError: reject
+          }
+        })
+          return bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
+          .catch(noop);
+      })
     }
 
     countLevel() {

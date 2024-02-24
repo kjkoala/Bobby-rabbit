@@ -20,9 +20,6 @@ const convertPath = (map: TiledMapResource) => {
   }
 }
 
-console.log(new URL('ast/asd.mv', import.meta.url).href)
-
-
 const engine = new Engine({
   antialiasing: false,
   canvasElementId: 'game',
