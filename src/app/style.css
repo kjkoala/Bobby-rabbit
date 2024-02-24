@@ -9,6 +9,7 @@ html {
     background-color: black;
     font-size: 14px;
     font-family: sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #root {
@@ -16,6 +17,7 @@ html {
     align-items: center;
     justify-content: center;
     user-select: none;
+    position: relative;
     -webkit-user-select: none; /* Safari */
     user-select: none; /* Standard syntax */
 }

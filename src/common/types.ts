@@ -3,5 +3,5 @@ export enum InputTypes {
     right = 'right',
     left = 'left',
     center = 'center',
-    swipe = 'swipe'
+    stick = 'swipe'
 }

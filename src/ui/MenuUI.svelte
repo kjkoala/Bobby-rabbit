@@ -61,7 +61,7 @@
 
   const changeInputType = () => {
     let nextInputType = currentInputType;
-    if (currentInputType === InputTypes.swipe) {
+    if (currentInputType === InputTypes.stick) {
       nextInputType = InputTypes.classic;
     } else if (currentInputType === InputTypes.classic) {
       nextInputType = InputTypes.right;
@@ -70,7 +70,7 @@
     } else if (currentInputType === InputTypes.left) {
       nextInputType = InputTypes.center;
     } else if (currentInputType === InputTypes.center) {
-      nextInputType = InputTypes.swipe;
+      nextInputType = InputTypes.stick;
     }
     currentInputType = nextInputType;
   };
@@ -95,8 +95,8 @@
     >
     {#if isMobile}
       <button type="button" on:click={changeInputType}
-        >Управление ({currentInputType === InputTypes.swipe
-          ? "свайпами"
+        >Управление ({currentInputType === InputTypes.stick
+          ? "стиком"
           : currentInputType === InputTypes.classic
           ? "стрелки стандартное"
           : currentInputType === InputTypes.center
