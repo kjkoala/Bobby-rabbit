@@ -5,7 +5,10 @@ import preprocess from "svelte-preprocess"
 
 export default defineConfig({
   assetsInclude: ['**/*.tmx'],
-  base: '/',
+  base: '',
+  build: {
+    target: 'es2015',
+  },
     plugins: [
         svelte({
             preprocess: preprocess()
@@ -14,7 +17,7 @@ export default defineConfig({
     resolve: {
         alias: {
             'src': fileURLToPath(new URL('./src', import.meta.url)),
-            'public': fileURLToPath(new URL('./public', import.meta.url)),
+            // 'public': fileURLToPath(new URL('./public', import.meta.url)),
           },
       },
 })

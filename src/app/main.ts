@@ -20,6 +20,8 @@ const convertPath = (map: TiledMapResource) => {
   }
 }
 
+console.log(new URL('ast/asd.mv', import.meta.url).href)
+
 
 const engine = new Engine({
   antialiasing: false,
@@ -42,6 +44,8 @@ engine.addScene('menu', new Menu)
 eggsMaps.forEach(convertPath)
 
 carrotsMaps.forEach(convertPath)
+
+
 
 const loader = new Loader([...Object.values(resources), ...carrotsMaps, ...eggsMaps])
 
