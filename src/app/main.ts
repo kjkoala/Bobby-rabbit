@@ -41,14 +41,12 @@ eggsMaps.forEach(convertPath)
 
 carrotsMaps.forEach(convertPath)
 
-
-
 const loader = new Loader([...Object.values(resources), ...carrotsMaps, ...eggsMaps])
 
 
 loader.logoWidth = 186;
 loader.logoHeight = 168;
-loader.logo = bobbyCarrotLogo
+loader.logo = bobbyCarrotLogo;
 
 loader.areResourcesLoaded()
 .then(() => {
