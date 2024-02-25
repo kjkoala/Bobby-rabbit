@@ -51,7 +51,10 @@ loader.logoHeight = 168;
 loader.logo = bobbyCarrotLogo
 
 loader.areResourcesLoaded()
-.then(() => VKBridge.loadingComplete())
+.then(() => {
+  VKBridge.loadingComplete()
+  VKBridge.getSave()
+})
 
 loader.playButtonText = "Запустить игру";
 

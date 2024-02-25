@@ -1,22 +1,21 @@
 import bridge, { EAdsFormats } from '@vkontakte/vk-bridge';
 import { carrots_levels, eggs_levels, getLevelsLocalStorage } from './constants';
+
 const noop = () => {}
 class VK {
   private countLevels: number;
   private whenShowAds: number;
   private prev: number;
   private sdk: any;
+  private awaitersSDK: ((values: unknown) => void)[] = []
   constructor() {
     this.countLevels = 0;
-    this.whenShowAds = 5;
+    this.whenShowAds = 4;
     this.prev = this.whenShowAds - 1;
 
     
     YaGames.init()
-    .then((sdk) => {
-      this.sdk = sdk
-    })
-    .then(() => this.getSave())
+    .then((sdk) => this.setSDK(sdk))
     .catch(console.error)
   }
     static init() {
@@ -24,7 +23,8 @@ class VK {
     }
 
     getSave() {
-      this.sdk.getPlayer()
+      this.getSDK()
+      .then((sdk: any) => sdk.getPlayer())
       .then((player: any) => {
         if (player.getMode() !== 'lite') {
           player.getData()
@@ -40,12 +40,35 @@ class VK {
       })
     }
 
+    getSDK() {
+      return new Promise((resolve) => {
+        if (this.sdk) {
+          resolve(this.sdk)
+        } else {
+          this.awaitersSDK.push(resolve)
+        }
+      })
+    }
+
+    setSDK(sdk: any) {
+      return new Promise((resolve) => {
+        this.sdk = sdk
+        this.awaitersSDK.forEach((resolve) => resolve(this.sdk));
+        this.awaitersSDK = []
+        resolve(this.sdk)
+      })
+    }
+
     loadingComplete() {
-      this.sdk?.features.LoadingAPI?.ready();
+      this.getSDK()
+      .then((sdk: any) => {
+        sdk.features.LoadingAPI?.ready();
+      })
     }
 
     setSave(key: string, value: string){
-      this.sdk.getPlayer()
+      this.getSDK()
+      .then((sdk: any) => sdk.getPlayer())
       .then((player: any) => {
         if (player.getMode() !== 'lite') {
           const difKey = key === carrots_levels ? eggs_levels : carrots_levels ;
@@ -56,7 +79,7 @@ class VK {
           })
           .catch(noop)
         }
-      } )
+      })
     }
 
     inviteFriend() {
@@ -73,13 +96,17 @@ class VK {
 
     showAds() {
       return new Promise((resolve, reject) => {
-        this.sdk.adv.showFullscreenAdv({
-          callbacks: {
-            onClose: resolve,
-            onError: reject,
-          }
+        this.getSDK()
+        .then((sdk: any) => {
+          sdk.adv.showFullscreenAdv({
+            callbacks: {
+              onClose: resolve,
+              onError: reject,
+            }
+          })
         })
-          return bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
+        return undefined
+        bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
           .catch(noop);
       })
     }
