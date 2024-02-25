@@ -33,7 +33,6 @@ const engine = new Engine({
   maxFps: 60,
   backgroundColor: Color.Black,
 })
-
 export const carrotsMaps = levels.map(level => new TiledMapResource(level))
 export const eggsMaps = eggs_levels.map(level => new TiledMapResource(level))
 engine.addScene('menu', new Menu)
@@ -51,5 +50,7 @@ loader.logo = bobbyCarrotLogo
 
 loader.playButtonText = "Запустить игру";
 engine.start(loader).then(() => {
+    // Баг движка, если изменится размер экрана то при загрузке сцены экран не обновится
+    window.dispatchEvent(new Event('resize'));
     engine.goToScene('menu')
 });
