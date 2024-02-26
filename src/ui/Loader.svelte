@@ -11,6 +11,12 @@
     </div>
 <style>
 
+    :global(#excalibur-play-root) {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, calc(50% + 50px));
+    }
     .loading {
         pointer-events: none;
         position: absolute;
