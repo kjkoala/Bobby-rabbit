@@ -2,23 +2,23 @@ import bridge, { EAdsFormats } from '@vkontakte/vk-bridge';
 import { carrots_levels, eggs_levels, getLevelsLocalStorage } from './constants';
 
 const noop = () => {}
+
+const TWO_MIN_IN_MS = 120_000
 class VK {
-  private countLevels: number;
-  private whenShowAds: number;
-  private prev: number;
   private sdk: any;
   private awaitersSDK: ((values: unknown) => void)[] = []
-  constructor() {
-    this.countLevels = 0;
-    this.whenShowAds = 4;
-    this.prev = this.whenShowAds - 1;
+  private addCountMS: number;
 
+  constructor() {
+    this.addCountMS = 0;
     
     YaGames.init()
     .then((sdk) => this.setSDK(sdk))
     .catch(console.error)
-  }
-    static init() {
+    
+    }
+
+  static init() {
       return new VK()
     }
 
@@ -111,13 +111,13 @@ class VK {
       })
     }
 
-    countLevel() {
-      this.countLevels += 1
-      if (this.countLevels === this.prev) {
-        this.checkAds()
-      } else if (this.countLevels >= this.whenShowAds) {
-        this.countLevels = 0;
+    countLevel(ms: number) {
+      this.addCountMS += ms
+      if (this.addCountMS > TWO_MIN_IN_MS) {
+        this.addCountMS = 0;
         return this.showAds()
+        .then(() => this.checkAds())
+        .catch(noop)
       }
 
       return Promise.resolve()
