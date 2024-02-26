@@ -229,6 +229,7 @@ export class Bobby extends Actor {
       this.mobileDirection === 11 ||
       engine.input.keyboard.wasPressed(Keys.R)
     ) {
+      this.isFreeze = true
       this.scene.emit("playerDied", undefined);
     }
     if (!this.scene.lockCamera) {

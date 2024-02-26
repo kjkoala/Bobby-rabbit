@@ -13,11 +13,7 @@ class VK {
         .then(this.getVKSaves)
         .catch(console.error)
 
-        const initVK = new VK()
-
-        initVK.checkAds()
-
-        return initVK
+        return new VK()
     }
 
     static getVKSaves() {
@@ -61,13 +57,11 @@ class VK {
     countLevel(ms: number) {
       this.addCountMS += ms
       if (this.addCountMS > TWO_MIN_IN_MS) {
-        console.log('more than 2min', this.addCountMS)
         this.addCountMS = 0;
         return this.showAds()
         .then(() => this.checkAds())
         .catch(noop)
       }
-      console.log('less than 2min', this.addCountMS)
 
       return Promise.resolve()
     }

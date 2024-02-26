@@ -6,6 +6,7 @@ import { resources } from "./resources";
 import { Menu } from "src/scenes/mainMenu";
 import { isMobile, tileFinish, tilemap } from "src/common/constants";
 import { bobbyCarrotLogo } from "./bobbyCarrot";
+import VKBridge from "src/common/VKBridge";
 
 const convertPath = (map: TiledMapResource) => {
   map.convertPath = (_originPath: string, relativePath: string): string => {
@@ -53,4 +54,5 @@ engine.start(loader).then(() => {
     // Баг движка, если изменится размер экрана то при загрузке сцены экран не обновится
     window.dispatchEvent(new Event('resize'));
     engine.goToScene('menu')
+    VKBridge.checkAds()
 });
