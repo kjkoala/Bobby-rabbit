@@ -15,7 +15,7 @@
         position: absolute !important;
         top: 50% !important;
         left: 50% !important;
-        transform: translate(-50%, calc(50% + 50px));
+        transform: translate(-50%, calc(-50% + 50px));
     }
     .loading {
         pointer-events: none;
