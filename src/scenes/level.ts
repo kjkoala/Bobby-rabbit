@@ -188,7 +188,7 @@ export class Level extends Scene {
 
     this.on("levelComplete", () => {
       engine.clock.schedule(() => {
-        VK.countLevel().finally(() => {
+        VK.countLevel(this.calculateTime()).finally(() => {
           engine.removeScene(this);
           const nextLevel = this.currentLevel + 1;
           if (nextLevel >= this.levels.length) {
@@ -202,7 +202,7 @@ export class Level extends Scene {
     });
 
     this.on("playerDied", () => {
-      VK.countLevel().finally(() => {
+      VK.countLevel(this.calculateTime()).finally(() => {
         engine.removeScene(this);
         engine.addScene("level", new Level(this.levels, this.currentLevel));
         engine.goToScene("level");
@@ -215,6 +215,10 @@ export class Level extends Scene {
         scene: this,
       },
     });
+  }
+
+  calculateTime() {
+    return this.engine.clock.now() - this.startLevelTime
   }
 
   goToMenu() {
@@ -435,7 +439,7 @@ export class Level extends Scene {
   }
 
   computedTime() {
-    const finishTime = this.engine.clock.now() - this.startLevelTime;
+    const finishTime = this.calculateTime();
     const nameStorage = this.carrots !== undefined ? carrots_levels : eggs_levels;
       const stogareLevels = getLevelsLocalStorage(nameStorage);
       const updateLevel = stogareLevels.findIndex((lvl) => lvl.level === this.currentLevel)

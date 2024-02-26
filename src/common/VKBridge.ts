@@ -1,21 +1,23 @@
 import bridge, { EAdsFormats } from '@vkontakte/vk-bridge';
 import { carrots_levels, eggs_levels } from './constants';
 const noop = () => {}
+
+const TWO_MIN_IN_MS = 120_000
 class VK {
-  private countLevels: number;
-  private whenShowAds: number;
-  private prev: number;
+  private addCountMS: number;
   constructor() {
-    this.countLevels = 0;
-    this.whenShowAds = 5;
-    this.prev = this.whenShowAds - 1;
+    this.addCountMS = 0;
   }
     static init() {
         bridge.send("VKWebAppInit", {})
         .then(this.getVKSaves)
         .catch(console.error)
 
-        return new VK()
+        const initVK = new VK()
+
+        initVK.checkAds()
+
+        return initVK
     }
 
     static getVKSaves() {
@@ -56,14 +58,16 @@ class VK {
         .catch(noop);
     }
 
-    countLevel() {
-      this.countLevels += 1
-      if (this.countLevels === this.prev) {
-        this.checkAds()
-      } else if (this.countLevels >= this.whenShowAds) {
-        this.countLevels = 0;
+    countLevel(ms: number) {
+      this.addCountMS += ms
+      if (this.addCountMS > TWO_MIN_IN_MS) {
+        console.log('more than 2min', this.addCountMS)
+        this.addCountMS = 0;
         return this.showAds()
+        .then(() => this.checkAds())
+        .catch(noop)
       }
+      console.log('less than 2min', this.addCountMS)
 
       return Promise.resolve()
     }
