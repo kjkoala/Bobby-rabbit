@@ -1,5 +1,5 @@
 import bridge, { BannerAdLocation, EAdsFormats } from '@vkontakte/vk-bridge';
-import { carrots_levels, eggs_levels, isMobile } from './constants';
+import { carrots_levels, eggs_levels } from './constants';
 const noop = () => {}
 
 const TWO_MIN_IN_MS = 120_000
@@ -51,7 +51,8 @@ class VK {
 
     showBannerAds() {
       return bridge.send('VKWebAppShowBannerAd', {
-        banner_location: isMobile ? BannerAdLocation.TOP  : BannerAdLocation.BOTTOM,
+        banner_location: BannerAdLocation.BOTTOM,
+        can_close: true,
       })
       .catch(noop)
     }
