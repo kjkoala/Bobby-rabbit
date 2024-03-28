@@ -1,5 +1,5 @@
-import bridge, { EAdsFormats } from '@vkontakte/vk-bridge';
-import { carrots_levels, eggs_levels } from './constants';
+import bridge, { BannerAdLocation, EAdsFormats } from '@vkontakte/vk-bridge';
+import { carrots_levels, eggs_levels, isMobile } from './constants';
 const noop = () => {}
 
 const TWO_MIN_IN_MS = 120_000
@@ -49,6 +49,13 @@ class VK {
         .catch(noop)
     }
 
+    showBannerAds() {
+      return bridge.send('VKWebAppShowBannerAd', {
+        banner_location: isMobile ? BannerAdLocation.TOP  : BannerAdLocation.BOTTOM,
+      })
+      .catch(noop)
+    }
+
     showAds() {
         return bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
         .catch(noop);
@@ -59,7 +66,10 @@ class VK {
       if (this.addCountMS > TWO_MIN_IN_MS) {
         this.addCountMS = 0;
         return this.showAds()
-        .then(() => this.checkAds())
+        .then(() => {
+          this.checkAds()
+          this.showBannerAds()
+        })
         .catch(noop)
       }
 
